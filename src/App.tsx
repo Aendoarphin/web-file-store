@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
 import supabase from "./utils/supabase";
 import Home from "./components/Home";
+import Results from "./components/Results";
+import { BrowserRouter, Routes, Route } from "react-router";
 
 function App() {
-  const [users, setUsers] = useState<any[] | null>(null);
-  useEffect(() => {
-    getUsers();
-  }, []);
-
-  async function getUsers() {
-    const { data } = await supabase.from("users").select();
-    setUsers(data);
-  }
+  // async function getUsers() {
+  //   const { data } = await supabase.from("users").select();
+  //   setUsers(data);
+  // }
 
   return (
     <>
-      <Home />
+      <BrowserRouter>
+        <Routes>
+          <Route index path="/" element={<Home />} />
+          <Route path="/search" element={<Results />} />
+        </Routes>
+      </BrowserRouter>
     </>
-  )
+  );
 
   // return (
   //   <ul>
