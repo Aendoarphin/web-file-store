@@ -3,8 +3,8 @@ import supabase from "./utils/supabase";
 import Home from "./components/Home";
 import Results from "./components/Results";
 import Login from "./components/Login";
-import Error from "./components/Error";
 import Register from "./components/Register";
+import Root from "./components/Root";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 function App() {
@@ -17,11 +17,12 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route index path="/" element={<Home />} />
-          <Route path="/search" element={<Results />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/error" element={<Error />} />
+          <Route path="/" element={<Root />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+            <Route path="results" element={<Results />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </>
