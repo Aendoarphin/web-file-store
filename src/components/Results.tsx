@@ -1,7 +1,13 @@
+import { useSearchParams } from "react-router";
+
 const Results = () => {
+  const [searchParams] = useSearchParams();
+
   return (
     <>
-      <p>post-submission results</p>
+      <strong>Path: </strong>{location.pathname}
+      <br />
+      <strong>User query: </strong>{searchParams.get("q")}
     </>
   );
 };
