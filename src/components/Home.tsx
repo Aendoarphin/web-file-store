@@ -16,9 +16,9 @@ const Home = () => {
 
 	return (
 		<>
-			<div className="flex-row gap-4 flex items-center p-6 w-full">
-				<div className="flex flex-row justify-between place-items-baseline gap-2 w-full">
-					<h1>SOPY</h1>
+			<div className="flex-row gap-4 flex justify-between border items-center p-6 w-full">
+				<div className="flex flex-row justify-between gap-2">
+					<h1 className="font-extrabold">SOPY</h1>
 				</div>
 				<div className="flex flex-row">
 					<input
