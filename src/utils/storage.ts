@@ -9,5 +9,5 @@ export const searchFile = async(fileName: string) => {
     search: fileName,
 	});
 
-  return data ? data.map(item => item.name): [];
+  return data ? data.map(item => item.name): ["No Results"];
 };

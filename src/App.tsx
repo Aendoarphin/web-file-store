@@ -1,12 +1,11 @@
 import Home from "./components/Home";
-import Results from "./components/Results";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Root from "./components/Root";
 import { BrowserRouter, Routes, Route } from "react-router";
 
+// React routing occurs here
 function App() {
-
   return (
     <>
       <BrowserRouter>
@@ -15,7 +14,6 @@ function App() {
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route path="results" element={<Results />} />
           </Route>
         </Routes>
       </BrowserRouter>
