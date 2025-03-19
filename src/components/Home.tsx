@@ -2,6 +2,13 @@ import { useState } from "react";
 import { searchFile } from "../utils/storage";
 import ResultItem from "./ResultItem";
 
+const reSearch = (sourceArr: string[], targetStr: string) => {
+	const pattern = new RegExp(targetStr.trim(), "ig");
+	return targetStr.length >= 2
+		? sourceArr.filter((source) => pattern.test(source))
+		: [];
+};
+
 // Main page where user searches
 const Home = () => {
 	const [input, setInput] = useState("");
@@ -9,22 +16,22 @@ const Home = () => {
 
 	const handleSubmit = async () => {
 		if (input) {
-			const response = await searchFile(input);
-      setData(response);
-      if (response.length === 0) {
-        alert("No results found");
-        setData(["No results found"]);
-      }
+			const response = await searchFile();
+			const filtered = reSearch(response, input);
+			setData(filtered);
+			if (filtered.length === 0) {
+				setData(["No results found"]);
+			}
 		}
-	}
+	};
 
 	return (
 		<>
-			<div className="flex-row gap-4 flex justify-between items-center p-6 w-full">
-				<div className="flex flex-row justify-between gap-2">
+			<div className="flex-row gap-4 flex justify-between items-center px-6 py-2 w-full">
+				<div id="logo">
 					<h1 className="font-extrabold">SOPY</h1>
 				</div>
-				<div className="flex flex-row">
+				<div id="searchBarContainer" className="flex flex-row">
 					<input
 						id="searchBar"
 						onClick={(e) => {
@@ -46,7 +53,8 @@ const Home = () => {
 					/>
 					{input && (
 						<button
-							className={`bg-neutral-900 active:scale-95 text-white outline-0 font-bold py-2 px-4 ${
+							id="submitButton"
+							className={`bg-neutral-900 active:scale-95 text-white outline-0 px-4 ${
 								input.length > 0 ? "rounded-r-lg" : "rounded-lg"
 							}`}
 							onClick={() => handleSubmit()}
@@ -56,11 +64,14 @@ const Home = () => {
 					)}
 				</div>
 			</div>
-      <hr className="mx-4 text-neutral-400"/>
-			<div id="resultsContainer" className="flex flex-col items-start p-6 w-full">
-				{data?.map((item) => (
-					<ResultItem fileName={item} />
-        ))}
+			<hr className="mx-6 text-neutral-400" />
+			<div
+				id="resultsContainer"
+				className="flex flex-col items-start p-6 w-full"
+			>
+				{data?.map((item, index) => (
+					<ResultItem key={index} fileName={item} input={input} />
+				))}
 			</div>
 		</>
 	);
