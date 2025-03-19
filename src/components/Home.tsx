@@ -15,6 +15,7 @@ const findMatches = (sourceArr: string[], userInput: string) => {
 const Home = () => {
   const [input, setInput] = useState("");
   const [data, setData] = useState<string[]>();
+  const [order, setOrder] = useState("asc");
 
   const handleSubmit = async () => {
     if (input) {
@@ -53,7 +54,6 @@ const Home = () => {
               setInput(e.target.value);
             }}
           />
-
           {input && (
             <button
               id="submitButton"
@@ -68,14 +68,28 @@ const Home = () => {
         </div>
       </div>
       <hr className="mx-6 text-neutral-400" />
+      <div className="w-full px-6 pt-4 flex justify-end">
+        <button
+          className="p-2 text-xs rounded-md hover:bg-neutral-200 border"
+          onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
+        >
+          {order === "asc" ? "Ascending" : "Descending"}
+        </button>
+      </div>
       <div
         id="resultsContainer"
         className="flex flex-col items-start p-6 w-full h-[90dvh]"
       >
-        {data?.map((item, index) => (
-          <ResultItem key={index} fileName={item} input={input} />
-        ))}
-				{data === undefined ? <StartupMessage />: null}
+        {order === "asc" ? (
+          data?.map((item, index) => (
+            <ResultItem key={index} fileName={item} input={input} />
+          ))
+        ) : (
+          data?.slice().reverse().map((item, index) => (
+            <ResultItem key={index} fileName={item} input={input} />
+          ))
+        )}
+        {data === undefined ? <StartupMessage /> : null}
       </div>
     </>
   );
