@@ -10,14 +10,20 @@ const Register = () => {
         />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Create a new password"
+          className="border-neutral-400 border-b focus:outline-none focus:border-black"
+        />
+        <input
+          type="password"
+          placeholder="Retype New Password"
           className="border-neutral-400 border-b focus:outline-none focus:border-black"
         />
         <a href="/login" className="text-neutral-500 text-xs underline">Or Log Into Existing Account</a>
         <input
           type="submit"
           value="Register"
-          className="bg-black text-white p-2 rounded px-10 mt-4"
+          onClick={() => {alert("Registered")}}
+          className="bg-black text-white p-2 rounded px-10 mt-4 active:scale-95"
         />
       </div>
     </>

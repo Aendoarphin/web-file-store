@@ -4,8 +4,8 @@ const Login = () => {
       <div className="flex flex-col mt-40 mx-auto items-center gap-4 p-8 shadow rounded-md bg-neutral-100 w-74">
         <h2 className="font-semibold">Log In</h2>
         <input
-          type="email"
-          placeholder="Email"
+          type="username"
+          placeholder="Username"
           className="border-neutral-400 border-b focus:outline-none focus:border-black"
         />
         <input

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { getFiles, getUser } from "../utils/operations";
+import { useState } from "react";
+import { getFiles, getAllUsers } from "../utils/database";
 import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./StartupMessage";
@@ -13,7 +13,7 @@ const Home = () => {
   const [input, setInput] = useState("");
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
-  const [currentUser, setCurrentUser] = useState<User[] | null>();
+  const [currentUser, setCurrentUser] = useState<object | null>();
 
   // Return elements that match the user's query
   const findMatches = (sourceArr: string[], userInput: string) => {
@@ -33,15 +33,6 @@ const Home = () => {
       }
     }
   };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const response = await getUser("apineda@wsfcu.com");
-
-      setCurrentUser(response as User[] | null);
-    };
-    fetchUser();
-  }, []);
 
   return (
     <>
@@ -84,22 +75,24 @@ const Home = () => {
       </div>
       <hr className="mx-6 text-neutral-400" />
       <div className="w-full px-6 pt-4 flex justify-end">
-        <button
-          className=" text-xs hover:-translate-y-1"
-          onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
-        >
-          {order === "asc" ? (
-            <div className="flex items-center">
-              <p>Ascending</p>
-              <IconArrowUp className="inline" size={15} />
-            </div>
-          ) : (
-            <div className="flex items-center">
-              <p>Descending</p>
-              <IconArrowDown className="inline" size={15} />
-            </div>
-          )}
-        </button>
+        {data && (
+          <button
+            className=" text-xs hover:-translate-y-1"
+            onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
+          >
+            {order === "asc" ? (
+              <div className="flex items-center">
+                <p>Ascending</p>
+                <IconArrowUp className="inline" size={15} />
+              </div>
+            ) : (
+              <div className="flex items-center">
+                <p>Descending</p>
+                <IconArrowDown className="inline" size={15} />
+              </div>
+            )}
+          </button>
+        )}
       </div>
       <div
         id="resultsContainer"
@@ -121,7 +114,7 @@ const Home = () => {
         &copy; SOPY {new Date().getFullYear()}
       </div>
       <div className="fixed bottom-0 right-0 p-2">
-        User: {currentUser?.map((user) => user.email)}
+        {/* User: {currentUser?.map((user) => user.email)} */}
       </div>
     </>
   );
