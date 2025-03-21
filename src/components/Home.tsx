@@ -4,14 +4,16 @@ import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./StartupMessage";
 
+interface User {
+  email: string;
+}
+
 // Main page to search documents
 const Home = () => {
   const [input, setInput] = useState("");
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
-  const [currentUser, setCurrentUser] = useState<
-    object[] | null
-  >();
+  const [currentUser, setCurrentUser] = useState<User[] | null>();
 
   // Return elements that match the user's query
   const findMatches = (sourceArr: string[], userInput: string) => {
@@ -35,7 +37,8 @@ const Home = () => {
   useEffect(() => {
     const fetchUser = async () => {
       const response = await getUser("apineda@wsfcu.com");
-      setCurrentUser(response);
+
+      setCurrentUser(response as User[] | null);
     };
     fetchUser();
   }, []);
@@ -115,11 +118,11 @@ const Home = () => {
         {data === undefined ? <StartupMessage /> : null}
       </div>
       <div className="fixed bottom-0 left-0 p-2">
-          &copy; SOPY {new Date().getFullYear()}
-        </div>
-        <div className="fixed bottom-0 right-0 p-2">
-          User: {currentUser?.map((user) => user.email)}
-        </div>
+        &copy; SOPY {new Date().getFullYear()}
+      </div>
+      <div className="fixed bottom-0 right-0 p-2">
+        User: {currentUser?.map((user) => user.email)}
+      </div>
     </>
   );
 };
