@@ -1,5 +1,5 @@
 import { IconFile, IconFileTypeJpg, IconFileTypePdf, IconFileTypePng, IconFileTypeTxt, IconFileTypeXls, IconFileWord } from "@tabler/icons-react";
-import { getDownloadLink } from "../utils/database";
+import { getFileDownloadLink } from "../utils/database";
 import { useState, useEffect } from "react";
 
 const ResultItem = (props: {fileName: string, input: string}) => {
@@ -31,7 +31,7 @@ const ResultItem = (props: {fileName: string, input: string}) => {
   };
   
   const fetchLink = async () => {
-    const response = await getDownloadLink(props.fileName);
+    const response = await getFileDownloadLink(props.fileName);
     setDownloadLink(response);
   }
 

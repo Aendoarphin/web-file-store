@@ -13,7 +13,7 @@ export const getFiles = async (): Promise<string[]> => {
 };
 
 // Storage - Generate download link of a file
-export const getDownloadLink = async (fileName: string): Promise<string> => {
+export const getFileDownloadLink = async (fileName: string): Promise<string> => {
 	const { data } = supabase.storage
 		.from("files")
 		.getPublicUrl(`document/${fileName}`, {
@@ -22,48 +22,49 @@ export const getDownloadLink = async (fileName: string): Promise<string> => {
 	return data ? data.publicUrl : "http://localhost:5173/not-found";
 };
 
-// Database - Get one user by email
-export const getUser = async (userEmail: string): Promise<object[] | null> => {
+// Database - Get one row
+export const getRecord = async (table: string, column: string, value: string): Promise<object[] | null> => {
 	const { data } = await supabase
-		.from("users")
+		.from(table)
 		.select("*")
-		.eq("email", userEmail);
+		.eq(column, value);
 	return data;
 };
 
-// Database - Get all users
-export const getAllUsers = async (): Promise<object[] | null> => {
-	const { data: users, error } = await supabase.from("users").select("*");
+// Database - Get all rows
+export const getAllRecords = async (table: string, column: string): Promise<object[] | null> => {
+	const { data: records, error } = await supabase.from(table).select(column);
 	if (error) return null;
-	return users;
+	return records;
 };
 
-// Database - Create a new user
-export const createUser = async (
-	email: string,
-	username: string,
-	role_id: number,
-	group_id?: number
+// Database - Create a new record
+export const createRecord = async (
+  table: string,
+	attributes: object
 ): Promise<void> => {
-	await supabase.from("users").insert({ email, username, group_id, role_id });
+	await supabase.from(table).insert(attributes);
 };
 
-// Database - Update user data
-export const updateUser = async (
-	userId: number,
+// Database - Update records data
+export const updateRecord = async (
+  table: string,
+	recordId: number,
 	columnName: string,
 	newValue: string
 ): Promise<void> => {
 	await supabase
-		.from("users")
+		.from(table)
 		.update({ [columnName]: newValue })
-		.eq("id", userId);
+		.eq("id", recordId);
 };
 
-// Database - Delete an existing user by email
-export const deleteUser = async (
-	email: string
+// Database - Delete an existing record by attribute
+export const deleteRecord = async (
+	table: string,
+  attribute: string,
+  value: string
 ): Promise<void | PostgrestError> => {
-	const { error } = await supabase.from("users").delete().eq("email", email);
+	const { error } = await supabase.from(table).delete().eq(attribute, value);
 	if (error) return error;
 };
