@@ -1,5 +1,5 @@
 import { IconFile, IconFileTypeJpg, IconFileTypePdf, IconFileTypePng, IconFileTypeTxt, IconFileTypeXls, IconFileWord } from "@tabler/icons-react";
-import { getFileDownloadLink } from "../utils/database";
+import { getFileDownloadLink } from "../utils/actions";
 import { useState, useEffect } from "react";
 
 const ResultItem = (props: {fileName: string, input: string}) => {

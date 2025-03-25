@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { getFiles } from "../utils/database";
+import { getFiles } from "../utils/actions";
 import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./StartupMessage";
-import { useGetUser } from "../hooks/useGetUser";
 
 // Main page to search documents
 const Home = () => {
@@ -11,7 +10,6 @@ const Home = () => {
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
 
-  useGetUser()
 
   // Return elements that match the user's query
   const findMatches = (sourceArr: string[], userInput: string) => {

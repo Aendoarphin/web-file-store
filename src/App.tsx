@@ -2,12 +2,20 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
 import { Route, Routes } from "react-router";
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
+import { supabase, supabaseAuth } from "./utils/supabase";
 
 const UserContext = createContext<string>("");
 
-// React routing occurs here
 function App() {
+
+	useEffect(() => {
+		const getAllUsers = async () => {
+			const { data } = await supabase.auth.admin.listUsers();
+			console.log(data.users);
+		};
+		getAllUsers();
+	}, []);
 
 	return (
 		<>
