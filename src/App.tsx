@@ -1,33 +1,40 @@
 import Home from "./components/Home";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
-import { Route, Routes } from "react-router";
-import { createContext, useEffect } from "react";
-import { supabase, supabaseAuth } from "./utils/supabase";
+import { BrowserRouter, Routes, Route } from "react-router";
+import { createContext, useState, useEffect } from "react";
+import supabase from "./utils/supabase";
 
-const UserContext = createContext<string>("");
+export const UserContext = createContext<object>({});
 
 function App() {
+  const [userList, setUserList] = useState([]);
+  const [user, setUser] = useState<object>({});
 
-	useEffect(() => {
-		const getAllUsers = async () => {
-			const { data } = await supabase.auth.admin.listUsers();
-			console.log(data.users);
-		};
-		getAllUsers();
-	}, []);
+  useEffect(() => {
+    const getAllUsers = async () => {
+      const {
+        data: { users },
+      } = await supabase.auth.admin.listUsers();
+      console.log(users);
+    };
+    getAllUsers();
+  }, []);
 
-	return (
-		<>
-			<UserContext.Provider value={"user"}>
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="*" element={<NotFound />} />
-				</Routes>
-			</UserContext.Provider>
-		</>
-	);
+  // continue here; work with auth.admin namespace
+  // and set up user management functions for app init
+
+  return (
+    <>
+      <UserContext.Provider value={user}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="not-found" element={<NotFound />} />
+        </Routes>
+      </UserContext.Provider>
+    </>
+  );
 }
 
 export default App;
