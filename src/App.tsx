@@ -1,25 +1,15 @@
 import Home from "./components/Home";
 import Login from "./components/Login";
 import NotFound from "./components/NotFound";
-import { BrowserRouter, Routes, Route } from "react-router";
-import { createContext, useState, useEffect } from "react";
-import supabase from "./utils/supabase";
+import { Routes, Route, Navigate } from "react-router";
+import { createContext } from "react";
+import useAuth from "./hooks/useAuth";
 
-export const UserContext = createContext<object>({});
+export const UserContext = createContext<object | null>({});
 
 function App() {
-  const [userList, setUserList] = useState([]);
-  const [user, setUser] = useState<object>({});
 
-  useEffect(() => {
-    const getAllUsers = async () => {
-      const {
-        data: { users },
-      } = await supabase.auth.admin.listUsers();
-      console.log(users);
-    };
-    getAllUsers();
-  }, []);
+  const { user } = useAuth()
 
   // continue here; work with auth.admin namespace
   // and set up user management functions for app init

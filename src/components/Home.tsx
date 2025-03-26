@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { getFiles } from "../utils/actions";
 import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./StartupMessage";
+import { UserContext } from "../App";
+import { Navigate } from "react-router";
 
 // Main page to search documents
 const Home = () => {
@@ -10,6 +12,7 @@ const Home = () => {
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
 
+  const user: object | null = useContext(UserContext);
 
   // Return elements that match the user's query
   const findMatches = (sourceArr: string[], userInput: string) => {
@@ -32,9 +35,14 @@ const Home = () => {
 
   return (
     <>
+      {user ? <></> : <Navigate to="/login" />}
+      {/* HEADER */}
       <div className="flex-row gap-4 flex justify-between items-center px-6 py-2 w-full">
         <div id="logo">
-          <h3 className="font-semibold">S O P Y</h3>
+          <div className="flex items-baseline gap-2">
+            <h3 className="font-semibold">S O P Y</h3>
+            <p className="font-semibold">File Store</p>
+          </div>
         </div>
         <div id="searchBarContainer" className="flex flex-row">
           <input
@@ -70,6 +78,7 @@ const Home = () => {
         </div>
       </div>
       <hr className="mx-6 text-neutral-400" />
+      {/* MAIN BODY */}
       <div className="w-full px-6 pt-4 flex justify-end">
         {data && (
           <button

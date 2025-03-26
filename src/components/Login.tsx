@@ -1,7 +1,11 @@
 const Login = () => {
   return (
     <>
-      <div className="flex flex-col mt-40 mx-auto items-center gap-4 p-8 shadow rounded-md bg-neutral-100 w-74">
+    <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
+            <h3 className="font-semibold">S O P Y</h3>
+            <p className="font-semibold">File Store</p>
+          </div>
+      <div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-md bg-neutral-100 w-74">
         <h2 className="font-semibold">Log In</h2>
         <input
           type="username"
