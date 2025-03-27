@@ -1,23 +1,23 @@
 import Home from "./components/Home";
-import SignIn from "./components/SignIn";
+import FormSignIn from "./components/FormSignIn";
 import NotFound from "./components/NotFound";
 import { Routes, Route } from "react-router";
 import { createContext } from "react";
 import useAuth from "./hooks/useAuth";
-import Password from "./components/Password";
+import Password from "./components/FormResetPassword";
 
 export const UserContext = createContext<object | null>({});
 
 function App() {
 
-  const { user } = useAuth()
+  const user = useAuth()
 
   return (
     <>
       <UserContext.Provider value={user}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="signin" element={<SignIn />} />
+          <Route path="auth" element={<FormSignIn />} />
           <Route path="reset" element={<Password />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 
 const NotFound = () => (
   <div style={{
@@ -14,7 +13,7 @@ const NotFound = () => (
   }}>
     <h1>404</h1>
     <p>Page Not Found</p>
-    <Link to="/" style={{
+    <a href="/" style={{
       marginTop: "10px",
       padding: "8px 16px",
       backgroundColor: "black",
@@ -23,7 +22,7 @@ const NotFound = () => (
       borderRadius: "4px"
     }}>
       Go Back Home
-    </Link>
+    </a>
   </div>
 );
 

@@ -14,7 +14,7 @@ const useAuth = () => {
     console.log(user);
   }, []);
 
-  return {user};
+  return user;
 }
 
 export default useAuth

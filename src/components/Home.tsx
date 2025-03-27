@@ -35,7 +35,7 @@ const Home = () => {
 
   return (
     <>
-      {user ? <></> : <Navigate to="/signin" />}
+      {user ? <></> : <Navigate to="/auth" />}
       {/* HEADER */}
       <div className="flex-row gap-4 flex justify-between items-center px-6 py-2 w-full">
         <div id="logo">
