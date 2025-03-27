@@ -1,9 +1,10 @@
 import Home from "./components/Home";
-import Login from "./components/Login";
+import SignIn from "./components/SignIn";
 import NotFound from "./components/NotFound";
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route } from "react-router";
 import { createContext } from "react";
 import useAuth from "./hooks/useAuth";
+import Password from "./components/Password";
 
 export const UserContext = createContext<object | null>({});
 
@@ -11,16 +12,14 @@ function App() {
 
   const { user } = useAuth()
 
-  // continue here; work with auth.admin namespace
-  // and set up user management functions for app init
-
   return (
     <>
       <UserContext.Provider value={user}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="not-found" element={<NotFound />} />
+          <Route path="signin" element={<SignIn />} />
+          <Route path="reset" element={<Password />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </UserContext.Provider>
     </>
