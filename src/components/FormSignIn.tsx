@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
-import { validateEmail } from "../scripts/validateEmail";
+import { validateEmail } from "../scripts/helper";
 import supabase from "../utils/supabase";
 
 const FormSignIn = () => {
@@ -21,7 +21,6 @@ const FormSignIn = () => {
       alert(error.message);
     }
   };
-// continue here; fetch user from supabase auth
   const [userInput, setUserInput] = useState<{
     email: string;
     password: string;
@@ -65,7 +64,7 @@ const FormSignIn = () => {
           />
           <div className="flex justify-between w-46">
             <Link
-              to="/reset"
+              to="/auth/reset"
               className="text-neutral-500 text-xs underline mx-auto"
             >
               Forgot Password

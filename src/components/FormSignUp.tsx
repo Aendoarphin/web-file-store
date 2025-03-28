@@ -1,8 +1,8 @@
-import { Form, Link } from "react-router";
+import { Link } from "react-router";
 import { useState } from "react";
-import { validateEmail } from "../scripts/validateEmail";
+import { validateEmail } from "../scripts/helper";
 
-const FormResetPassword = () => {
+const FormSignUp = () => {
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
 
@@ -39,7 +39,7 @@ const FormResetPassword = () => {
           <input
             disabled={!isEmail}
             type="submit"
-            value="Send Reset Link"
+            value="Sign Up"
             className="bg-black text-white p-2 rounded px-10 disabled:contrast-50"
           />
         </div>
@@ -48,4 +48,4 @@ const FormResetPassword = () => {
   );
 };
 
-export default FormResetPassword;
+export default FormSignUp;
