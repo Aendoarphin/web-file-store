@@ -3,13 +3,13 @@ import { useState } from "react";
 import { validateEmail } from "../scripts/helper";
 import supabase from "../utils/supabase";
 
-const FormSignIn = () => {
+const FormConfirmPassword = () => {
   const navigate = useNavigate();
 
   const supabaseSignInUser = async (
     email: string,
     password: string
-  ): Promise<object | any> => {
+  ): Promise<void> => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -82,4 +82,4 @@ const FormSignIn = () => {
   );
 };
 
-export default FormSignIn;
+export default FormConfirmPassword;

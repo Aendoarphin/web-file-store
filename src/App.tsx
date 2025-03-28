@@ -4,7 +4,7 @@ import NotFound from "./components/NotFound";
 import { Routes, Route } from "react-router";
 import { createContext } from "react";
 import useAuth from "./hooks/useAuth";
-// import FormConfirmPassword from "./components/FormConfirmPassword";
+import FormConfirmPassword from "./components/FormConfirmPassword";
 import FormSignUp from "./components/FormSignUp";
 import FormSendReset from "./components/FormSendReset";
 
@@ -22,7 +22,7 @@ function App() {
           <Route path="auth" element={<FormSignIn />} />
           <Route path="auth/signup" element={<FormSignUp />} />
           <Route path="auth/reset" element={<FormSendReset />} />
-          {/* <Route path="auth/new-password" element={<FormConfirmPassword />} /> */}
+          <Route path="/auth/new-password" element={<FormConfirmPassword />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </UserContext.Provider>
