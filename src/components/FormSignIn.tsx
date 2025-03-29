@@ -32,7 +32,6 @@ const FormConfirmPassword = () => {
       <form
         onSubmit={() => {
           alert(`Email: ${userInput.email} Password: ${userInput.password}`);
-          supabaseSignInUser(userInput.email, userInput.password);
         }}
       >
         <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
@@ -62,12 +61,18 @@ const FormConfirmPassword = () => {
             }}
             className="border-neutral-400 border-b focus:outline-none focus:border-black"
           />
-          <div className="flex justify-between w-46">
+          <div className="flex flex-col justify-between w-46">
             <Link
               to="/auth/reset"
               className="text-neutral-500 text-xs underline mx-auto"
             >
               Forgot Password
+            </Link>
+            <Link
+              to="/auth/signup"
+              className="text-neutral-500 text-xs underline mx-auto"
+            >
+              Create Account
             </Link>
           </div>
           <input

@@ -1,22 +1,33 @@
 import { Link } from "react-router";
 import { useState } from "react";
 import { validateEmail } from "../scripts/helper";
+import supabase from "../utils/supabase";
 
 const FormSignUp = () => {
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
+
+  const handleSignUpSubmit = async (e: React.FormEvent) => {
+    const { data:{user, session}, error } = await supabase.auth.signUp({
+      email: email,
+      password: password
+    })
+    console.log(user, session, error)
+  };
+  // continue here. create users
   return (
     <>
-      <form onSubmit={() => alert(`Reset link sent to ${email}`)}>
+      <form onSubmit={handleSignUpSubmit}>
         <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
-          <h3 className="font-semibold">S O P Y</h3>
+          <h1 className="font-semibold">S O P Y</h1>
           <p className="font-semibold">File Store</p>
         </div>
         <div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-md bg-neutral-200 w-74">
-          <h4 className="font-semibold text-center">Reset Password</h4>
+          <h4 className="font-semibold text-center">Sign Up</h4>
           <div className="text-sm mx-6">
-            Enter your email and we we'll send you a link to reset.
+            Enter your email and we'll send you an invitation link
           </div>
           <input
             onChange={(e) => {

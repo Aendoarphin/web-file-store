@@ -6,7 +6,7 @@ import supabase from "../utils/supabase";
 const FormSendReset = () => {
   const sendUserEmailReset = async (email: string) => {
     await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/auth/new-password",
+      redirectTo: "http://localhost:5173/auth/confirm",
     });
   };
 

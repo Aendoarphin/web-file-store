@@ -3,7 +3,7 @@ import { getFiles } from "../utils/actions";
 import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./StartupMessage";
-import { UserContext } from "../App";
+import { SessionContext } from "../App";
 import { Navigate } from "react-router";
 
 // Main page to search documents
@@ -12,7 +12,7 @@ const Home = () => {
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
 
-  const user: object | null = useContext(UserContext);
+  const user: object | null = useContext(SessionContext);
 
   // Return elements that match the user's query
   const findMatches = (sourceArr: string[], userInput: string) => {
