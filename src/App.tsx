@@ -18,19 +18,7 @@ function App() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "INITIAL_SESSION") {
-        alert("INITIAL_SESSION");
-      } else if (event === "SIGNED_IN") {
-        alert("SIGNED_IN");
-      } else if (event === "SIGNED_OUT") {
-        alert("SIGNED_OUT");
-      } else if (event === "PASSWORD_RECOVERY") {
-        alert("PASSWORD_RECOVERY");
-      } else if (event === "TOKEN_REFRESHED") {
-        alert("TOKEN_REFRESHED");
-      } else if (event === "USER_UPDATED") {
-        alert("USER_UPDATED");
-      }
+      alert("Event: " + event + " Session: " + session);
     });
     return () => subscription.unsubscribe();
   }, []);

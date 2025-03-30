@@ -6,17 +6,28 @@ import supabase from "../utils/supabase";
 const FormSignUp = () => {
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [password] = useState<string>("SupaBase#1");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
 
 
   const handleSignUpSubmit = async (e: React.FormEvent) => {
-    const { data:{user, session}, error } = await supabase.auth.signUp({
+    e.preventDefault();
+    const { data, error } = await supabase.auth.signUp({
       email: email,
-      password: password
+      password: password,
+      options: {
+        emailRedirectTo: "http://localhost:5173/auth/confirm",
+      }
     })
-    console.log(user, session, error)
+    if (error) {
+      setErrorMessage(error.message);
+      return;
+    }
+    setSuccessMessage(successMessage);
+    alert("Email was sent to " + data.user?.email)
   };
-  // continue here. create users
+
   return (
     <>
       <form onSubmit={handleSignUpSubmit}>
@@ -27,7 +38,9 @@ const FormSignUp = () => {
         <div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-md bg-neutral-200 w-74">
           <h4 className="font-semibold text-center">Sign Up</h4>
           <div className="text-sm mx-6">
-            Enter your email and we'll send you an invitation link
+            <p>Enter your email and we'll send you an invitation link</p>
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+            {successMessage && <p className="text-green-500">{successMessage}</p>}
           </div>
           <input
             onChange={(e) => {
