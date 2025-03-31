@@ -4,23 +4,24 @@ import { validateEmail } from "../scripts/helper";
 import supabase from "../utils/supabase";
 
 const FormSendReset = () => {
-  const sendUserEmailReset = async (email: string) => {
-    await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/auth/confirm",
-    });
-  };
-
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
 
+  const sendUserEmailReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: "http://localhost:5173/auth/confirm",
+    });
+    if (error) {
+      alert(error.message);
+    }
+    alert("Email was sent to " + email);
+    (document.getElementById("email") as HTMLInputElement).value = "";
+  };
+
   return (
     <>
-      <form
-        onSubmit={() => {
-          sendUserEmailReset(email);
-          alert(`Reset link sent to ${email}`);
-        }}
-      >
+      <form onSubmit={sendUserEmailReset}>
         <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
           <h3 className="font-semibold">S O P Y</h3>
           <p className="font-semibold">File Store</p>
@@ -35,6 +36,7 @@ const FormSendReset = () => {
               setEmail(e.target.value);
               setIsEmail(validateEmail(e.target.value));
             }}
+            id="email"
             type="email"
             placeholder="Email"
             required

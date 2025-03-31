@@ -6,34 +6,29 @@ import supabase from "../utils/supabase";
 const FormConfirmPassword = () => {
   const navigate = useNavigate();
 
-  const supabaseSignInUser = async (
-    email: string,
-    password: string
-  ): Promise<void> => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    if (data.user?.email === email) {
-      navigate("/");
-    }
-    if (error) {
-      alert(error.message);
-    }
-  };
   const [userInput, setUserInput] = useState<{
     email: string;
     password: string;
   }>({ email: "", password: "" });
   const [isEmail, setIsEmail] = useState<boolean>(false);
 
+  const supabaseSignInUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: userInput.email,
+      password: userInput.password,
+    });
+    if (data.user?.email === userInput.email) {
+      navigate("/");
+    }
+    if (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <>
-      <form
-        onSubmit={() => {
-          alert(`Email: ${userInput.email} Password: ${userInput.password}`);
-        }}
-      >
+      <form onSubmit={supabaseSignInUser}>
         <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
           <h1 className="font-semibold">S O P Y</h1>
           <p className="font-semibold">File Store</p>

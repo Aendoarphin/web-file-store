@@ -13,7 +13,7 @@ const FormSignUp = () => {
 
   const handleSignUpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
@@ -25,7 +25,9 @@ const FormSignUp = () => {
       return;
     }
     setSuccessMessage(successMessage);
-    alert("Email was sent to " + data.user?.email)
+    alert("Email was sent to " + email);
+    (document.getElementById("email") as HTMLInputElement).value = "";
+    document.location.href = "/";
   };
 
   return (
@@ -47,6 +49,7 @@ const FormSignUp = () => {
               setEmail(e.target.value);
               setIsEmail(validateEmail(e.target.value));
             }}
+            id="email"
             type="email"
             placeholder="Email"
             required
@@ -64,7 +67,7 @@ const FormSignUp = () => {
             disabled={!isEmail}
             type="submit"
             value="Sign Up"
-            className="bg-black text-white p-2 rounded px-10 disabled:contrast-50"
+            className="bg-black cursor-pointer text-white p-2 rounded px-10 disabled:contrast-50"
           />
         </div>
       </form>

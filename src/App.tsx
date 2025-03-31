@@ -18,7 +18,8 @@ function App() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      alert("Event: " + event + " Session: " + session);
+      alert("User: " + session?.user?.email + " Event: " + event);
+      setSession(session);
     });
     return () => subscription.unsubscribe();
   }, []);
