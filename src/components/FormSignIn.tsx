@@ -21,6 +21,7 @@ const FormConfirmPassword = () => {
     if (data.user?.email === userInput.email) {
       navigate("/");
     }
+    console.log(data)
     if (error) {
       alert(error.message);
     }
