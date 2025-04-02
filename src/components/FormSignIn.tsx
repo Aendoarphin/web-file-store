@@ -12,7 +12,7 @@ const FormConfirmPassword = () => {
   }>({ email: "", password: "" });
   const [isEmail, setIsEmail] = useState<boolean>(false);
 
-  const supabaseSignInUser = async (e: React.FormEvent) => {
+  const signInUser = async (e: React.FormEvent) => {
     e.preventDefault();
     const { data, error } = await supabase.auth.signInWithPassword({
       email: userInput.email,
@@ -25,11 +25,12 @@ const FormConfirmPassword = () => {
     if (error) {
       alert(error.message);
     }
+    setUserInput({ email: "", password: "" });
   };
 
   return (
     <>
-      <form onSubmit={supabaseSignInUser}>
+      <form onSubmit={signInUser}>
         <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
           <h1 className="font-semibold">S O P Y</h1>
           <p className="font-semibold">File Store</p>

@@ -37,6 +37,7 @@ const Home = () => {
     if (error) {
       alert(error.message);
     }
+    localStorage.removeItem("tokens")
     alert("Signed out");
     document.location.href = "/auth";
   };
@@ -72,11 +73,6 @@ const Home = () => {
                   setInput(e.target.value);
                 }}
               />
-              <div className=" flex items-center justify-center ml-4" title="Sign Out">
-                <button className="cursor-pointer" onClick={handleSignOut}>
-                <IconLogout className="inline" size={20} />
-                </button>
-              </div>
               {input && (
                 <button
                   id="submitButton"
@@ -88,6 +84,11 @@ const Home = () => {
                   Search
                 </button>
               )}
+              <div className=" flex items-center justify-center ml-4" title="Sign Out">
+                <button className="cursor-pointer" onClick={handleSignOut}>
+                <IconLogout className="inline" size={20} />
+                </button>
+              </div>
             </div>
           </div>
           <hr className="mx-6 text-neutral-400" />
