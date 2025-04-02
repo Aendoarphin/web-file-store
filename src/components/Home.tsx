@@ -1,29 +1,16 @@
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import { getFiles } from "../utils/actions";
 import { IconArrowUp, IconArrowDown, IconLogout } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./StartupMessage";
-import { SessionContext } from "../App";
-import { Session } from "@supabase/supabase-js";
 import supabase from "../utils/supabase";
-import { useNavigate } from "react-router";
 
 // Main page to search documents
 const Home = () => {
-  const navigate = useNavigate();
 
   const [input, setInput] = useState("");
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
-
-  const session: Session | null = useContext(SessionContext);
-
-  useEffect(() => {
-    // Check if session.user.email is defined, if not, redirect to /auth
-    if (!session || !session.user.email) {
-      document.location.href = "/auth";
-    }
-  }, []);
 
   // Return elements that match the user's query
   const findMatches = (sourceArr: string[], userInput: string) => {
@@ -145,7 +132,6 @@ const Home = () => {
             &copy; SOPY {new Date().getFullYear()}
           </div>
           <div className="fixed bottom-0 right-0 p-2">
-            User: {session?.user.email}
           </div>
         </>
     </>

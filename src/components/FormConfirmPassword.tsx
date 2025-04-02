@@ -58,7 +58,6 @@ const FormConfirmPassword = () => {
     setPasswordsMatch(password === newConfirmedPassword);
   };
 
-	// Continue from here: fix 'no auth session' issue
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 		const currentSession = await supabase.auth.getSession();

@@ -7,37 +7,57 @@ import FormSignUp from "./components/FormSignUp";
 import FormSendReset from "./components/FormSendReset";
 import { useState, createContext, useEffect } from "react";
 import supabase from "./utils/supabase";
-import { Session } from "@supabase/supabase-js";
+import { useNavigate } from "react-router";
 
-export const SessionContext = createContext<Session | null>(null);
+export const SessionContext = createContext<object | null>(null);
 
 function App() {
-  const [session, setSession] = useState<Session | null>(null);
+  const navigate = useNavigate();
+	const [session, setSession] = useState<object | null>(null);
 
-  useEffect(() => {
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      alert("User: " + session?.user?.email + " Event: " + event);
-      setSession(session);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
+	useEffect(() => {
+    const session = localStorage.getItem("tokens");
+    setSession(JSON.parse(JSON.stringify(localStorage.getItem("tokens"))));
+    console.log(session)
 
-  return (
-    <>
-      <SessionContext.Provider value={session}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="auth" element={<FormSignIn />} />
-          <Route path="auth/signup" element={<FormSignUp />} />
-          <Route path="auth/reset" element={<FormSendReset />} />
-          <Route path="/auth/confirm" element={<FormConfirmPassword />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </SessionContext.Provider>
-    </>
-  );
+    if (session) {
+      navigate("/");
+    } else {
+      navigate("/auth");
+    }
+		const {
+			data: { subscription },
+		} = supabase.auth.onAuthStateChange((event, session) => {
+			alert("User: " + session?.user?.email + " Event: " + event);
+			if (event === "SIGNED_IN") {
+				setSession({
+					accessToken: session?.access_token,
+					refreshToken: session?.refresh_token,
+				});
+				localStorage.setItem("tokens", JSON.stringify(session));
+			} else if (event === "SIGNED_OUT") {
+        localStorage.removeItem("tokens")
+      }
+		});
+		return () => subscription.unsubscribe();
+	}, []);
+
+  // continue here; fix auth flow
+
+	return (
+		<>
+			<SessionContext.Provider value={session}>
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="auth" element={<FormSignIn />} />
+					<Route path="auth/signup" element={<FormSignUp />} />
+					<Route path="auth/reset" element={<FormSendReset />} />
+					<Route path="auth/confirm" element={<FormConfirmPassword />} />
+					<Route path="*" element={<NotFound />} />
+				</Routes>
+			</SessionContext.Provider>
+		</>
+	);
 }
 
 export default App;
