@@ -1,4 +1,4 @@
-import supabase from "../utils/supabase"
+import supabase from "../utils/supabase";
 import { useState, useEffect } from "react";
 
 const useAuth = () => {
@@ -15,6 +15,6 @@ const useAuth = () => {
   }, []);
 
   return user;
-}
+};
 
-export default useAuth
+export default useAuth;
