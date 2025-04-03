@@ -13,9 +13,9 @@ const FormSendReset = () => {
       redirectTo: "http://localhost:5173/auth/confirm",
     });
     if (error) {
-      alert(error.message);
+      console.log(error.message)
     }
-    alert("Email was sent to " + email);
+    console.log("Email was sent to " + email);
     (document.getElementById("email") as HTMLInputElement).value = "";
   };
 

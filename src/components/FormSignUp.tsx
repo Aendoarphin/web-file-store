@@ -3,7 +3,7 @@ import { validateEmail } from "../scripts/helper";
 import supabase from "../utils/supabase";
 import { Link } from "react-router";
 
-const SignUpForm = ({ setSession }: any) => {
+const SignUpForm = () => {
   // Email state
   const [email, setEmail] = useState<string>("");
   const [isEmail, setIsEmail] = useState<boolean>(false);
@@ -75,7 +75,7 @@ const SignUpForm = ({ setSession }: any) => {
   const handleSignUpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {
@@ -90,7 +90,7 @@ const SignUpForm = ({ setSession }: any) => {
     setSuccessMessage(
       "Sign up successful! Check your email for a confirmation link."
     );
-    alert("Email was sent to " + email);
+    console.log("Email was sent to " + email);
     (document.getElementById("email") as HTMLInputElement).value = "";
     (document.getElementById("password") as HTMLInputElement).value = "";
     (document.getElementById("confirmedPassword") as HTMLInputElement).value =
