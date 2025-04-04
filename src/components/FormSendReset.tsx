@@ -6,16 +6,19 @@ import supabase from "../utils/supabase";
 const FormSendReset = () => {
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const sendUserEmailReset = async (e: React.FormEvent) => {
     e.preventDefault();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "http://localhost:5173/auth/confirm",
+      redirectTo: "http://localhost:5173/auth/reset-password",
     });
+    localStorage.setItem("reset-email", email);
     if (error) {
-      console.log(error.message)
+      setErrorMessage(error.message);
     }
-    console.log("Email was sent to " + email);
+    setMessage("Email was sent to " + email);
     (document.getElementById("email") as HTMLInputElement).value = "";
   };
 
@@ -31,6 +34,12 @@ const FormSendReset = () => {
           <div className="text-sm mx-6">
             Enter your email and we we'll send you a link to reset.
           </div>
+          {message && (
+            <div className="text-green-600 text-xs mx-6">{message}</div>
+          )}
+          {errorMessage && (
+            <div className="text-red-600 text-xs mx-6">{errorMessage}</div>
+          )}
           <input
             onChange={(e) => {
               setEmail(e.target.value);

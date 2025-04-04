@@ -3,7 +3,7 @@ import { useState } from "react";
 import { validateEmail } from "../scripts/helper";
 import supabase from "../utils/supabase";
 
-const FormConfirmPassword = () => {
+const FormSignIn = () => {
   const navigate = useNavigate();
 
   const [userInput, setUserInput] = useState<{
@@ -84,4 +84,4 @@ const FormConfirmPassword = () => {
   );
 };
 
-export default FormConfirmPassword;
+export default FormSignIn;
