@@ -11,6 +11,7 @@ const FormSignIn = () => {
     password: string;
   }>({ email: "", password: "" });
   const [isEmail, setIsEmail] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const signInUser = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,6 +24,7 @@ const FormSignIn = () => {
     }
     console.log(data);
     if (error) {
+      setErrorMessage(error.message);
       console.log(error.message);
     }
     setUserInput({ email: "", password: "" });
@@ -37,6 +39,7 @@ const FormSignIn = () => {
         </div>
         <div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-md bg-neutral-200 w-74">
           <h3 className="font-semibold">Sign In</h3>
+          {errorMessage && <p className="text-red-600 mx-6">{errorMessage}</p>}
           <input
             type="email"
             required

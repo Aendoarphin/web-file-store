@@ -11,7 +11,7 @@ const EmailConfirmation = () => {
         <h4 className="font-semibold text-center">Email Confirmed</h4>
         <div className="text-sm mx-6 text-center">
           <p >Your email has been confirmed successfully.</p>
-          <p className="text-center mt-2">Use the button below to proceed to the home page</p>
+          <p className="text-center mt-2">Use the button below to proceed to the sign in page.</p>
         </div>
         <div className="text-green-600 mt-4">
           <svg 
@@ -31,10 +31,11 @@ const EmailConfirmation = () => {
         </div>
         
         <Link 
-          to="/" 
+          to="/auth"
+          onClick={() => localStorage.removeItem("tokens")} 
           className="bg-black cursor-pointer text-white p-2 rounded px-10 mt-4 text-center"
         >
-          Return to Home
+          Return to Sign In
         </Link>
       </div>
     </>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import supabase from "../utils/supabase";
 import supabaseAdmin from "../utils/supabase-admin";
 
 const FormResetPassword = () => {
@@ -75,7 +74,7 @@ const FormResetPassword = () => {
       users.find((user) => user.email === localStorage.getItem("reset-email"))
         ?.email || "";
 
-    alert(userId + " " + userEmail);
+    console.log(userId + " " + userEmail);
 
     const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
       password: password,

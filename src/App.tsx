@@ -8,7 +8,7 @@ import { useState, createContext, useEffect } from "react";
 import supabase from "./utils/supabase";
 import { useNavigate } from "react-router";
 import EmailConfirmation from "./components/EmailConfirmation";
-import useTest from "./hooks/useTest";
+// import useTest from "./hooks/useTest";
 import AdminPanel from "./components/AdminPanel";
 import FormResetPassword from "./components/FormResetPassword";
 
@@ -18,14 +18,14 @@ function App() {
   const navigate = useNavigate();
   const [session, setSession] = useState<object | null>(null);
 
-  useTest();
+  // useTest(); 
 
   useEffect(() => {
     const session = localStorage.getItem("tokens");
     setSession(JSON.parse(session || "null"));
     console.log(session);
 
-    // Only redirect if we're not already on email-confirmation or signup pages
+    // Only redirect if we're not already on email confirm message, signup, or reset
     const currentPath = window.location.pathname;
     if (
       !currentPath.includes("email-confirmation") &&
@@ -35,7 +35,7 @@ function App() {
       if (session) {
         navigate("/");
       } else {
-        navigate("admin");
+        navigate("auth");
       }
     }
 
