@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { getFiles } from "../utils/actions";
 import { IconArrowUp, IconArrowDown, IconLogout } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./StartupMessage";
 import supabase from "../utils/supabase";
+import { SessionContext } from "../App";
+
+// continue here; display user's email on first render
 
 // Main page to search documents
 const Home = () => {
+  const session: any | null = useContext(SessionContext);
+
   const [input, setInput] = useState("");
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
@@ -134,7 +139,9 @@ const Home = () => {
         <div className="fixed bottom-0 left-0 p-2">
           &copy; SOPY {new Date().getFullYear()}
         </div>
-        <div className="fixed bottom-0 right-0 p-2"></div>
+        <div className="fixed bottom-0 right-0 p-2">
+          {session?.user?.email}
+        </div>
       </>
     </>
   );

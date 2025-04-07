@@ -1,17 +1,12 @@
-import supabase from "../utils/supabase";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { SessionContext } from "../App";
 
 const useAuth = () => {
   const [user, setUser] = useState<object | null>(null);
 
   useEffect(() => {
-    const getCurrentUser = async () => {
-      const { data: user } = await supabase.auth.getUser();
-      setUser(user);
-    };
-
-    getCurrentUser();
-    console.log(user);
+    const session: any = useContext(SessionContext);
+  setUser(session?.user?.email)
   }, []);
 
   return user;
