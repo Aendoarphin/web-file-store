@@ -10,16 +10,16 @@ export function validatePassword(password: string): boolean {
   return passwordRegex.test(password);
 }
 
-export function isExpired(expiresAt?: number, expiresIn?: number): boolean {
-  if (expiresAt === undefined) {
-    throw new Error("expiresAt is required");
+export function checkTimeElapsed(time: string): void {
+  const currentTime: Date = new Date();
+  const timeElapsed: number = (currentTime.getTime() - new Date(time).getTime()) / (1000 * 60 * 60);
+  if (timeElapsed >= 1) {
+    console.log("expired");
   }
-  const currentTimestamp = Math.floor(Date.now() / 1000);
-
-  if (currentTimestamp >= expiresAt + (expiresIn || 0)) {
-    console.log("Token has expired.");
-    return true;
-  }
-  console.log("Token has not expired.");
-  return false;
 }
+
+// Example usage:
+const time: string = "2025-04-08T18:01:52.534816385Z";
+checkTimeElapsed(time);
+
+

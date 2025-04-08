@@ -46,7 +46,7 @@ const FormSendReset = () => {
 					<h3 className="font-semibold">S O P Y</h3>
 					<p className="font-semibold">File Store</p>
 				</div>
-				<div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-md bg-neutral-200 w-74">
+				<div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-sm bg-neutral-200 w-74">
 					<h4 className="font-semibold text-center">Reset Password</h4>
 					<div className="text-sm mx-6">
 						Enter your email and we we'll send you a link to reset.

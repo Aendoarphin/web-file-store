@@ -103,7 +103,7 @@ const SignUpForm = () => {
         <h1 className="font-semibold">S O P Y</h1>
         <p className="font-semibold">File Store</p>
       </div>
-      <div className="flex flex-col mt-10 mx-auto items-center gap-4 p-8 rounded-md bg-neutral-200 w-74">
+      <div className="flex flex-col mt-10 mx-auto items-center gap-4 p-8 rounded-sm bg-neutral-200 w-74">
         <h4 className="font-semibold text-center">Sign Up</h4>
         <div className="text-sm mx-6">
           <p>Create your account with email and password</p>

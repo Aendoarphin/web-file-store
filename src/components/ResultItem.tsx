@@ -28,6 +28,7 @@ const ResultItem = (props: { fileName: string; input: string }) => {
     jpg: <IconFileTypeJpg className="inline" />,
     jpeg: <IconFileTypeJpg className="inline" />,
     xlsx: <IconFileTypeXls className="inline" color="green" />,
+    xls: <IconFileTypeXls className="inline" color="green" />,
   };
 
   const highlightMatches = (input: string, targetString: string) => {
