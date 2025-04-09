@@ -8,7 +8,7 @@ import { useState, createContext, useEffect } from "react";
 import supabase from "./utils/supabase";
 import { useNavigate } from "react-router";
 import EmailConfirmation from "./components/EmailConfirmation";
-// import useTest from "./hooks/useTest";
+import useTest from "./hooks/useTest";
 import AdminPanel from "./components/AdminPanel";
 import FormResetPassword from "./components/FormResetPassword";
 
@@ -18,10 +18,10 @@ function App() {
   const navigate = useNavigate();
   const [session, setSession] = useState<object | null>(null);
 
-  // useTest(); 
+  useTest(); 
 
   useEffect(() => {
-    const session = localStorage.getItem("tokens");
+    const session = localStorage.getItem("sbuser");
     setSession(JSON.parse(session || "null"));
     console.log(session);
 
@@ -44,9 +44,9 @@ function App() {
     } = supabase.auth.onAuthStateChange((event, session) => {
       // alert("User: " + session?.user?.email + " Event: " + event);
       if (event === "SIGNED_IN") {
-        localStorage.setItem("tokens", JSON.stringify(session));
+        localStorage.setItem("sbuser", JSON.stringify(session));
       } else if (event === "SIGNED_OUT") {
-        localStorage.removeItem("tokens");
+        localStorage.removeItem("sbuser");
       }
     });
     return () => subscription.unsubscribe();

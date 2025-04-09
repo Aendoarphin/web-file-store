@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const NavItems = () => {
   const [style] = useState<string>(
-    "hover:translate-x-2.5 cursor-pointer px-4 py-2 font-semibold flex flex-nowrap gap-4"
+    "hover:scale-105 transition-all ease-in-out cursor-pointer px-4 py-2 font-semibold flex flex-nowrap gap-4"
   );
   
   return (

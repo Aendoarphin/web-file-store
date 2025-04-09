@@ -17,6 +17,9 @@ const Home = () => {
   const [input, setInput] = useState("");
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
+  const [userEmail] = useState<string>(
+    JSON.parse(localStorage.getItem("sbuser")!).user.email
+  );
 
   // State for navbar
   const [nav, setNav] = useState(false);
@@ -51,7 +54,7 @@ const Home = () => {
       if (error) {
         console.log(error.message);
       }
-      localStorage.removeItem("tokens");
+      localStorage.removeItem("sbuser");
       document.location.href = "/auth";
     } catch (error) {
       alert(error);
@@ -61,18 +64,28 @@ const Home = () => {
   return (
     <>
       <div className="flex flex-row h-[100vh]">
-        <div className={`${nav ? "w-[200px]" : "w-0"} overflow-hidden bg-neutral-300`}>
-          <NavItems />
-        </div>
-        <div className="w-full">
-          {/* HEADER */}
-          <button onClick={() => setNav(!nav)} className="h-1/1 absolute">
+        <div className="flex flex-row">
+          <button
+            onClick={() => setNav(!nav)}
+            className="h-1/1 bg-neutral-400"
+          >
             {nav ? (
               <IconChevronCompactLeft stroke={3} />
             ) : (
               <IconChevronCompactRight stroke={3} />
             )}
           </button>
+          <div
+            className={`${
+              nav ? "w-[200px]" : "w-0"
+            } overflow-hidden bg-neutral-300`}
+          >
+            <NavItems />
+          </div>
+        </div>
+        <div className="w-full">
+          {/* HEADER */}
+
           <div className="flex-row gap-4 flex justify-between items-center px-6 py-2 w-full">
             <div id="logo">
               <div className="flex items-baseline gap-2">
@@ -162,9 +175,7 @@ const Home = () => {
           <div className="fixed bottom-0 left-0 p-2">
             &copy; SOPY {new Date().getFullYear()}
           </div>
-          <div className="fixed bottom-0 right-0 p-2">
-            User: {JSON.parse(localStorage.getItem("tokens")!).user.email}
-          </div>
+          <div className="fixed bottom-0 right-0 p-2">User: {userEmail}</div>
         </div>
       </div>
     </>
