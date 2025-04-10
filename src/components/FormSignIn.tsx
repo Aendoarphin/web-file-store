@@ -1,7 +1,8 @@
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useState } from "react";
 import { validateEmail } from "../scripts/helper";
 import supabase from "../utils/supabase";
+import { useNavigate } from "react-router";
 
 const FormSignIn = () => {
   const navigate = useNavigate();
@@ -22,10 +23,8 @@ const FormSignIn = () => {
     if (data.user?.email === userInput.email) {
       navigate("/");
     }
-    console.log(data);
     if (error) {
       setErrorMessage(error.message);
-      console.log(error.message);
     }
     setUserInput({ email: "", password: "" });
   };

@@ -90,7 +90,6 @@ const SignUpForm = () => {
     setSuccessMessage(
       "Sign up successful! Check your email for a confirmation link."
     );
-    console.log("Email was sent to " + email);
     (document.getElementById("email") as HTMLInputElement).value = "";
     (document.getElementById("password") as HTMLInputElement).value = "";
     (document.getElementById("confirmedPassword") as HTMLInputElement).value =

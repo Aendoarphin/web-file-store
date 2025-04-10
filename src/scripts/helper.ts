@@ -10,16 +10,11 @@ export function validatePassword(password: string): boolean {
   return passwordRegex.test(password);
 }
 
-export function checkTimeElapsed(time: string): void {
+
+// Hours=1000*60*60, Minutes=1000*60, Seconds=1000
+export function isExpired(time: string): boolean {
   const currentTime: Date = new Date();
-  const timeElapsed: number = (currentTime.getTime() - new Date(time).getTime()) / (1000 * 60 * 60);
-  if (timeElapsed >= 1) {
-    console.log("expired");
-  }
+  const timeElapsedInHours: number =
+    (currentTime.getTime() - new Date(time).getTime()) / (1000 * 60 * 60);
+  return timeElapsedInHours > 1; // 2 = 2hrs and so on
 }
-
-// Example usage:
-const time: string = "2025-04-08T18:01:52.534816385Z";
-checkTimeElapsed(time);
-
-

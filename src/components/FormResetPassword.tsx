@@ -70,11 +70,6 @@ const FormResetPassword = () => {
     const userId =
       users.find((user) => user.email === localStorage.getItem("reset-email"))
         ?.id || "";
-    const userEmail =
-      users.find((user) => user.email === localStorage.getItem("reset-email"))
-        ?.email || "";
-
-    console.log(userId + " " + userEmail);
 
     const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
       password: password,

@@ -18,7 +18,9 @@ const Home = () => {
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
   const [userEmail] = useState<string>(
-    JSON.parse(localStorage.getItem("sbuser")!).user.email
+    (localStorage.length > 0 &&
+      JSON.parse(localStorage.getItem("sbuser")!).user.email) ||
+      ""
   );
 
   // State for navbar
@@ -65,10 +67,7 @@ const Home = () => {
     <>
       <div className="flex flex-row h-[100vh]">
         <div className="flex flex-row">
-          <button
-            onClick={() => setNav(!nav)}
-            className="h-1/1 bg-neutral-400"
-          >
+          <button onClick={() => setNav(!nav)} className="h-1/1 bg-neutral-300">
             {nav ? (
               <IconChevronCompactLeft stroke={3} />
             ) : (
@@ -78,7 +77,7 @@ const Home = () => {
           <div
             className={`${
               nav ? "w-[200px]" : "w-0"
-            } overflow-hidden bg-neutral-300`}
+            } overflow-hidden bg-neutral-200`}
           >
             <NavItems />
           </div>
@@ -172,10 +171,10 @@ const Home = () => {
                   ))}
             {data === undefined ? <StartupMessage /> : null}
           </div>
-          <div className="fixed bottom-0 left-0 p-2">
-            &copy; SOPY {new Date().getFullYear()}
+          <div className="bg-neutral-300 flex flex-row justify-between fixed bottom-0 w-full left-0">
+            <div className="p-2">&copy; SOPY {new Date().getFullYear()}</div>
+            <div className="p-2">User: {userEmail}</div>
           </div>
-          <div className="fixed bottom-0 right-0 p-2">User: {userEmail}</div>
         </div>
       </div>
     </>

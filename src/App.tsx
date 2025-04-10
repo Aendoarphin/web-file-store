@@ -11,26 +11,43 @@ import EmailConfirmation from "./components/EmailConfirmation";
 import useTest from "./hooks/useTest";
 import AdminPanel from "./components/AdminPanel";
 import FormResetPassword from "./components/FormResetPassword";
+import { isExpired } from "./scripts/helper";
+import SessionExpired from "./components/SessionExpired";
 
-export const SessionContext = createContext<object | null>(null);
+export const UserContext = createContext<object | null>(null);
 
 function App() {
   const navigate = useNavigate();
+
   const [session, setSession] = useState<object | null>(null);
 
-  useTest(); 
+  // useTest();
 
   useEffect(() => {
+    // Validate session on every click
+    document.addEventListener("click", function () {
+      console.log("Checking session...");
+      const expired =
+        localStorage.length > 0 &&
+        isExpired(
+          JSON.parse(localStorage.getItem("sbuser")!).user.last_sign_in_at
+        );
+      if (expired) {
+        localStorage.removeItem("sbuser");
+        document.location.href = "/session-expired";
+      }
+    });
+
     const session = localStorage.getItem("sbuser");
     setSession(JSON.parse(session || "null"));
-    console.log(session);
 
     // Only redirect if we're not already on email confirm message, signup, or reset
     const currentPath = window.location.pathname;
     if (
       !currentPath.includes("email-confirmation") &&
       !currentPath.includes("signup") &&
-      !currentPath.includes("reset-password")
+      !currentPath.includes("reset-password") &&
+      !currentPath.includes("session-expired")
     ) {
       if (session) {
         navigate("/");
@@ -53,7 +70,7 @@ function App() {
   }, []);
   return (
     <>
-      <SessionContext.Provider value={session}>
+      <UserContext.Provider value={session}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="auth" element={<FormSignIn />} />
@@ -65,9 +82,10 @@ function App() {
           />
           <Route path="auth/reset-password" element={<FormResetPassword />} />
           <Route path="admin" element={<AdminPanel />} />
+          <Route path="session-expired" element={<SessionExpired />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </SessionContext.Provider>
+      </UserContext.Provider>
     </>
   );
 }
