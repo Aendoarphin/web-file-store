@@ -1,19 +1,29 @@
-import { useState } from "react";
-import { Link } from "react-router";
-import supabaseAdmin from "../utils/supabase-admin";
+"use client"
+
+import type React from "react"
+
+import { useState } from "react"
+import { Link } from "react-router"
+import supabaseAdmin from "../utils/supabase-admin"
+
+type MessageType = {
+  text: string
+  type: "success" | "error" | null
+}
 
 const FormResetPassword = () => {
   // Password state
-  const [password, setPassword] = useState<string>("");
-  const [confirmedPassword, setConfirmedPassword] = useState<string>("");
-  const [validPassword, setValidPassword] = useState<boolean>(false);
-  const [validConfirmedPassword, setValidConfirmedPassword] =
-    useState<boolean>(false);
-  const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>("")
+  const [confirmedPassword, setConfirmedPassword] = useState<string>("")
+  const [validPassword, setValidPassword] = useState<boolean>(false)
+  const [validConfirmedPassword, setValidConfirmedPassword] = useState<boolean>(false)
+  const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false)
 
-  // Message state
-  const [successMessage, setSuccessMessage] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
+  // Unified message state
+  const [message, setMessage] = useState<MessageType>({
+    text: "",
+    type: null,
+  })
 
   // Password validation requirements
   const [validations, setValidations] = useState({
@@ -21,7 +31,7 @@ const FormResetPassword = () => {
     uppercase: false,
     number: false,
     specialChar: false,
-  });
+  })
 
   // Check password requirements
   const checkPasswordRequirements = (password: string) => {
@@ -30,63 +40,54 @@ const FormResetPassword = () => {
       uppercase: /[A-Z]/.test(password),
       number: /\d/.test(password),
       specialChar: /[!@#$%^&*(),.?":{}|<>]/.test(password),
-    };
-    setValidations(requirements);
+    }
+    setValidations(requirements)
 
-    return Object.values(requirements).every(Boolean);
-  };
+    return Object.values(requirements).every(Boolean)
+  }
 
   // Handle password input change
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    const isValid = checkPasswordRequirements(newPassword);
-    setValidPassword(isValid);
-    setPasswordsMatch(
-      newPassword === confirmedPassword &&
-        newPassword !== "" &&
-        confirmedPassword !== ""
-    );
-  };
+    const newPassword = e.target.value
+    setPassword(newPassword)
+    const isValid = checkPasswordRequirements(newPassword)
+    setValidPassword(isValid)
+    setPasswordsMatch(newPassword === confirmedPassword && newPassword !== "" && confirmedPassword !== "")
+  }
 
   // Handle confirm password input change
-  const handleConfirmPasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newConfirmedPassword = e.target.value;
-    setConfirmedPassword(newConfirmedPassword);
-    setValidConfirmedPassword(checkPasswordRequirements(newConfirmedPassword));
-    setPasswordsMatch(password === newConfirmedPassword);
-  };
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newConfirmedPassword = e.target.value
+    setConfirmedPassword(newConfirmedPassword)
+    setValidConfirmedPassword(checkPasswordRequirements(newConfirmedPassword))
+    setPasswordsMatch(password === newConfirmedPassword)
+  }
 
   // Handle form submission
   const handleResetSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
 
     const {
       data: { users },
-    } = await supabaseAdmin.auth.admin.listUsers();
+    } = await supabaseAdmin.auth.admin.listUsers()
 
-    const userId =
-      users.find((user) => user.email === localStorage.getItem("reset-email"))
-        ?.id || "";
+    const userId = users.find((user) => user.email === localStorage.getItem("reset-email"))?.id || ""
 
     const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
       password: password,
-    });
+    })
 
     if (error) {
-      setErrorMessage(error.message);
-      return;
+      setMessage({ text: error.message, type: "error" })
+      return
     }
 
-    setSuccessMessage("Password has been successfully reset!");
-    (document.getElementById("password") as HTMLInputElement).value = "";
-    (document.getElementById("confirmedPassword") as HTMLInputElement).value =
-      "";
+    setMessage({ text: "Password has been successfully reset!", type: "success" })
+    ;(document.getElementById("password") as HTMLInputElement).value = ""
+    ;(document.getElementById("confirmedPassword") as HTMLInputElement).value = ""
 
-    localStorage.removeItem("reset-email");
-  };
+    localStorage.removeItem("reset-email")
+  }
 
   return (
     <form onSubmit={handleResetSubmit}>
@@ -104,45 +105,21 @@ const FormResetPassword = () => {
         <div className="text-xs mx-6">
           <p className="font-semibold mb-1">Password requirements:</p>
           <ul>
-            <li
-              className={validations.length ? "text-green-600" : "text-red-500"}
-            >
-              At least 6 characters long
-            </li>
-            <li
-              className={
-                validations.uppercase ? "text-green-600" : "text-red-500"
-              }
-            >
+            <li className={validations.length ? "text-green-600" : "text-red-500"}>At least 6 characters long</li>
+            <li className={validations.uppercase ? "text-green-600" : "text-red-500"}>
               At least one uppercase letter (A-Z)
             </li>
-            <li
-              className={validations.number ? "text-green-600" : "text-red-500"}
-            >
-              At least one number (0-9)
-            </li>
-            <li
-              className={
-                validations.specialChar ? "text-green-600" : "text-red-500"
-              }
-            >
+            <li className={validations.number ? "text-green-600" : "text-red-500"}>At least one number (0-9)</li>
+            <li className={validations.specialChar ? "text-green-600" : "text-red-500"}>
               At least one special character Example: (!@#$%^&amp;*(),.?":{}
               |&lt;&gt;)
             </li>
-            <li className={passwordsMatch ? "text-green-600" : "text-red-500"}>
-              Passwords match
-            </li>
+            <li className={passwordsMatch ? "text-green-600" : "text-red-500"}>Passwords match</li>
           </ul>
-          {errorMessage && (
+          {message.text && (
             <div>
               <br />
-              <p className="text-red-500">{errorMessage}</p>
-            </div>
-          )}
-          {successMessage && (
-            <div>
-              <br />
-              <p className="text-green-600 font-bold">{successMessage}</p>
+              <p className={message.type === "success" ? "text-green-600 font-bold" : "text-red-500"}>{message.text}</p>
             </div>
           )}
         </div>
@@ -167,26 +144,21 @@ const FormResetPassword = () => {
 
         {/* Sign in link */}
         <div className="flex justify-between w-46">
-          <Link
-            to="/auth"
-            className="text-neutral-500 text-xs underline mx-auto"
-          >
+          <Link to="/auth" className="text-neutral-500 text-xs underline mx-auto">
             Return to Sign In
           </Link>
         </div>
 
         {/* Submit button */}
         <input
-          disabled={
-            !(validPassword && validConfirmedPassword && passwordsMatch)
-          }
+          disabled={!(validPassword && validConfirmedPassword && passwordsMatch)}
           type="submit"
           value="Reset Password"
           className="bg-black cursor-pointer text-white p-2 rounded px-10 disabled:contrast-50 mt-2"
         />
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default FormResetPassword;
+export default FormResetPassword

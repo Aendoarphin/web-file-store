@@ -18,7 +18,7 @@ const Home = () => {
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
   const [userEmail] = useState<string>(
-    (localStorage.length > 0 &&
+    (localStorage.getItem("sbuser") !== null && localStorage.length > 0 &&
       JSON.parse(localStorage.getItem("sbuser")!).user.email) ||
       ""
   );

@@ -4,7 +4,7 @@ import NotFound from "./components/NotFound";
 import { Routes, Route } from "react-router";
 import FormSignUp from "./components/FormSignUp";
 import FormSendReset from "./components/FormSendReset";
-import { useState, createContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import supabase from "./utils/supabase";
 import { useNavigate } from "react-router";
 import EmailConfirmation from "./components/EmailConfirmation";
@@ -13,25 +13,20 @@ import AdminPanel from "./components/AdminPanel";
 import FormResetPassword from "./components/FormResetPassword";
 import { isExpired } from "./scripts/helper";
 import SessionExpired from "./components/SessionExpired";
-
-export const UserContext = createContext<object | null>(null);
-
+import { UserContext } from "./contexts/Context";
 function App() {
   const navigate = useNavigate();
 
   const [session, setSession] = useState<object | null>(null);
 
-  // useTest();
+  useTest();
 
   useEffect(() => {
     // Validate session on every click
     document.addEventListener("click", function () {
       console.log("Checking session...");
-      const expired =
-        localStorage.length > 0 &&
-        isExpired(
-          JSON.parse(localStorage.getItem("sbuser")!).user.last_sign_in_at
-        );
+      const user = JSON.parse(localStorage.getItem("sbuser")!);
+      const expired = user && user.user && localStorage.length > 0 && isExpired(user.user.last_sign_in_at);
       if (expired) {
         localStorage.removeItem("sbuser");
         document.location.href = "/session-expired";
