@@ -1,8 +1,9 @@
 import { Link } from "react-router";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { validateEmail } from "../scripts/helper";
 import supabase from "../utils/supabase";
 import { useNavigate } from "react-router";
+import { BrandContext } from "../contexts/Context";
 
 const FormSignIn = () => {
   const navigate = useNavigate();
@@ -13,6 +14,8 @@ const FormSignIn = () => {
   }>({ email: "", password: "" });
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const { brand } = useContext(BrandContext) as { brand: string };
 
   const signInUser = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +36,7 @@ const FormSignIn = () => {
     <>
       <form onSubmit={signInUser}>
         <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
-          <h1 className="font-semibold">S O P Y</h1>
+          <h1 className="font-semibold">{brand}</h1>
           <p className="font-semibold">File Store</p>
         </div>
         <div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-sm bg-neutral-200 w-74">

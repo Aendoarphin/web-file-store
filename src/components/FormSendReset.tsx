@@ -1,8 +1,9 @@
 import { Link } from "react-router"
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { validateEmail } from "../scripts/helper"
 import supabase from "../utils/supabase"
 import supabaseAdmin from "../utils/supabase-admin"
+import { BrandContext } from "../contexts/Context"
 
 type MessageType = {
   text: string
@@ -14,6 +15,8 @@ const FormSendReset = () => {
   const [email, setEmail] = useState<string>("")
   const [message, setMessage] = useState<MessageType>({ text: "", type: null })
   const [userExists, setUserExists] = useState<boolean>(false)
+
+  const { brand } = useContext(BrandContext) as { brand: string };
 
   const sendUserEmailReset = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,7 +52,7 @@ const FormSendReset = () => {
     <>
       <form onSubmit={sendUserEmailReset}>
         <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
-          <h3 className="font-semibold">S O P Y</h3>
+          <h3 className="font-semibold">{brand}</h3>
           <p className="font-semibold">File Store</p>
         </div>
         <div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-sm bg-neutral-200 w-74">

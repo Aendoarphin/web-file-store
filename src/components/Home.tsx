@@ -1,16 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { getFiles } from "../utils/actions";
-import {
-  IconArrowUp,
-  IconArrowDown,
-  IconLogout,
-  IconChevronCompactRight,
-  IconChevronCompactLeft,
-} from "@tabler/icons-react";
+import { IconArrowUp, IconArrowDown, IconLogout } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./StartupMessage";
 import supabase from "../utils/supabase";
-import NavItems from "./NavItems";
+import { BrandContext } from "../contexts/Context";
 
 // Main page to search documents
 const Home = () => {
@@ -18,13 +12,15 @@ const Home = () => {
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
   const [userEmail] = useState<string>(
-    (localStorage.getItem("sbuser") !== null && localStorage.length > 0 &&
+    (localStorage.getItem("sbuser") !== null &&
+      localStorage.length > 0 &&
       JSON.parse(localStorage.getItem("sbuser")!).user.email) ||
       ""
   );
 
-  // State for navbar
-  const [nav, setNav] = useState(false);
+  const { brand } = useContext(BrandContext) as { brand: string };
+
+  
 
   // Return elements that match the user's query
   const findMatches = (sourceArr: string[], userInput: string) => {
@@ -66,29 +62,13 @@ const Home = () => {
   return (
     <>
       <div className="flex flex-row h-[100vh]">
-        <div className="flex flex-row">
-          <button onClick={() => setNav(!nav)} className="h-1/1 bg-neutral-300">
-            {nav ? (
-              <IconChevronCompactLeft stroke={3} />
-            ) : (
-              <IconChevronCompactRight stroke={3} />
-            )}
-          </button>
-          <div
-            className={`${
-              nav ? "w-[200px]" : "w-0"
-            } overflow-hidden bg-neutral-200`}
-          >
-            <NavItems />
-          </div>
-        </div>
         <div className="w-full">
           {/* HEADER */}
 
           <div className="flex-row gap-4 flex justify-between items-center px-6 py-2 w-full">
             <div id="logo">
               <div className="flex items-baseline gap-2">
-                <h3 className="font-semibold">S O P Y</h3>
+                <h3 className="font-semibold">{brand}</h3>
                 <p className="font-semibold">File Store</p>
               </div>
             </div>

@@ -1,32 +1,59 @@
 import Home from "./components/Home";
 import FormSignIn from "./components/FormSignIn";
 import NotFound from "./components/NotFound";
-import { Routes, Route } from "react-router";
+import { Routes, Route, useNavigate } from "react-router";
 import FormSignUp from "./components/FormSignUp";
 import FormSendReset from "./components/FormSendReset";
 import { useState, useEffect } from "react";
 import supabase from "./utils/supabase";
-import { useNavigate } from "react-router";
 import EmailConfirmation from "./components/EmailConfirmation";
-import useTest from "./hooks/useTest";
 import AdminPanel from "./components/AdminPanel";
 import FormResetPassword from "./components/FormResetPassword";
 import { isExpired } from "./scripts/helper";
 import SessionExpired from "./components/SessionExpired";
-import { UserContext } from "./contexts/Context";
+import { BrandContext, UserContext } from "./contexts/Context";
+import NavMenu from "./components/NavMenu";
+
+import useTest from "./hooks/useTest";
+import MyAccount from "./components/MyAccount";
+import Users from "./components/Users";
+import Files from "./components/Files";
+import Settings from "./components/Settings";
+
+const routes: { [key: string]: React.ReactElement } = {
+  "/": <Home />,
+  auth: <FormSignIn />,
+  "auth/signup": <FormSignUp />,
+  "auth/reset": <FormSendReset />,
+  "auth/email-confirmation": <EmailConfirmation />,
+  "auth/reset-password": <FormResetPassword />,
+  admin: <AdminPanel />,
+  "session-expired": <SessionExpired />,
+  "*": <NotFound />,
+  "my-account": <MyAccount />,
+  users: <Users />,
+  files: <Files />,
+  settings: <Settings />,
+};
+
 function App() {
   const navigate = useNavigate();
 
   const [session, setSession] = useState<object | null>(null);
+  const [brand, setBrand] = useState<string>("Brand");
 
-  useTest();
+  // useTest();
 
   useEffect(() => {
     // Validate session on every click
     document.addEventListener("click", function () {
       console.log("Checking session...");
       const user = JSON.parse(localStorage.getItem("sbuser")!);
-      const expired = user && user.user && localStorage.length > 0 && isExpired(user.user.last_sign_in_at);
+      const expired =
+        user &&
+        user.user &&
+        localStorage.length > 0 &&
+        isExpired(user.user.last_sign_in_at);
       if (expired) {
         localStorage.removeItem("sbuser");
         document.location.href = "/session-expired";
@@ -66,20 +93,22 @@ function App() {
   return (
     <>
       <UserContext.Provider value={session}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="auth" element={<FormSignIn />} />
-          <Route path="auth/signup" element={<FormSignUp />} />
-          <Route path="auth/reset" element={<FormSendReset />} />
-          <Route
-            path="auth/email-confirmation"
-            element={<EmailConfirmation />}
-          />
-          <Route path="auth/reset-password" element={<FormResetPassword />} />
-          <Route path="admin" element={<AdminPanel />} />
-          <Route path="session-expired" element={<SessionExpired />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <BrandContext.Provider value={{ brand, setBrand }}>
+          <div className="flex flex-row flex-nowrap z-50">
+            {localStorage.getItem("sbuser") && <NavMenu />}
+            <div className="w-full">
+              <Routes>
+                {Object.keys(routes).map((route) => (
+                  <Route
+                    key={route}
+                    path={route}
+                    element={routes[route]}
+                  ></Route>
+                ))}
+              </Routes>
+            </div>
+          </div>
+        </BrandContext.Provider>
       </UserContext.Provider>
     </>
   );

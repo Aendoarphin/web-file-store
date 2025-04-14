@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { validateEmail } from "../scripts/helper";
 import supabase from "../utils/supabase";
 import { Link } from "react-router";
+import { BrandContext } from "../contexts/Context";
 
 const SignUpForm = () => {
+  const { brand } = useContext(BrandContext) as { brand: string };
+
   // Email state
   const [email, setEmail] = useState<string>("");
   const [isEmail, setIsEmail] = useState<boolean>(false);
@@ -99,7 +102,7 @@ const SignUpForm = () => {
   return (
     <form onSubmit={handleSignUpSubmit}>
       <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
-        <h1 className="font-semibold">S O P Y</h1>
+        <h1 className="font-semibold">{brand}</h1>
         <p className="font-semibold">File Store</p>
       </div>
       <div className="flex flex-col mt-10 mx-auto items-center gap-4 p-8 rounded-sm bg-neutral-200 w-74">

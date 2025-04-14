@@ -1,10 +1,7 @@
-"use client"
-
-import type React from "react"
-
-import { useState } from "react"
+import { useState, useContext } from "react"
 import { Link } from "react-router"
 import supabaseAdmin from "../utils/supabase-admin"
+import { BrandContext } from "../contexts/Context"
 
 type MessageType = {
   text: string
@@ -32,6 +29,9 @@ const FormResetPassword = () => {
     number: false,
     specialChar: false,
   })
+
+  // Brand name
+    const { brand } = useContext(BrandContext) as { brand: string };
 
   // Check password requirements
   const checkPasswordRequirements = (password: string) => {
@@ -92,7 +92,7 @@ const FormResetPassword = () => {
   return (
     <form onSubmit={handleResetSubmit}>
       <div className="flex w-min text-nowrap mx-auto items-baseline gap-2 mt-20">
-        <h1 className="font-semibold">S O P Y</h1>
+        <h1 className="font-semibold">{brand}</h1>
         <p className="font-semibold">File Store</p>
       </div>
       <div className="flex flex-col mt-10 mx-auto items-center gap-4 p-8 rounded-sm bg-neutral-200 w-74">
