@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import NavItems from "./NavItems";
+import { BrandContext } from "../../contexts/Context";
 
 const NavMenu = () => {
+  const { brand } = useContext(BrandContext) as { brand: string };
+
   // Current user
   const [userEmail] = useState<string>(
       (localStorage.getItem("sbuser") !== null &&
@@ -28,7 +31,7 @@ const NavMenu = () => {
         </div>
       </div>
       <div className="bg-neutral-300 flex flex-row justify-between fixed bottom-0 w-full left-0">
-            <div className="p-2">&copy; SOPY {new Date().getFullYear()}</div>
+            <div className="p-2">&copy; {brand} {new Date().getFullYear()}</div>
             <div className="p-2">User: {userEmail}</div>
           </div>
     </>
