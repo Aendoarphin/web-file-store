@@ -1,9 +1,9 @@
 import { Link } from "react-router"
 import { useState, useContext } from "react"
-import { validateEmail } from "../scripts/helper"
-import supabase from "../utils/supabase"
-import supabaseAdmin from "../utils/supabase-admin"
-import { BrandContext } from "../contexts/Context"
+import { validateEmail } from "../../scripts/helper"
+import supabase from "../../utils/supabase"
+import supabaseAdmin from "../../utils/supabase-admin"
+import { BrandContext } from "../../contexts/Context"
 
 type MessageType = {
   text: string

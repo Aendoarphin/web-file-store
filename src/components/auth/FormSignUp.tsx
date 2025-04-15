@@ -1,8 +1,8 @@
 import { useState, useContext } from "react";
-import { validateEmail } from "../scripts/helper";
-import supabase from "../utils/supabase";
+import { validateEmail } from "../../scripts/helper";
+import supabase from "../../utils/supabase";
 import { Link } from "react-router";
-import { BrandContext } from "../contexts/Context";
+import { BrandContext } from "../../contexts/Context";
 
 const SignUpForm = () => {
   const { brand } = useContext(BrandContext) as { brand: string };

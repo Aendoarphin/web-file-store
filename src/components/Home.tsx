@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { getFiles } from "../utils/actions";
 import { IconArrowUp, IconArrowDown, IconLogout } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
-import StartupMessage from "./StartupMessage";
+import StartupMessage from "./messages/StartupMessage";
 import supabase from "../utils/supabase";
 import { BrandContext } from "../contexts/Context";
 
@@ -11,12 +11,6 @@ const Home = () => {
   const [input, setInput] = useState("");
   const [data, setData] = useState<string[]>();
   const [order, setOrder] = useState("asc");
-  const [userEmail] = useState<string>(
-    (localStorage.getItem("sbuser") !== null &&
-      localStorage.length > 0 &&
-      JSON.parse(localStorage.getItem("sbuser")!).user.email) ||
-      ""
-  );
 
   const { brand } = useContext(BrandContext) as { brand: string };
 
@@ -65,7 +59,7 @@ const Home = () => {
         <div className="w-full">
           {/* HEADER */}
 
-          <div className="flex-row gap-4 flex justify-between items-center px-6 py-2 w-full">
+          <div className="flex-row gap-4 flex justify-between items-center px-4 py-2 w-full">
             <div id="logo">
               <div className="flex items-baseline gap-2">
                 <h3 className="font-semibold">{brand}</h3>
@@ -86,7 +80,7 @@ const Home = () => {
                 }}
                 className={`bg-neutral-300 outline-0 focus:border-[1px] ${
                   input.length > 0 ? "rounded-l-sm" : "rounded-sm"
-                } p-2 text-sm`}
+                } px-2 text-sm`}
                 placeholder="How to XYZ..."
                 onChange={(e) => {
                   setInput(e.target.value);
@@ -95,7 +89,7 @@ const Home = () => {
               {input && (
                 <button
                   id="submitButton"
-                  className={`bg-neutral-900 active:scale-95 text-white outline-0 px-4 ${
+                  className={`bg-neutral-700 active:scale-95 text-white outline-0 px-4 ${
                     input.length > 0 ? "rounded-r-sm" : "rounded-sm"
                   }`}
                   onClick={() => handleSubmit()}
@@ -150,10 +144,6 @@ const Home = () => {
                     <ResultItem key={index} fileName={item} input={input} />
                   ))}
             {data === undefined ? <StartupMessage /> : null}
-          </div>
-          <div className="bg-neutral-300 flex flex-row justify-between fixed bottom-0 w-full left-0">
-            <div className="p-2">&copy; SOPY {new Date().getFullYear()}</div>
-            <div className="p-2">User: {userEmail}</div>
           </div>
         </div>
       </div>

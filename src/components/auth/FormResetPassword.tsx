@@ -1,7 +1,7 @@
 import { useState, useContext } from "react"
 import { Link } from "react-router"
-import supabaseAdmin from "../utils/supabase-admin"
-import { BrandContext } from "../contexts/Context"
+import supabaseAdmin from "../../utils/supabase-admin"
+import { BrandContext } from "../../contexts/Context"
 
 type MessageType = {
   text: string

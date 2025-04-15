@@ -7,7 +7,7 @@ import {
 } from "@tabler/icons-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import supabaseAdmin from "../utils/supabase-admin";
+import supabaseAdmin from "../../utils/supabase-admin";
 
 const NavItems = () => {
   const navigate = useNavigate();

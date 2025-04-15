@@ -1,18 +1,18 @@
 import Home from "./components/Home";
-import FormSignIn from "./components/FormSignIn";
-import NotFound from "./components/NotFound";
+import FormSignIn from "./components/auth/FormSignIn";
+import NotFound from "./components/messages/NotFound";
 import { Routes, Route, useNavigate } from "react-router";
-import FormSignUp from "./components/FormSignUp";
-import FormSendReset from "./components/FormSendReset";
+import FormSignUp from "./components/auth/FormSignUp";
+import FormSendReset from "./components/auth/FormSendReset";
 import { useState, useEffect } from "react";
 import supabase from "./utils/supabase";
-import EmailConfirmation from "./components/EmailConfirmation";
-import AdminPanel from "./components/AdminPanel";
-import FormResetPassword from "./components/FormResetPassword";
+import EmailConfirmation from "./components/auth/EmailConfirmation";
+import AdminPanel from "./components/admin/AdminPanel";
+import FormResetPassword from "./components/auth/FormResetPassword";
 import { isExpired } from "./scripts/helper";
-import SessionExpired from "./components/SessionExpired";
+import SessionExpired from "./components/messages/SessionExpired";
 import { BrandContext, UserContext } from "./contexts/Context";
-import NavMenu from "./components/NavMenu";
+import NavMenu from "./components/navigation/NavMenu";
 
 import useTest from "./hooks/useTest";
 import MyAccount from "./components/MyAccount";

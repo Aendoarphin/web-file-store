@@ -1,6 +1,6 @@
 import { Link } from "react-router"
 import { useContext } from "react"
-import { BrandContext } from "../contexts/Context"
+import { BrandContext } from "../../contexts/Context"
 
 const EmailConfirmation = () => { 
   const { brand } = useContext(BrandContext) as { brand: string };
