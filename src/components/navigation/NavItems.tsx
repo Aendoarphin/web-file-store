@@ -13,7 +13,7 @@ const NavItems = () => {
   const navigate = useNavigate();
 
   const [style] = useState<string>(
-    "hover:scale-105 transition-all ease-in-out cursor-pointer px-4 py-2 font-semibold flex flex-nowrap gap-4"
+    "hover:bg-[rgba(0,0,0,0.1)] transition-all ease-in-out cursor-pointer px-4 py-2 font-semibold flex flex-nowrap gap-4"
   );
   const [lsId, setLsId] = useState<string>(
     localStorage.getItem("sbuser") || ""
