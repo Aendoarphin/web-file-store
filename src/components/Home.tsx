@@ -35,7 +35,7 @@ const Home = () => {
         }
       }
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
   };
 
@@ -49,7 +49,7 @@ const Home = () => {
       localStorage.removeItem("sbuser");
       document.location.href = "/auth";
     } catch (error) {
-      alert(error);
+      console.log(error);
     }
   };
 
