@@ -1,6 +1,6 @@
 // Hook to run test functions
 import { useEffect } from "react";
-import supabaseAdmin from "../utils/supabase-admin"; // continue here; run id against admins table
+import supabaseAdmin from "../utils/supabase-admin";
 
 const useTest = () => {
   useEffect(() => {

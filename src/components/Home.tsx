@@ -4,7 +4,7 @@ import { IconArrowUp, IconArrowDown, IconLogout } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./messages/StartupMessage";
 import supabase from "../utils/supabase";
-import { BrandContext } from "../contexts/Context";
+import { BrandContext } from "../contexts/Context"; // continue here; move logout to navbar
 
 // Main page to search documents
 const Home = () => {
