@@ -90,10 +90,7 @@ const MyAccount = () => {
   }, [message]);
 
   const handleInputChange = (id: string, value: string) => {
-    if (
-      id === "newPassword" ||
-      id === "confirmedNewPassword"
-    ) {
+    if (id === "newPassword" || id === "confirmedNewPassword") {
       setPasswords((prev) => ({
         ...prev,
         [id]: value,
@@ -105,61 +102,72 @@ const MyAccount = () => {
     try {
       e.preventDefault();
 
-      const newPwInput = document.getElementById("newPassword") as HTMLInputElement;
-      const confirmedPwInput = document.getElementById("confirmedNewPassword") as HTMLInputElement;        
-      
-      newPwInput.classList.remove("border", "border-red-500")
-      confirmedPwInput.classList.remove("border", "border-red-500")
+      const newPwInput = document.getElementById(
+        "newPassword"
+      ) as HTMLInputElement;
+      const confirmedPwInput = document.getElementById(
+        "confirmedNewPassword"
+      ) as HTMLInputElement;
+
+      newPwInput.classList.remove("border", "border-red-500");
+      confirmedPwInput.classList.remove("border", "border-red-500");
 
       if (passwords.newPassword !== passwords.confirmedNewPassword) {
         setMessage({
           text: "Passwords do not match.",
           type: "error",
-        })
-        newPwInput.classList.add("border", "border-red-500")
-        confirmedPwInput.classList.add("border", "border-red-500")
+        });
+        newPwInput.classList.add("border", "border-red-500");
+        confirmedPwInput.classList.add("border", "border-red-500");
         newPwInput.focus();
         confirmedPwInput.focus();
         return;
       }
-      if (passwords.newPassword === "" || passwords.confirmedNewPassword === "") {
+      if (
+        passwords.newPassword === "" ||
+        passwords.confirmedNewPassword === ""
+      ) {
         setMessage({
           text: "Please enter a password.",
           type: "error",
-        })
-        const newPwInput = document.getElementById("newPassword") as HTMLInputElement;
-        const confirmedPwInput = document.getElementById("confirmedNewPassword") as HTMLInputElement;
-        newPwInput.classList.add("border", "border-red-500")
-        confirmedPwInput.classList.add("border", "border-red-500")
+        });
+        const newPwInput = document.getElementById(
+          "newPassword"
+        ) as HTMLInputElement;
+        const confirmedPwInput = document.getElementById(
+          "confirmedNewPassword"
+        ) as HTMLInputElement;
+        newPwInput.classList.add("border", "border-red-500");
+        confirmedPwInput.classList.add("border", "border-red-500");
         newPwInput.focus();
         confirmedPwInput.focus();
         return;
       }
 
-    // Supabase side logic
-    const {
-      data: { users },
-    } = await supabaseAdmin.auth.admin.listUsers();
-    const currentUserId: string = JSON.parse(localStorage.getItem("sbuser")!)
-      .user.id;
+      // Supabase side logic
+      const {
+        data: { users },
+      } = await supabaseAdmin.auth.admin.listUsers();
+      const currentUserId: string = JSON.parse(localStorage.getItem("sbuser")!)
+        .user.id;
 
-    if (users.find((user) => user.id === currentUserId)?.id) {
-      const { error } = await supabaseAdmin.auth.admin.updateUserById(
-        currentUserId,
-        { password: passwords.confirmedNewPassword }
-      );
+      if (users.find((user) => user.id === currentUserId)?.id) {
+        const { error } = await supabaseAdmin.auth.admin.updateUserById(
+          currentUserId,
+          { password: passwords.confirmedNewPassword }
+        );
 
-      if (error) {
-        setMessage({ text: error.message, type: "error" });
-        return;
+        if (error) {
+          setMessage({ text: error.message, type: "error" });
+          return;
+        }
       }
-    }
 
-    // Show success message
-    setMessage({
-      text: "Password has been changed successfully.",
-      type: "success",
-    });
+      // Show success message
+      setMessage({
+        text: "Password has been changed successfully.",
+        type: "success",
+      });
     } catch (error) {
       console.log(error);
     }

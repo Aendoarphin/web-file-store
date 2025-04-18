@@ -2,14 +2,19 @@ import { useState, useContext } from "react";
 import NavItems from "./NavItems";
 import { BrandContext } from "../../contexts/Context";
 
+interface User {
+  id: string;
+  email: string;
+}
+
 const NavMenu = () => {
   const { brand } = useContext(BrandContext) as { brand: string };
 
   // Current user
-  const [userEmail] = useState<string>(
+  const [currentUser] = useState<User>(
       (localStorage.getItem("sbuser") !== null &&
         localStorage.length > 0 &&
-        JSON.parse(localStorage.getItem("sbuser")!).user.email) ||
+        JSON.parse(localStorage.getItem("sbuser")!).user) ||
         ""
     );
   // State for navbar
@@ -32,7 +37,10 @@ const NavMenu = () => {
       </div>
       <div className="bg-neutral-300 flex flex-row justify-between fixed bottom-0 w-full left-0">
             <div className="p-2">&copy; {brand} {new Date().getFullYear()}</div>
-            <div className="p-2">User: {userEmail}</div>
+            <div className="flex flex-row">
+            <div className="p-2">ID: {currentUser.id}</div>
+            <div className="p-2">Logged in as: {currentUser.email}</div>
+            </div>
           </div>
     </>
   );

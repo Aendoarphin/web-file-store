@@ -13,14 +13,14 @@ import { isExpired } from "./scripts/helper";
 import SessionExpired from "./components/messages/SessionExpired";
 import { BrandContext, UserContext } from "./contexts/Context";
 import NavMenu from "./components/navigation/NavMenu";
-
-import useTest from "./hooks/useTest";
 import MyAccount from "./components/MyAccount";
 import Users from "./components/Users";
 import Files from "./components/Files";
 import Settings from "./components/Settings";
 
-const routes: { [key: string]: React.ReactElement } = {
+import useTest from "./hooks/useTest";
+
+const appRoutes: { [key: string]: React.ReactElement } = {
   "/": <Home />,
   auth: <FormSignIn />,
   "auth/signup": <FormSignUp />,
@@ -39,29 +39,28 @@ const routes: { [key: string]: React.ReactElement } = {
 function App() {
   const navigate = useNavigate();
 
-  const [session, setSession] = useState<object | null>(null);
+  const [currentUser] = useState<object | null>(
+    JSON.parse(localStorage.getItem("sbuser")!)
+  );
   const [brand, setBrand] = useState<string>("Brand");
 
   // useTest();
 
+  // Check if session is expired
   useEffect(() => {
-    // Validate session on every click
     document.addEventListener("click", function () {
       console.log("Checking session...");
-      const user = JSON.parse(localStorage.getItem("sbuser")!);
+      const parsedUser = JSON.parse(localStorage.getItem("sbuser")!);
       const expired =
-        user &&
-        user.user &&
+        parsedUser &&
+        parsedUser.user &&
         localStorage.length > 0 &&
-        isExpired(user.user.last_sign_in_at);
+        isExpired(parsedUser.user.last_sign_in_at);
       if (expired) {
         localStorage.removeItem("sbuser");
         document.location.href = "/session-expired";
       }
     });
-
-    const session = localStorage.getItem("sbuser");
-    setSession(JSON.parse(session || "null"));
 
     // Only redirect if we're not already on email confirm message, signup, or reset
     const currentPath = window.location.pathname;
@@ -71,7 +70,7 @@ function App() {
       !currentPath.includes("reset-password") &&
       !currentPath.includes("session-expired")
     ) {
-      if (session) {
+      if (currentUser) {
         navigate("/");
       } else {
         navigate("auth");
@@ -92,17 +91,17 @@ function App() {
   }, []);
   return (
     <>
-      <UserContext.Provider value={session}>
+      <UserContext.Provider value={currentUser}>
         <BrandContext.Provider value={{ brand, setBrand }}>
           <div className="flex flex-row flex-nowrap z-50">
             {localStorage.getItem("sbuser") && <NavMenu />}
             <div className="w-full">
               <Routes>
-                {Object.keys(routes).map((route) => (
+                {Object.keys(appRoutes).map((route) => (
                   <Route
                     key={route}
                     path={route}
-                    element={routes[route]}
+                    element={appRoutes[route]}
                   ></Route>
                 ))}
               </Routes>

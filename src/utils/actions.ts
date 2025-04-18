@@ -1,5 +1,6 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import supabase from "./supabase";
+import supabaseAdmin from "./supabase-admin";
 
 // Storage - Get all files in a bucket
 export const getFiles = async (): Promise<string[]> => {
@@ -73,4 +74,18 @@ export const deleteRecord = async (
 ): Promise<void | PostgrestError> => {
   const { error } = await supabase.from(table).delete().eq(attribute, value);
   if (error) return error;
+};
+
+// Auth - Create new user
+export const createNewUser = async (
+  email: string,
+  password: string,
+  { name, group, role }: { name: string; group: string; role: string }
+): Promise<void> => {
+  await supabaseAdmin.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+    user_metadata: { name, email, role, group },
+  });
 };
