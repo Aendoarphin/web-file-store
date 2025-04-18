@@ -4,7 +4,7 @@ import { IconArrowUp, IconArrowDown, IconLogout } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./messages/StartupMessage";
 import supabase from "../utils/supabase";
-import { BrandContext } from "../contexts/Context"; // continue here; move logout to navbar
+import { BrandContext } from "../contexts/Context";
 
 // Main page to search documents
 const Home = () => {
@@ -39,20 +39,6 @@ const Home = () => {
     }
   };
 
-  const handleSignOut = async (e: React.FormEvent) => {
-    try {
-      e.preventDefault();
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.log(error.message);
-      }
-      localStorage.removeItem("sbuser");
-      document.location.href = "/auth";
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
       <div className="flex flex-row h-[100vh]">
@@ -80,7 +66,7 @@ const Home = () => {
                 }}
                 className={`bg-neutral-300 outline-0 focus:border-[1px] ${
                   input.length > 0 ? "rounded-l-sm" : "rounded-sm"
-                } px-2 text-sm`}
+                } p-2 text-sm`}
                 placeholder="How to XYZ..."
                 onChange={(e) => {
                   setInput(e.target.value);
@@ -97,14 +83,6 @@ const Home = () => {
                   Search
                 </button>
               )}
-              <div
-                className=" flex items-center justify-center ml-4"
-                title="Sign Out"
-              >
-                <button className="cursor-pointer" onClick={handleSignOut}>
-                  <IconLogout className="inline" size={30} stroke={2} />
-                </button>
-              </div>
             </div>
           </div>
           <hr className="mx-4 text-neutral-400" />

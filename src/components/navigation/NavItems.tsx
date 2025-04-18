@@ -1,6 +1,7 @@
 import {
   IconDatabase,
   IconHome,
+  IconLogout,
   IconSettings,
   IconUser,
   IconUsersGroup,
@@ -8,6 +9,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import supabaseAdmin from "../../utils/supabase-admin";
+import supabase from "../../utils/supabase";
 
 const NavItems = () => {
   const navigate = useNavigate();
@@ -39,6 +41,20 @@ const NavItems = () => {
 
   checkIsAdmin();
 
+  const handleSignOut = async (e: React.FormEvent) => {
+    try {
+      e.preventDefault();
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.log(error.message);
+      }
+      localStorage.removeItem("sbuser");
+      document.location.href = "/auth";
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <ol>
@@ -63,6 +79,9 @@ const NavItems = () => {
         ) : (
           <></>
         )}
+        <li className={style} onClick={handleSignOut}>
+          <IconLogout /> Sign Out
+        </li>
       </ol>
     </>
   );
