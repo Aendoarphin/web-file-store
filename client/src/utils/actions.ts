@@ -1,6 +1,7 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import supabase from "./supabase";
 import supabaseAdmin from "./supabase-admin";
+import axios from "axios";
 
 // Storage - Get all files in a bucket
 export const getFiles = async (): Promise<string[]> => {
@@ -77,15 +78,25 @@ export const deleteRecord = async (
 };
 
 // Auth - Create new user
-export const createNewUser = async (
-  email: string,
-  password: string,
-  { name, group, role }: { name: string; group: string; role: string }
-): Promise<void> => {
-  await supabaseAdmin.auth.admin.createUser({
-    email,
-    password,
-    email_confirm: true,
-    user_metadata: { name, email, role, group },
-  });
+export const createNewUser = async (email: string, password: string, name: string, group: string, role: string) => {
+  try {
+    const response = await axios.post("http://localhost:3000/api/create-user", {
+      email,
+      password,
+      name,
+      group,
+      role
+    });
+ 
+    alert("User created successfully!");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      alert(error.response.data.error);
+    } else {
+      alert("An unexpected error occurred");
+      console.error(error);
+    }
+  }
 };
+// continue here; work on create user function

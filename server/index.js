@@ -1,5 +1,6 @@
 import express from 'express';
 import { createClient } from '@supabase/supabase-js';
+import cors from 'cors';
 
 // Load environment variables from .env file
 import dotenv from 'dotenv';
@@ -15,6 +16,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+// Enable CORS
+app.use(cors());
+
 app.get('/api/users', async (req, res) => {
   try {
     const { data, error } = await supabaseAdmin.auth.admin.listUsers();
@@ -25,6 +29,20 @@ app.get('/api/users', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+app.post('/api/create-user', async (req, res) => {
+  const { email, password, name, role, group } = req.body;
+    const { data, error } = await supabaseAdmin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: { name, email, role, group },
+    });
+    if (error) {
+      return res.status(500).json({ error: error.message });
+    }
+    res.status(200).json(data);
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

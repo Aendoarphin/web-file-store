@@ -1,5 +1,5 @@
 import { IconPlus } from "@tabler/icons-react";
-import { useState } from "react"; // continue here; work on add new user button
+import { useState } from "react";
 
 interface User {
   name: string
