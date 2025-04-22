@@ -1,11 +1,15 @@
 import { IconPlus } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { listAllUsers } from "../utils/actions";
 
 interface User {
-  name: string
-  email: string
-  group: string
-  role: string
+  email: string;
+  user_metadata: {
+    email: string;
+    name: string;
+    group: string;
+    role: string;
+  }
 }
 
 const UsersTable = ({ users }: { users: User[] }) => {
@@ -22,11 +26,11 @@ const UsersTable = ({ users }: { users: User[] }) => {
         </thead>
         <tbody>
           {users.map((user, index) => (
-            <tr key={index} className={`border-t border-neutral-300 hover:bg-neutral-300/50 transition-colors`}>
-              <td className="p-3">{user.name}</td>
+            <tr key={index} className={`border-t border-neutral-300 even:bg-neutral-300 transition-colors`}>
+              <td className="p-3">{user.user_metadata.name}</td>
               <td className="p-3">{user.email}</td>
-              <td className="p-3">{user.group}</td>
-              <td className="p-3">{user.role}</td>
+              <td className="p-3">{user.user_metadata.group}</td>
+              <td className="p-3">{user.user_metadata.role}</td>
             </tr>
           ))}
         </tbody>
@@ -36,45 +40,23 @@ const UsersTable = ({ users }: { users: User[] }) => {
 }
 
 const Users = () => {
-  // Fictitious user data
-  const [users] = useState<User[]>([
-    {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      group: "IT",
-      role: "Admin",
-    },
-    {
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      group: "HR",
-      role: "Manager",
-    },
-    {
-      name: "Robert Johnson",
-      email: "robert.j@example.com",
-      group: "Finance",
-      role: "User",
-    },
-    {
-      name: "Emily Davis",
-      email: "emily.d@example.com",
-      group: "Marketing",
-      role: "Editor",
-    },
-    {
-      name: "Michael Wilson",
-      email: "michael.w@example.com",
-      group: "IT",
-      role: "Developer",
-    },
-    {
-      name: "Sarah Brown",
-      email: "sarah.b@example.com",
-      group: "Sales",
-      role: "User",
-    },
-  ])
+
+  // User data
+  const [users, setusers] = useState<User[]>([])
+
+  useEffect(() => {
+    const getAllUsers = async () => {
+      try {
+        const allUsers = await listAllUsers();
+        setusers(allUsers);
+        console.log(allUsers);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getAllUsers();
+  }, [])
 
   return (
     <div className="min-h-screen w-full p-4 flex items-start justify-center">

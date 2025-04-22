@@ -77,26 +77,40 @@ export const deleteRecord = async (
   if (error) return error;
 };
 
-// Auth - Create new user
-export const createNewUser = async (email: string, password: string, name: string, group: string, role: string) => {
+// Auth Admin - Create new user
+export const createNewUser = async (
+  email: string,
+  password: string,
+  name: string,
+  group: string,
+  role: string
+) => {
   try {
     const response = await axios.post("http://localhost:3000/api/create-user", {
       email,
       password,
       name,
       group,
-      role
+      role,
     });
- 
+
     alert("User created successfully!");
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       alert(error.response.data.error);
     } else {
-      alert("An unexpected error occurred");
       console.error(error);
     }
   }
 };
-// continue here; work on create user function
+
+// Auth Admin - List all users
+export const listAllUsers = async () => {
+  try {
+    const response = await axios.get("http://localhost:3000/api/users");
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};

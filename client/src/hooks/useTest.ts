@@ -1,20 +1,15 @@
 // Hook to run test functions
 import { useEffect } from "react";
-import { createNewUser } from "../utils/actions";
+import { createNewUser, listAllUsers } from "../utils/actions";
 
 const useTest = () => {
   useEffect(() => {
     try {
-      console.log("Running test hook...");
-      
-      const testFunction = async () => {
-        await createNewUser("aronp2000@gmail.com", "Amber#1", "Arhon", "Admin", "IT");
+      const test = async () => {
+        const allUsers = await listAllUsers();
+        alert(JSON.stringify(allUsers, null, 2));
       };
-      
-      // Only run if localStorage has items, and do so safely
-      if (localStorage.length > 0) {
-        testFunction();
-      }
+      test();
     } catch (error) {
       alert("Unexpected error: " + error);
     }

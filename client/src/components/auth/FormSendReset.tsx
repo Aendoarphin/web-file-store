@@ -1,52 +1,55 @@
-import { Link } from "react-router"
-import { useState, useContext } from "react"
-import { validateEmail } from "../../scripts/helper"
-import supabase from "../../utils/supabase"
-import supabaseAdmin from "../../utils/supabase-admin"
-import { BrandContext } from "../../contexts/Context"
+import { Link } from "react-router";
+import { useState, useContext } from "react";
+import { validateEmail } from "../../scripts/helper";
+import supabase from "../../utils/supabase";
+import supabaseAdmin from "../../utils/supabase-admin";
+import { BrandContext } from "../../contexts/Context";
+import { listAllUsers } from "../../utils/actions";
+import { User } from "@supabase/supabase-js";
 
 type MessageType = {
-  text: string
-  type: "success" | "error" | null
-}
+  text: string;
+  type: "success" | "error" | null;
+};
 
 const FormSendReset = () => {
-  const [isEmail, setIsEmail] = useState<boolean>(false)
-  const [email, setEmail] = useState<string>("")
-  const [message, setMessage] = useState<MessageType>({ text: "", type: null })
-  const [userExists, setUserExists] = useState<boolean>(false)
+  const [isEmail, setIsEmail] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>("");
+  const [message, setMessage] = useState<MessageType>({ text: "", type: null });
+  const [userExists, setUserExists] = useState<boolean>(false);
 
   const { brand } = useContext(BrandContext) as { brand: string };
 
   const sendUserEmailReset = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: "http://localhost:5173/auth/reset-password",
-    })
+    });
 
     if (error) {
-      setMessage({ text: error.message, type: "error" })
-      return
+      setMessage({ text: error.message, type: "error" });
+      return;
     }
 
     if (!userExists) {
-      const {
-        data: { users },
-      } = await supabaseAdmin.auth.admin.listUsers()
-      const user = users.find((user) => user.email === email)
+      const users = await listAllUsers();
+      const user = users.find((user: User) => user.email === email);
 
       if (user) {
-        setUserExists(true)
+        setUserExists(true);
       } else {
-        setMessage({ text: "Email is not associated with any account.", type: "error" })
-        return
+        setMessage({
+          text: "Email is not associated with any account.",
+          type: "error",
+        });
+        return;
       }
     }
 
-    localStorage.setItem("reset-email", email)
-    setMessage({ text: "Email was sent to " + email, type: "success" })
-    ;(document.getElementById("email") as HTMLInputElement).value = ""
-  }
+    localStorage.setItem("reset-email", email);
+    setMessage({ text: "Email was sent to " + email, type: "success" });
+    (document.getElementById("email") as HTMLInputElement).value = "";
+  };
 
   return (
     <>
@@ -57,16 +60,22 @@ const FormSendReset = () => {
         </div>
         <div className="flex flex-col mt-20 mx-auto items-center gap-4 p-8 rounded-sm bg-neutral-200 w-74">
           <h4 className="font-semibold text-center">Reset Password</h4>
-          <div className="text-sm mx-6">Enter your email and we we'll send you a link to reset.</div>
+          <div className="text-sm mx-6">
+            Enter your email and we we'll send you a link to reset.
+          </div>
           {message.text !== "" && (
-            <div className={`text-xs mx-6 ${message.type === "success" ? "text-green-600" : "text-red-600"}`}>
+            <div
+              className={`text-xs mx-6 ${
+                message.type === "success" ? "text-green-600" : "text-red-600"
+              }`}
+            >
               {message.text}
             </div>
           )}
           <input
             onChange={(e) => {
-              setEmail(e.target.value)
-              setIsEmail(validateEmail(e.target.value))
+              setEmail(e.target.value);
+              setIsEmail(validateEmail(e.target.value));
             }}
             id="email"
             type="email"
@@ -75,7 +84,10 @@ const FormSendReset = () => {
             className="border-neutral-400 border-b focus:outline-none focus:border-black"
           />
           <div className="flex justify-between w-46">
-            <Link to="/auth" className="text-neutral-500 text-xs underline mx-auto">
+            <Link
+              to="/auth"
+              className="text-neutral-500 text-xs underline mx-auto"
+            >
               Back to Sign In
             </Link>
           </div>
@@ -88,7 +100,7 @@ const FormSendReset = () => {
         </div>
       </form>
     </>
-  )
-}
+  );
+};
 
-export default FormSendReset
+export default FormSendReset;

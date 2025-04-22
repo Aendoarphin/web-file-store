@@ -1,9 +1,8 @@
 import { useState, useContext } from "react";
-import { createNewUser, getFiles } from "../utils/actions";
-import { IconArrowUp, IconArrowDown, IconLogout } from "@tabler/icons-react";
+import { getFiles } from "../utils/actions";
+import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./messages/StartupMessage";
-import supabase from "../utils/supabase";
 import { BrandContext } from "../contexts/Context";
 
 // Main page to search documents
@@ -13,8 +12,6 @@ const Home = () => {
   const [order, setOrder] = useState("asc");
 
   const { brand } = useContext(BrandContext) as { brand: string };
-
-  
 
   // Return elements that match the user's query
   const findMatches = (sourceArr: string[], userInput: string) => {
@@ -26,7 +23,6 @@ const Home = () => {
 
   const handleSubmit = async () => {
     try {
-      await createNewUser("aronp2000@gmail.com", "Amber#1", "Arhon", "Admin", "IT");
       if (input.trim()) {
         const response = await getFiles();
         const filtered = findMatches(response, input);

@@ -1,6 +1,8 @@
 import { IconCheck } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
 import supabaseAdmin from "../utils/supabase-admin";
+import { listAllUsers } from "../utils/actions";
+import { User } from "@supabase/supabase-js";
 
 interface MessageType {
   text: string;
@@ -145,13 +147,11 @@ const MyAccount = () => {
       }
 
       // Supabase side logic
-      const {
-        data: { users },
-      } = await supabaseAdmin.auth.admin.listUsers();
+      const users = await listAllUsers();
       const currentUserId: string = JSON.parse(localStorage.getItem("sbuser")!)
         .user.id;
 
-      if (users.find((user) => user.id === currentUserId)?.id) {
+      if (users.find((user: User) => user.id === currentUserId)?.id) {
         const { error } = await supabaseAdmin.auth.admin.updateUserById(
           currentUserId,
           { password: passwords.confirmedNewPassword }

@@ -22,18 +22,19 @@ import useTest from "./hooks/useTest";
 
 const appRoutes: { [key: string]: React.ReactElement } = {
   "/": <Home />,
-  auth: <FormSignIn />,
+  "auth": <FormSignIn />,
   "auth/signup": <FormSignUp />,
   "auth/reset": <FormSendReset />,
   "auth/email-confirmation": <EmailConfirmation />,
   "auth/reset-password": <FormResetPassword />,
-  admin: <AdminPanel />,
+  "admin": <AdminPanel />,
   "session-expired": <SessionExpired />,
   "*": <NotFound />,
   "my-account": <MyAccount />,
-  users: <Users />,
-  files: <Files />,
-  settings: <Settings />,
+  "users": <Users />,
+  "files": <Files />,
+  "settings": <Settings />,
+
 };
 
 function App() {
