@@ -50,7 +50,6 @@ function App() {
   // Check if session is expired
   useEffect(() => {
     document.addEventListener("click", function () {
-      console.log("Checking session...");
       const parsedUser = JSON.parse(localStorage.getItem("sbuser")!);
       const expired =
         parsedUser &&

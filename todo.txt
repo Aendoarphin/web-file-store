@@ -1,5 +1,5 @@
 client
 - write form to edit user metadata
-- write actions function to call backend metadata update
-
+- in actions.ts, write function to call backend metadata update
+- 
 server

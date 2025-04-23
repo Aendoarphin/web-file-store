@@ -11,10 +11,10 @@ export function validatePassword(password: string): boolean {
 }
 
 
-// Hours=1000*60*60, Minutes=1000*60, Seconds=1000
+// Conversions: Hours=1000*60*60, Minutes=1000*60, Seconds=1000
 export function isExpired(time: string): boolean {
   const currentTime: Date = new Date();
   const timeElapsedInHours: number =
     (currentTime.getTime() - new Date(time).getTime()) / (1000 * 60 * 60);
-  return timeElapsedInHours > 1; // 2 = 2hrs and so on
+  return timeElapsedInHours > 1; // 2 = 2 hrs/min/s and so on
 }
