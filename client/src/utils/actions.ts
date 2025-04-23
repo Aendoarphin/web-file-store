@@ -113,3 +113,24 @@ export const listAllUsers = async () => {
     console.error(error);
   }
 };
+
+// Auth Admin - Update user password
+export const updateUserPassword = async (
+  userId: string,
+  userPassword: string
+) => {
+  try {
+    const response = await axios.put(
+      "http://localhost:3000/api/update-user-pw",
+      {
+        userId,
+        userPassword,
+      }
+    );
+    const { message, error }: { message: string; error?: string } =
+      response.data;
+    return { message, error };
+  } catch (error) {
+    console.error(error);
+  }
+};

@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import { Link } from "react-router";
 import supabaseAdmin from "../../utils/supabase-admin";
 import { BrandContext } from "../../contexts/Context";
-import { listAllUsers } from "../../utils/actions";
+import { listAllUsers, updateUserPassword } from "../../utils/actions";
 import { User } from "@supabase/supabase-js";
 
 type MessageType = {
@@ -83,12 +83,10 @@ const FormResetPassword = () => {
         (user: User) => user.email === localStorage.getItem("reset-email")
       )?.id || "";
 
-    const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
-      password: password,
-    });
+    const response = await updateUserPassword(userId, password);
 
-    if (error) {
-      setMessage({ text: error.message, type: "error" });
+    if (response?.error) {
+      setMessage({ text: response.error, type: "error" });
       return;
     }
 

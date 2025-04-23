@@ -1,7 +1,5 @@
-actions.ts
-- make function to update user data (supabase type User)
+client
+- write form to edit user metadata
+- write actions function to call backend metadata update
 
-MyAccount.tsx
-- replace placeholder info with actual user data (currently logged in user)
-
-Remove all direct instances of supabaseAdmin
+server

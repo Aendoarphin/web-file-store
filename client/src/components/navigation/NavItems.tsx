@@ -22,7 +22,13 @@ const NavItems = () => {
       e.preventDefault();
       const { error } = await supabase.auth.signOut();
       if (error) {
-        console.log(error.message);
+        console.log({
+          code: error.code,
+          message: error.message,
+          name: error.name,
+          stack: error.stack,
+          status: error.status,
+        });
       }
       localStorage.removeItem("sbuser");
       document.location.href = "/auth";

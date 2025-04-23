@@ -20,6 +20,7 @@ import Settings from "./components/Settings";
 
 import useTest from "./hooks/useTest";
 
+
 const appRoutes: { [key: string]: React.ReactElement } = {
   "/": <Home />,
   "auth": <FormSignIn />,
@@ -34,7 +35,6 @@ const appRoutes: { [key: string]: React.ReactElement } = {
   "users": <Users />,
   "files": <Files />,
   "settings": <Settings />,
-
 };
 
 function App() {

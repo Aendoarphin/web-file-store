@@ -1,4 +1,4 @@
-import { IconPlus } from "@tabler/icons-react";
+import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { listAllUsers } from "../utils/actions";
 
@@ -9,8 +9,21 @@ interface User {
     name: string;
     group: string;
     role: string;
-  }
+  };
 }
+
+const UserActions = () => {
+  return (
+    <div className="w-min flex flex-nowrap mx-auto">
+      <button className="px-2 py-1 rounded-sm hover:scale-90">
+        <IconPencil />
+      </button>
+      <button className="px-2 py-1 rounded-sm hover:scale-90 text-red-600">
+        <IconTrash />
+      </button>
+    </div>
+  );
+};
 
 const UsersTable = ({ users }: { users: User[] }) => {
   return (
@@ -22,41 +35,46 @@ const UsersTable = ({ users }: { users: User[] }) => {
             <th className="text-left p-3 font-semibold">Email</th>
             <th className="text-left p-3 font-semibold">Group</th>
             <th className="text-left p-3 font-semibold">Role</th>
+            <th className="text-center p-3 font-semibold">Actions</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user, index) => (
-            <tr key={index} className={`border-t border-neutral-300 even:bg-neutral-300 transition-colors`}>
+            <tr
+              key={index}
+              className={`border-t border-neutral-300 even:bg-neutral-300 transition-colors`}
+            >
               <td className="p-3">{user.user_metadata.name}</td>
               <td className="p-3">{user.email}</td>
               <td className="p-3">{user.user_metadata.group}</td>
               <td className="p-3">{user.user_metadata.role}</td>
+              <td className="p-3">
+                <UserActions />
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
 const Users = () => {
-
   // User data
-  const [users, setusers] = useState<User[]>([])
+  const [users, setusers] = useState<User[]>([]);
 
   useEffect(() => {
     const getAllUsers = async () => {
       try {
         const allUsers = await listAllUsers();
         setusers(allUsers);
-        console.log(allUsers);
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     getAllUsers();
-  }, [])
+  }, []);
 
   return (
     <div className="min-h-screen w-full p-4 flex items-start justify-center">
@@ -64,7 +82,9 @@ const Users = () => {
         {/* Header */}
         <div className="p-6 pb-2">
           <h3 className="font-semibold">Users</h3>
-          <p className="text-sm text-neutral-600">View and manage system users</p>
+          <p className="text-sm text-neutral-600">
+            View and manage system users
+          </p>
         </div>
 
         {/* Content */}
@@ -85,7 +105,7 @@ const Users = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Users
+export default Users;

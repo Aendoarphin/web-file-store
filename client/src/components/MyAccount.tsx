@@ -1,13 +1,8 @@
 import { IconCheck } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
-import supabaseAdmin from "../utils/supabase-admin";
-import { listAllUsers } from "../utils/actions";
+import { listAllUsers, updateUserPassword } from "../utils/actions";
 import { User } from "@supabase/supabase-js";
-
-interface MessageType {
-  text: string;
-  type: "success" | "error" | null;
-}
+import { MessageType } from "../types/types";
 
 const UserMetaDataItem = ({
   label,
@@ -52,12 +47,7 @@ const PasswordInput = ({
 };
 
 const MyAccount = () => {
-  const [user] = useState({
-    name: "John Doe",
-    email: "XbH5y@example.com",
-    group: "IT",
-    role: "Admin",
-  });
+  const [user] = useState(JSON.parse(localStorage.getItem("sbuser")!).user);
 
   const [passwords, setPasswords] = useState({
     newPassword: "",
@@ -152,15 +142,13 @@ const MyAccount = () => {
         .user.id;
 
       if (users.find((user: User) => user.id === currentUserId)?.id) {
-        const { error } = await supabaseAdmin.auth.admin.updateUserById(
+        const response = await updateUserPassword(
           currentUserId,
-          { password: passwords.confirmedNewPassword }
+          passwords.confirmedNewPassword
         );
 
-        // const {error} = await axios.put("http://localhost:3000/api/update-user", { password: passwords.confirmedNewPassword });
-
-        if (error) {
-          setMessage({ text: error.message, type: "error" });
+        if (response?.error) {
+          setMessage({ text: response.error, type: "error" });
           return;
         }
       }
@@ -194,10 +182,16 @@ const MyAccount = () => {
             <h4 className="font-semibold text-lg mb-2">User Details</h4>
             <hr className="mb-4" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <UserMetaDataItem label="Name" value={user.name} />
-              <UserMetaDataItem label="Email" value={user.email} />
-              <UserMetaDataItem label="Group" value={user.group} />
-              <UserMetaDataItem label="Role" value={user.role} />
+              <UserMetaDataItem label="Name" value={user.user_metadata.name} />
+              <UserMetaDataItem
+                label="Email"
+                value={user.user_metadata.email}
+              />
+              <UserMetaDataItem
+                label="Group"
+                value={user.user_metadata.group}
+              />
+              <UserMetaDataItem label="Role" value={user.user_metadata.role} />
             </div>
           </div>
 
