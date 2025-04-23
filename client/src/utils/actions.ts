@@ -1,6 +1,5 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import supabase from "./supabase";
-import supabaseAdmin from "./supabase-admin";
 import axios from "axios";
 
 // Storage - Get all files in a bucket

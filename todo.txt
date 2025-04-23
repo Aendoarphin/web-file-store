@@ -1,0 +1,7 @@
+actions.ts
+- make function to update user data (supabase type User)
+
+MyAccount.tsx
+- replace placeholder info with actual user data (currently logged in user)
+
+Remove all direct instances of supabaseAdmin

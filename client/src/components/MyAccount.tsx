@@ -157,6 +157,8 @@ const MyAccount = () => {
           { password: passwords.confirmedNewPassword }
         );
 
+        // const {error} = await axios.put("http://localhost:3000/api/update-user", { password: passwords.confirmedNewPassword });
+
         if (error) {
           setMessage({ text: error.message, type: "error" });
           return;
