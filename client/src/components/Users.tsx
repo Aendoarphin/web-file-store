@@ -1,16 +1,8 @@
 import { IconLoader2, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { listAllUsers } from "../utils/actions";
+import { User } from "../types/types";
 
-interface User {
-  email: string;
-  user_metadata: {
-    email: string;
-    name: string;
-    group: string;
-    role: string;
-  };
-}
 
 const UserActions = () => {
   return (

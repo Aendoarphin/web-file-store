@@ -37,6 +37,8 @@ const appRoutes: { [key: string]: React.ReactElement } = {
   "settings": <Settings />,
 };
 
+// Import statements remain the same
+
 function App() {
   const navigate = useNavigate();
 
@@ -44,8 +46,6 @@ function App() {
     JSON.parse(localStorage.getItem("sbuser")!)
   );
   const [brand, setBrand] = useState<string>("Brand");
-
-  // useTest();
 
   // Check if session is expired
   useEffect(() => {
@@ -62,25 +62,33 @@ function App() {
       }
     });
 
-    // Only redirect if we're not already on email confirm message, signup, or reset
+    // Modified redirect logic to preserve current path
     const currentPath = window.location.pathname;
-    if (
-      !currentPath.includes("email-confirmation") &&
-      !currentPath.includes("signup") &&
-      !currentPath.includes("reset-password") &&
-      !currentPath.includes("session-expired")
-    ) {
-      if (currentUser) {
-        navigate("/");
-      } else {
-        navigate("auth");
-      }
+    
+    // Only redirect if user is not authenticated and trying to access protected routes
+    const publicRoutes = [
+      "/auth", 
+      "/auth/signup", 
+      "/auth/reset", 
+      "/auth/email-confirmation", 
+      "/auth/reset-password", 
+      "/session-expired"
+    ];
+    
+    const isPublicRoute = publicRoutes.some(route => currentPath.startsWith(route));
+    
+    if (!currentUser && !isPublicRoute) {
+      // User is not logged in and trying to access protected route
+      navigate("/auth");
+    } else if (currentUser && currentPath === "/auth") {
+      // User is logged in but on login page
+      navigate("/");
     }
+    // In all other cases, keep the URL as is
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
-      // alert("User: " + session?.user?.email + " Event: " + event);
       if (event === "SIGNED_IN") {
         localStorage.setItem("sbuser", JSON.stringify(session));
       } else if (event === "SIGNED_OUT") {
@@ -89,6 +97,8 @@ function App() {
     });
     return () => subscription.unsubscribe();
   }, []);
+  
+  // Rest of the component remains the same
   return (
     <>
       <UserContext.Provider value={currentUser}>

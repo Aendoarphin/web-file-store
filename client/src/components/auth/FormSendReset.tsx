@@ -2,7 +2,6 @@ import { Link } from "react-router";
 import { useState, useContext } from "react";
 import { validateEmail } from "../../scripts/helper";
 import supabase from "../../utils/supabase";
-import supabaseAdmin from "../../utils/supabase-admin";
 import { BrandContext } from "../../contexts/Context";
 import { listAllUsers } from "../../utils/actions";
 import { User } from "@supabase/supabase-js";

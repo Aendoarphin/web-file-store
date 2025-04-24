@@ -1,6 +1,5 @@
 import { useState, useContext } from "react";
 import { Link } from "react-router";
-import supabaseAdmin from "../../utils/supabase-admin";
 import { BrandContext } from "../../contexts/Context";
 import { listAllUsers, updateUserPassword } from "../../utils/actions";
 import { User } from "@supabase/supabase-js";

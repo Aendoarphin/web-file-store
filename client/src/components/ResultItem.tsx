@@ -9,15 +9,12 @@ import {
 } from "@tabler/icons-react";
 import { getFileDownloadLink } from "../utils/actions";
 import { useState, useEffect } from "react";
+import { IconMap } from "../types/types";
 
 const ResultItem = (props: { fileName: string; input: string }) => {
   const [downloadLink, setDownloadLink] = useState("");
   const [currentFileIcon, setCurrentFileIcon] =
     useState<React.ReactNode | null>();
-
-  interface IconMap {
-    [key: string]: React.ReactNode;
-  }
 
   const IconMap: IconMap = {
     pdf: <IconFileTypePdf className="inline" color="red" />,

@@ -18,7 +18,7 @@ const NavMenu = () => {
         ""
     );
   // State for navbar
-  const [nav, setNav] = useState(false);
+  const [nav, setNav] = useState(true);
   return (
     <>
       <div className="h-[100vh] flex">
