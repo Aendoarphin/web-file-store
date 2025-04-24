@@ -1,4 +1,4 @@
-import { IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconLoader2, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { listAllUsers } from "../utils/actions";
 
@@ -26,6 +26,8 @@ const UserActions = () => {
 };
 
 const UsersTable = ({ users }: { users: User[] }) => {
+  if (users.length === 0) return <div className="py-20"><IconLoader2 className="animate-spin mx-auto" /></div>
+
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full border-collapse">
