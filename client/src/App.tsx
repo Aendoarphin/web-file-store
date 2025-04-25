@@ -17,13 +17,13 @@ import MyAccount from "./components/MyAccount";
 import Users from "./components/Users";
 import Files from "./components/Files";
 import Settings from "./components/Settings";
+import FormEditUser from "./components/admin/FormEditUser";
 
 import useTest from "./hooks/useTest";
 
-
 const appRoutes: { [key: string]: React.ReactElement } = {
   "/": <Home />,
-  "auth": <FormSignIn />,
+  "auth/signin": <FormSignIn />,
   "auth/signup": <FormSignUp />,
   "auth/reset": <FormSendReset />,
   "auth/email-confirmation": <EmailConfirmation />,
@@ -32,9 +32,10 @@ const appRoutes: { [key: string]: React.ReactElement } = {
   "session-expired": <SessionExpired />,
   "*": <NotFound />,
   "my-account": <MyAccount />,
-  "users": <Users />,
+  "admin/users": <Users />,
   "files": <Files />,
   "settings": <Settings />,
+  "/admin/edit-user": <FormEditUser />,
 };
 
 // Import statements remain the same
@@ -67,7 +68,7 @@ function App() {
     
     // Only redirect if user is not authenticated and trying to access protected routes
     const publicRoutes = [
-      "/auth", 
+      "/auth/signin", 
       "/auth/signup", 
       "/auth/reset", 
       "/auth/email-confirmation", 
@@ -79,8 +80,8 @@ function App() {
     
     if (!currentUser && !isPublicRoute) {
       // User is not logged in and trying to access protected route
-      navigate("/auth");
-    } else if (currentUser && currentPath === "/auth") {
+      navigate("/auth/signin");
+    } else if (currentUser && currentPath === "/auth/signin") {
       // User is logged in but on login page
       navigate("/");
     }

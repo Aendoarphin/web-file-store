@@ -6,13 +6,3 @@ export interface MessageType {
 export   interface IconMap {
   [key: string]: React.ReactNode;
 }
-
-export interface User {
-  email: string;
-  user_metadata: {
-    email: string;
-    name: string;
-    group: string;
-    role: string;
-  };
-}

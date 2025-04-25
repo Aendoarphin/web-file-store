@@ -1,16 +1,35 @@
-import { IconLoader2, IconPencil, IconPlus, IconTrash } from "@tabler/icons-react";
+import {
+  IconLoader2,
+  IconPencil,
+  IconPlus,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { listAllUsers } from "../utils/actions";
-import { User } from "../types/types";
+import { User } from "@supabase/supabase-js";
+import { Link } from "react-router";
 
-
-const UserActions = () => {
+const UserActions = ({ user }: { user: User }) => {
+  const encodedData = {
+    name: encodeURIComponent(user.user_metadata.name),
+    email: encodeURIComponent(user.email as string),
+    group: encodeURIComponent(user.user_metadata.group),
+    role: encodeURIComponent(user.user_metadata.role),
+  };
   return (
     <div className="w-min flex flex-nowrap mx-auto">
-      <button className="px-2 py-1 rounded-sm hover:scale-90">
+      <Link
+        to={`/admin/edit-user?email=${encodedData.email}&name=${encodedData.name}&group=${encodedData.group}&role=${encodedData.role}`}
+        className="px-2 py-1 rounded-sm hover:scale-90"
+        title="Edit user"
+        onClick={() => {}}
+      >
         <IconPencil />
-      </button>
-      <button className="px-2 py-1 rounded-sm hover:scale-90 text-red-600">
+      </Link>
+      <button
+        className="px-2 py-1 rounded-sm hover:scale-90 text-red-600"
+        title="Delete user"
+      >
         <IconTrash />
       </button>
     </div>
@@ -18,7 +37,12 @@ const UserActions = () => {
 };
 
 const UsersTable = ({ users }: { users: User[] }) => {
-  if (users.length === 0) return <div className="py-20"><IconLoader2 className="animate-spin mx-auto" /></div>
+  if (users.length === 0)
+    return (
+      <div className="py-20">
+        <IconLoader2 className="animate-spin mx-auto" />
+      </div>
+    );
 
   return (
     <div className="w-full overflow-x-auto">
@@ -43,7 +67,7 @@ const UsersTable = ({ users }: { users: User[] }) => {
               <td className="p-3">{user.user_metadata.group}</td>
               <td className="p-3">{user.user_metadata.role}</td>
               <td className="p-3">
-                <UserActions />
+                <UserActions user={user} />
               </td>
             </tr>
           ))}

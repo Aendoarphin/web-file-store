@@ -31,7 +31,7 @@ const NavItems = () => {
         });
       }
       localStorage.removeItem("sbuser");
-      document.location.href = "/auth";
+      document.location.href = "/auth/signin";
     } catch (error) {
       console.log(error);
     }
@@ -46,7 +46,7 @@ const NavItems = () => {
         <li className={style} onClick={() => navigate("/my-account")}>
           <IconUser /> My Account
         </li>
-        <li className={style} onClick={() => navigate("/users")}>
+        <li className={style} onClick={() => navigate("admin/users")}>
           <IconUsersGroup /> Users
         </li>
         <li className={style} onClick={() => navigate("/files")}>

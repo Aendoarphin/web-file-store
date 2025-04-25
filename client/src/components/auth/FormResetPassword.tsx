@@ -182,7 +182,7 @@ const FormResetPassword = () => {
         {/* Sign in link */}
         <div className="flex justify-between w-46">
           <Link
-            to="/auth"
+            to="/auth/signin"
             className="text-neutral-500 text-xs underline mx-auto"
           >
             Return to Sign In

@@ -19,7 +19,7 @@ const SessionExpired = () => {
         <h1>Session Expired</h1>
         <p>Your session has expired. Please log in again.</p>
         <button
-          onClick={() => navigate("/auth")}
+          onClick={() => navigate("/auth/signin")}
           style={{
             marginTop: "10px",
             padding: "8px 16px",

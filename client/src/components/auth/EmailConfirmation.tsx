@@ -35,7 +35,7 @@ const EmailConfirmation = () => {
         </div>
         
         <Link 
-          to="/auth"
+          to="/auth/signin"
           onClick={() => localStorage.removeItem("sbuser")} 
           className="bg-black cursor-pointer text-white p-2 rounded px-10 mt-4 text-center"
         >
