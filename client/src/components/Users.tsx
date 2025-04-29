@@ -116,7 +116,7 @@ const Users = () => {
 
           {/* Action Button */}
           <div>
-            <button className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors">
+            <button onClick={() => alert("Adding new user...")} className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors">
               <IconPlus className="inline" /> Add New User
             </button>
           </div>

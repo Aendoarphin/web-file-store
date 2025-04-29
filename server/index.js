@@ -1,6 +1,6 @@
 import express from "express";
 import { createClient } from "@supabase/supabase-js";
-import cors from "cors";
+import cors from "cors"; // continue here; make endpoint to update user info
 
 // Load environment variables from .env file
 import dotenv from "dotenv";
