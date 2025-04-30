@@ -1,6 +1,7 @@
 import { IconArrowLeft, IconDeviceFloppy } from "@tabler/icons-react";
 import { Link, useSearchParams } from "react-router";
 import { useState } from "react";
+import { updateUserMetadata } from "../../utils/actions";
 
 const FormEditUser = () => {
   const [searchParams] = useSearchParams();
@@ -8,6 +9,7 @@ const FormEditUser = () => {
   const [email, setEmail] = useState(searchParams.get("email"));
   const [group, setGroup] = useState(searchParams.get("group"));
   const [role, setRole] = useState(searchParams.get("role"));
+  const [userId, setUserId] = useState(searchParams.get("userId"));
 
   const user = {
     email: searchParams.get("email"),
@@ -21,6 +23,7 @@ const FormEditUser = () => {
   const handleEditUserSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     alert(JSON.stringify({ name, email, group, role }, null, 2));
+    updateUserMetadata(userId, name, email, role, group);
   };
 
   return (

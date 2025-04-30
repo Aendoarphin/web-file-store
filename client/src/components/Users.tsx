@@ -11,6 +11,7 @@ import { Link } from "react-router";
 
 const UserActions = ({ user }: { user: User }) => {
   const encodedData = {
+    userId: encodeURIComponent(user.id),
     name: encodeURIComponent(user.user_metadata.name),
     email: encodeURIComponent(user.email as string),
     group: encodeURIComponent(user.user_metadata.group),
@@ -19,10 +20,9 @@ const UserActions = ({ user }: { user: User }) => {
   return (
     <div className="w-min flex flex-nowrap mx-auto">
       <Link
-        to={`/admin/edit-user?email=${encodedData.email}&name=${encodedData.name}&group=${encodedData.group}&role=${encodedData.role}`}
+        to={`/admin/edit-user?userId=${encodedData.userId}&email=${encodedData.email}&name=${encodedData.name}&group=${encodedData.group}&role=${encodedData.role}`}
         className="px-2 py-1 rounded-sm hover:scale-90"
         title="Edit user"
-        onClick={() => {}}
       >
         <IconPencil />
       </Link>
@@ -116,7 +116,10 @@ const Users = () => {
 
           {/* Action Button */}
           <div>
-            <button onClick={() => alert("Adding new user...")} className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors">
+            <button
+              onClick={() => alert("Adding new user...")}
+              className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors"
+            >
               <IconPlus className="inline" /> Add New User
             </button>
           </div>

@@ -1,6 +1,6 @@
 import express from "express";
 import { createClient } from "@supabase/supabase-js";
-import cors from "cors"; // continue here; make endpoint to update user info
+import cors from "cors"; // continue here; work on create user button
 
 // Load environment variables from .env file
 import dotenv from "dotenv";
@@ -58,13 +58,13 @@ app.put("/api/update-user-pw", async (req, res) => {
 // Update user metadata
 app.put("/api/update-user-metadata", async (req, res) => {
   const { userId, name, email, role, group } = req.body;
-  const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+  const { data, error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
     user_metadata: { name, email, group, role },
   });
   if (error) {
     return res.status(500).json({ error: error.message });
   }
-  res.status(200).json({ message: "User metadata updated successfully" });
+  res.status(200).json(data);
 });
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

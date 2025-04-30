@@ -134,3 +134,27 @@ export const updateUserPassword = async (
     console.error(error);
   }
 };
+
+export const updateUserMetadata = async (
+  userId: string | null,
+  name: string | null,
+  email: string | null,
+  role: string | null,
+  group: string | null
+) => {
+  try {
+    const response = await axios.put(
+      "http://localhost:3000/api/update-user-metadata",
+      {
+        userId,
+        name,
+        email,
+        role,
+        group,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
