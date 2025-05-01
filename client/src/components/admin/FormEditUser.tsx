@@ -1,7 +1,8 @@
-import { IconArrowLeft, IconDeviceFloppy } from "@tabler/icons-react";
+import { IconArrowLeft, IconDeviceFloppy, IconCheck } from "@tabler/icons-react";
 import { Link, useSearchParams } from "react-router";
 import { useState } from "react";
 import { updateUserMetadata } from "../../utils/actions";
+import { useToast } from "../../hooks/useToast";
 
 const FormEditUser = () => {
   const [searchParams] = useSearchParams();
@@ -9,21 +10,25 @@ const FormEditUser = () => {
   const [email, setEmail] = useState(searchParams.get("email"));
   const [group, setGroup] = useState(searchParams.get("group"));
   const [role, setRole] = useState(searchParams.get("role"));
-  const [userId, setUserId] = useState(searchParams.get("userId"));
+  const [userId] = useState(searchParams.get("userId"));
 
-  const user = {
-    email: searchParams.get("email"),
-    user_metadata: {
-      name: searchParams.get("name"),
-      group: searchParams.get("group"),
-      role: searchParams.get("role"),
-    },
-  };
+  const { message, setMessage, toastVisible } = useToast();
 
-  const handleEditUserSubmit = (e: React.FormEvent) => {
+  const handleEditUserSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(JSON.stringify({ name, email, group, role }, null, 2));
-    updateUserMetadata(userId, name, email, role, group);
+
+    try {
+      const result = await updateUserMetadata(userId, name, email, role, group);
+
+      if (result?.error) {
+        setMessage({ text: result.error, type: "error" });
+      } else {
+        setMessage({ text: "User updated successfully.", type: "success" });
+      }
+    } catch (err: any) {
+      console.error(err);
+      setMessage({ text: "An unexpected error occurred.", type: "error" });
+    }
   };
 
   return (
@@ -37,18 +42,20 @@ const FormEditUser = () => {
 
         {/* Content */}
         <div className="p-6 space-y-6">
-          <form onSubmit={handleEditUserSubmit}>
+          <form id="edit-user-form" onSubmit={handleEditUserSubmit}>
             <div className="space-y-4">
               <h4 className="font-semibold text-lg mb-2">User Details</h4>
               <hr className="mb-4" />
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium">Name</label>
+                  <label htmlFor="name" className="block text-sm font-medium">Name</label>
                   <input
                     id="name"
+                    name="name"
                     type="text"
-                    defaultValue={user.user_metadata.name ?? ""}
+                    autoComplete="name"
+                    defaultValue={name ?? ""}
                     className="w-full p-2 border border-neutral-300 rounded-sm bg-neutral-300"
                     required
                     onChange={(e) => setName(e.target.value)}
@@ -56,11 +63,13 @@ const FormEditUser = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium">Email</label>
+                  <label htmlFor="email" className="block text-sm font-medium">Email</label>
                   <input
                     id="email"
+                    name="email"
                     type="email"
-                    defaultValue={user.email ?? ""}
+                    autoComplete="email"
+                    defaultValue={email ?? ""}
                     className="w-full p-2 border border-neutral-300 rounded-sm bg-neutral-300"
                     required
                     onChange={(e) => setEmail(e.target.value)}
@@ -68,11 +77,11 @@ const FormEditUser = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium">Group</label>
+                  <label htmlFor="group" className="block text-sm font-medium">Group</label>
                   <select
                     name="group"
                     id="group"
-                    defaultValue={user.user_metadata.group ?? ""}
+                    defaultValue={group ?? ""}
                     className="w-full p-2 border border-neutral-300 rounded-sm bg-neutral-300"
                     onChange={(e) => setGroup(e.target.value)}
                   >
@@ -85,11 +94,11 @@ const FormEditUser = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium">Role</label>
+                  <label htmlFor="role" className="block text-sm font-medium">Role</label>
                   <select
                     name="role"
                     id="role"
-                    defaultValue={user.user_metadata.role ?? ""}
+                    defaultValue={role ?? ""}
                     className="w-full p-2 border border-neutral-300 rounded-sm bg-neutral-300"
                     onChange={(e) => setRole(e.target.value)}
                   >
@@ -120,6 +129,24 @@ const FormEditUser = () => {
           </form>
         </div>
       </div>
+
+      {/* Toast Notification */}
+      {message.text && (
+        <div
+          className={`fixed top-2 right-2 transition-opacity duration-300 ease-in-out ${
+            toastVisible ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <div
+            className={`flex items-center gap-2 rounded-sm px-4 py-3 text-white shadow-md ${
+              message.type === "error" ? "bg-red-500" : "bg-green-700"
+            }`}
+          >
+            <IconCheck />
+            <p>{message.text}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

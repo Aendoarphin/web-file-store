@@ -1,23 +1,16 @@
-import { IconCheck } from "@tabler/icons-react";
-import { useState, useEffect } from "react";
+import { IconCheck, IconAlertTriangle } from "@tabler/icons-react";
+import { useState } from "react";
 import { listAllUsers, updateUserPassword } from "../utils/actions";
 import { User } from "@supabase/supabase-js";
-import { MessageType } from "../types/types";
+import { useToast } from "../hooks/useToast";
 
-const UserMetaDataItem = ({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) => {
-  return (
-    <div className="space-y-1">
-      <label className="font-semibold">{label}</label>
-      <p className="text-sm">{value}</p>
-    </div>
-  );
-};
+// UI components
+const UserMetaDataItem = ({ label, value }: { label: string; value: string }) => (
+  <div className="space-y-1">
+    <label className="font-semibold">{label}</label>
+    <p className="text-sm">{value}</p>
+  </div>
+);
 
 const PasswordInput = ({
   label,
@@ -29,174 +22,117 @@ const PasswordInput = ({
   id: string;
   value: string;
   onChange: (id: string, value: string) => void;
-}) => {
-  return (
-    <div className="space-y-2">
-      <label htmlFor={id} className="font-semibold">
-        {label}
-      </label>
-      <input
-        type="password"
-        id={id}
-        value={value}
-        onChange={(e) => onChange(id, e.target.value)}
-        className="w-full bg-neutral-300 rounded-sm px-3 py-1 focus:outline-none focus:ring-1 focus:ring-neutral-400"
-      />
-    </div>
-  );
-};
+}) => (
+  <div className="space-y-2">
+    <label htmlFor={id} className="font-semibold">{label}</label>
+    <input
+      type="password"
+      id={id}
+      value={value}
+      onChange={(e) => onChange(id, e.target.value)}
+      className="w-full bg-neutral-300 rounded-sm px-3 py-1 focus:outline-none focus:ring-1 focus:ring-neutral-400"
+    />
+  </div>
+);
 
+// Main component
 const MyAccount = () => {
   const [user] = useState(JSON.parse(localStorage.getItem("sbuser")!).user);
-
-  const [passwords, setPasswords] = useState({
-    newPassword: "",
-    confirmedNewPassword: "",
-  });
-
-  const [message, setMessage] = useState<MessageType>({
-    text: "",
-    type: null,
-  });
-
-  // Add visible state to control toast animation
-  const [toastVisible, setToastVisible] = useState(false);
-
-  // Watch for message changes to trigger animation
-  useEffect(() => {
-    if (message.text) {
-      setToastVisible(true);
-
-      const timer = setTimeout(() => {
-        setToastVisible(false);
-
-        const clearTimer = setTimeout(() => {
-          setMessage({ text: "", type: null });
-        }, 300);
-
-        return () => clearTimeout(clearTimer);
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
+  const [passwords, setPasswords] = useState({ newPassword: "", confirmedNewPassword: "" });
+  const { message, setMessage, toastVisible } = useToast();
 
   const handleInputChange = (id: string, value: string) => {
-    if (id === "newPassword" || id === "confirmedNewPassword") {
-      setPasswords((prev) => ({
-        ...prev,
-        [id]: value,
-      }));
+    setPasswords((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const showInputError = (...ids: string[]) => {
+    ids.forEach((id) => {
+      const input = document.getElementById(id);
+      input?.classList.add("border", "border-red-500");
+    });
+  };
+
+  const validatePassword = () => {
+    const { newPassword, confirmedNewPassword } = passwords;
+
+    const pattern = /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9\s])[\S]{6,}$/;
+
+    if (!newPassword || !confirmedNewPassword) {
+      setMessage({ text: "Please enter a password.", type: "error" });
+      showInputError("newPassword", "confirmedNewPassword");
+      return false;
     }
+
+    if (newPassword !== confirmedNewPassword) {
+      setMessage({ text: "Passwords do not match.", type: "error" });
+      showInputError("newPassword", "confirmedNewPassword");
+      return false;
+    }
+
+    if (!pattern.test(confirmedNewPassword)) {
+      setMessage({
+        text: "Password must be at least 6 characters long, contain at least one uppercase letter and one special character.",
+        type: "error",
+      });
+      showInputError("newPassword", "confirmedNewPassword");
+      return false;
+    }
+
+    return true;
   };
 
   const handlePasswordChangeSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Reset input borders
+    ["newPassword", "confirmedNewPassword"].forEach((id) =>
+      document.getElementById(id)?.classList.remove("border", "border-red-500")
+    );
+
+    if (!validatePassword()) return;
+
     try {
-      e.preventDefault();
-
-      const newPwInput = document.getElementById(
-        "newPassword"
-      ) as HTMLInputElement;
-      const confirmedPwInput = document.getElementById(
-        "confirmedNewPassword"
-      ) as HTMLInputElement;
-
-      newPwInput.classList.remove("border", "border-red-500");
-      confirmedPwInput.classList.remove("border", "border-red-500");
-
-      if (passwords.newPassword !== passwords.confirmedNewPassword) {
-        setMessage({
-          text: "Passwords do not match.",
-          type: "error",
-        });
-        newPwInput.classList.add("border", "border-red-500");
-        confirmedPwInput.classList.add("border", "border-red-500");
-        newPwInput.focus();
-        confirmedPwInput.focus();
-        return;
-      }
-      if (
-        passwords.newPassword === "" ||
-        passwords.confirmedNewPassword === ""
-      ) {
-        setMessage({
-          text: "Please enter a password.",
-          type: "error",
-        });
-        const newPwInput = document.getElementById(
-          "newPassword"
-        ) as HTMLInputElement;
-        const confirmedPwInput = document.getElementById(
-          "confirmedNewPassword"
-        ) as HTMLInputElement;
-        newPwInput.classList.add("border", "border-red-500");
-        confirmedPwInput.classList.add("border", "border-red-500");
-        newPwInput.focus();
-        confirmedPwInput.focus();
-        return;
-      }
-
-      // Supabase side logic
       const users = await listAllUsers();
-      const currentUserId: string = JSON.parse(localStorage.getItem("sbuser")!)
-        .user.id;
+      const currentUser = users.find((u: User) => u.id === user.id);
 
-      if (users.find((user: User) => user.id === currentUserId)?.id) {
-        const response = await updateUserPassword(
-          currentUserId,
-          passwords.confirmedNewPassword
-        );
+      if (!currentUser) throw new Error("User not found.");
 
-        if (response?.error) {
-          setMessage({ text: response.error, type: "error" });
-          return;
-        }
+      const response = await updateUserPassword(user.id, passwords.confirmedNewPassword);
+
+      if (response?.error) {
+        setMessage({ text: response.error, type: "error" });
+        return;
       }
 
-      // Show success message
-      setMessage({
-        text: "Password has been changed successfully.",
-        type: "success",
-      });
+      setMessage({ text: "Password has been changed successfully.", type: "success" });
+      setPasswords({ newPassword: "", confirmedNewPassword: "" });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      setMessage({ text: "An unexpected error occurred.", type: "error" });
     }
-    setPasswords({ newPassword: "", confirmedNewPassword: "" });
   };
 
   return (
     <div className="min-h-screen w-full p-4 flex items-start justify-center">
       <div className="w-full max-w-2xl bg-neutral-200 rounded-sm shadow-sm mt-[5vh] overflow-hidden">
-        {/* Header */}
         <div className="p-6 pb-2">
           <h3 className="font-semibold">My Account</h3>
-          <p className="text-sm text-neutral-600">
-            View and manage your account details
-          </p>
+          <p className="text-sm text-neutral-600">View and manage your account details</p>
         </div>
 
-        {/* Content */}
         <div className="p-6 space-y-6">
-          {/* User Details Section */}
-          <div>
+          <section>
             <h4 className="font-semibold text-lg mb-2">User Details</h4>
             <hr className="mb-4" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <UserMetaDataItem label="Name" value={user.user_metadata.name} />
-              <UserMetaDataItem
-                label="Email"
-                value={user.user_metadata.email}
-              />
-              <UserMetaDataItem
-                label="Group"
-                value={user.user_metadata.group}
-              />
+              <UserMetaDataItem label="Email" value={user.user_metadata.email} />
+              <UserMetaDataItem label="Group" value={user.user_metadata.group} />
               <UserMetaDataItem label="Role" value={user.user_metadata.role} />
             </div>
-          </div>
+          </section>
 
-          {/* Change Password Section */}
-          <div>
+          <section>
             <h4 className="font-semibold text-lg mb-2">Change Password</h4>
             <hr className="mb-4" />
             <form onSubmit={handlePasswordChangeSubmit} className="space-y-4">
@@ -215,16 +151,16 @@ const MyAccount = () => {
                 />
               </div>
               <input
-                value="Change Password"
                 type="submit"
+                value="Change Password"
                 className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors"
               />
             </form>
-          </div>
+          </section>
         </div>
       </div>
 
-      {/* Toast Notification - Keep in DOM but control opacity with toastVisible */}
+      {/* Toast Notification */}
       {message.text && (
         <div
           className={`fixed top-2 right-2 transition-opacity duration-300 ease-in-out ${
@@ -236,7 +172,7 @@ const MyAccount = () => {
               message.type === "error" ? "bg-red-500" : "bg-green-700"
             }`}
           >
-            <IconCheck />
+            {message.type === "error" ? <IconAlertTriangle /> : <IconCheck />}
             <p>{message.text}</p>
           </div>
         </div>
