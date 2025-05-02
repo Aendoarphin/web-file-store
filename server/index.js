@@ -1,6 +1,6 @@
 import express from "express";
 import { createClient } from "@supabase/supabase-js";
-import cors from "cors"; // continue here; work on create user button
+import cors from "cors";
 
 // Load environment variables from .env file
 import dotenv from "dotenv";
