@@ -20,6 +20,7 @@ import Settings from "./components/Settings";
 import FormEditUser from "./components/admin/FormEditUser";
 
 import useTest from "./hooks/useTest";
+import FormCreateUser from "./components/admin/FormCreateUser";
 
 const appRoutes: { [key: string]: React.ReactElement } = {
   "/": <Home />,
@@ -35,7 +36,8 @@ const appRoutes: { [key: string]: React.ReactElement } = {
   "admin/users": <Users />,
   "files": <Files />,
   "settings": <Settings />,
-  "/admin/edit-user": <FormEditUser />,
+  "admin/edit-user": <FormEditUser />,
+  "admin/create-user": <FormCreateUser />,
 };
 
 // Import statements remain the same

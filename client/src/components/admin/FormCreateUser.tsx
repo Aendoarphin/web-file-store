@@ -1,0 +1,231 @@
+import { IconChevronLeft, IconDeviceFloppy } from "@tabler/icons-react";
+import type React from "react";
+
+import { useState, useEffect, type ChangeEvent, type FormEvent } from "react";
+import { Link } from "react-router";
+
+// Define types for form data
+interface FormData {
+  email: string;
+  password: string;
+  name: string;
+  role: "Admin" | "User";
+  group: "collections" | "accounting" | "operations" | "IT" | "compliance";
+}
+
+// Define types for form errors
+interface FormErrors {
+  email?: string;
+  password?: string;
+  name?: string;
+}
+
+const CreateUserForm: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
+    email: "",
+    password: "",
+    name: "",
+    role: "User",
+    group: "collections",
+  });
+
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ): void => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const validate = (): FormErrors => {
+    const newErrors: FormErrors = {};
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    if (!formData.name) {
+      newErrors.name = "Name is required";
+    }
+
+    return newErrors;
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    const validationErrors = validate();
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length === 0) {
+      setIsSubmitting(true);
+      // The actual submission will be implemented by the user
+      console.log("Form data ready for submission:", formData);
+      // Reset form after submission if needed
+      // setFormData({ email: '', password: '', name: '', role: 'User', group: 'collections' });
+    }
+  };
+
+  useEffect(() => {
+    if (isSubmitting) {
+      setIsSubmitting(false);
+    }
+  }, [isSubmitting]);
+
+  return (
+    <div className="min-h-screen w-full p-4 flex items-start justify-center">
+      <div className="w-full max-w-4xl bg-neutral-200 rounded-sm shadow-sm mt-[5vh] overflow-hidden">
+        {/* Header */}
+        <div className="p-6 pb-2">
+          <h3 className="font-semibold">Create New User</h3>
+          <p className="text-sm text-neutral-600">
+            Add a new user to the system
+          </p>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-4">
+              <h4 className="font-semibold text-lg mb-2">User Details</h4>
+              <hr className="mb-4" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="block text-sm font-medium">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className={`w-full p-2 border rounded-sm bg-neutral-300 ${
+                      errors.email ? "border-red-500" : "border-neutral-300"
+                    }`}
+                  />
+                  {errors.email && (
+                    <span className="text-red-500 text-xs">{errors.email}</span>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    className={`w-full p-2 border rounded-sm bg-neutral-300 ${
+                      errors.password ? "border-red-500" : "border-neutral-300"
+                    }`}
+                  />
+                  {errors.password && (
+                    <span className="text-red-500 text-xs">
+                      {errors.password}
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="name" className="block text-sm font-medium">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className={`w-full p-2 border rounded-sm bg-neutral-300 ${
+                      errors.name ? "border-red-500" : "border-neutral-300"
+                    }`}
+                  />
+                  {errors.name && (
+                    <span className="text-red-500 text-xs">{errors.name}</span>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="role" className="block text-sm font-medium">
+                    Role
+                  </label>
+                  <select
+                    id="role"
+                    name="role"
+                    value={formData.role}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-neutral-300 rounded-sm bg-neutral-300"
+                  >
+                    <option value="User">User</option>
+                    <option value="Admin">Admin</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <label htmlFor="group" className="block text-sm font-medium">
+                    Group
+                  </label>
+                  <select
+                    id="group"
+                    name="group"
+                    value={formData.group}
+                    onChange={handleChange}
+                    className="w-full p-2 border border-neutral-300 rounded-sm bg-neutral-300"
+                  >
+                    <option value="collections">Collections</option>
+                    <option value="accounting">Accounting</option>
+                    <option value="operations">Operations</option>
+                    <option value="IT">IT</option>
+                    <option value="compliance">Compliance</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between mt-8">
+              <Link
+                to="/admin/users"
+                className="flex items-center text-neutral-600 hover:text-neutral-800"
+              >
+                <IconChevronLeft className="mr-1 h-4 w-4" />
+                Back to Users
+              </Link>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors flex items-center disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                <IconDeviceFloppy className="mr-2 h-4 w-4" />
+                {isSubmitting ? "Creating..." : "Create User"}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CreateUserForm;

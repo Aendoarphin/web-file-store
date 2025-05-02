@@ -11,11 +11,13 @@ const FormEditUser = () => {
   const [group, setGroup] = useState(searchParams.get("group"));
   const [role, setRole] = useState(searchParams.get("role"));
   const [userId] = useState(searchParams.get("userId"));
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { message, setMessage, toastVisible } = useToast();
 
   const handleEditUserSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const result = await updateUserMetadata(userId, name, email, role, group);
@@ -28,6 +30,8 @@ const FormEditUser = () => {
     } catch (err: any) {
       console.error(err);
       setMessage({ text: "An unexpected error occurred.", type: "error" });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -120,10 +124,11 @@ const FormEditUser = () => {
 
               <button
                 type="submit"
-                className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors flex items-center"
+                disabled={isSubmitting}
+                className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors flex items-center disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 <IconDeviceFloppy className="mr-2 h-4 w-4" />
-                Save Changes
+                {isSubmitting ? 'Saving...' : 'Save Changes'}
               </button>
             </div>
           </form>
