@@ -52,7 +52,7 @@ const dummyFiles: File[] = [
   },
 ]
 
-const FileActions = ({ file }: { file: File }) => {
+const FileActions = () => {
   return (
     <div className="w-min flex flex-nowrap mx-auto">
       <button
@@ -175,7 +175,7 @@ const FilesTable = ({ files }: { files: File[] }) => {
               <td className="p-3">{file.size}</td>
               <td className="p-3">{file.uploadedAt}</td>
               <td className="p-3">
-                <FileActions file={file} />
+                <FileActions />
               </td>
             </tr>
           ))}
@@ -187,7 +187,7 @@ const FilesTable = ({ files }: { files: File[] }) => {
 
 const Files = () => {
   // File data - using the dummy data directly
-  const [files, setFiles] = useState<File[]>(dummyFiles)
+  const [files] = useState<File[]>(dummyFiles)
 
   // Search functionality
   const [searchQuery, setSearchQuery] = useState("")

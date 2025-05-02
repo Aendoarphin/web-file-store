@@ -1,6 +1,6 @@
 // Hook to run test functions
 import { useEffect } from "react";
-import { createNewUser, listAllUsers } from "../utils/actions";
+import { listAllUsers } from "../utils/actions";
 
 const useTest = () => {
   useEffect(() => {

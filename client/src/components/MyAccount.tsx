@@ -57,13 +57,13 @@ const MyAccount = () => {
 
     const pattern = /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9\s])[\S]{6,}$/;
 
-    if (!newPassword || !confirmedNewPassword) {
+    if (!newPassword && !confirmedNewPassword) {
       setMessage({ text: "Please enter a password.", type: "error" });
       showInputError("newPassword", "confirmedNewPassword");
       return false;
     }
 
-    if (newPassword !== confirmedNewPassword) {
+    if (newPassword !== confirmedNewPassword ) {
       setMessage({ text: "Passwords do not match.", type: "error" });
       showInputError("newPassword", "confirmedNewPassword");
       return false;

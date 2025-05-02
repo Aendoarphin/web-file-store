@@ -17,3 +17,17 @@ export type File = {
 
 export type SortField = "name" | "type" | "size" | "uploadedAt" | null
 export type SortDirection = "asc" | "desc"
+
+export interface FormErrors {
+  email?: string;
+  password?: string;
+  name?: string;
+}
+
+export interface FormData {
+  email: string;
+  password: string;
+  name: string;
+  role: "Admin" | "User";
+  group: "collections" | "accounting" | "operations" | "IT" | "compliance";
+}
