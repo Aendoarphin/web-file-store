@@ -137,6 +137,7 @@ export const updateUserPassword = async (
 	}
 };
 
+// Auth Admin - Update user metadata
 export const updateUserMetadata = async (
 	userId: string | null,
 	name: string | null,
@@ -153,6 +154,23 @@ export const updateUserMetadata = async (
 				email,
 				role,
 				group,
+			}
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+// Auth Admin - Delete existing user
+export const deleteUser = async (userId: string) => {
+	try {
+		const response = await axios.delete(
+			"http://localhost:3000/api/delete-user",
+			{
+				data: {
+					userId,
+				},
 			}
 		);
 		return response.data;

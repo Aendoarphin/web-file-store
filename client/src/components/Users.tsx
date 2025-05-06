@@ -1,4 +1,4 @@
-import { // continue here; work on user deletion
+import { // continue here; create delete modal
   IconLoader2,
   IconPencil,
   IconPlus,
@@ -17,6 +17,12 @@ const UserActions = ({ user }: { user: User }) => {
     group: encodeURIComponent(user.user_metadata.group),
     role: encodeURIComponent(user.user_metadata.role),
   };
+
+  const handleDeleteUser = async () => {
+    alert("Setting modal state");
+    alert("Resetting modal state");
+  };
+
   return (
     <div className="w-min flex flex-nowrap mx-auto">
       <Link
@@ -29,6 +35,7 @@ const UserActions = ({ user }: { user: User }) => {
       <button
         className="px-2 py-1 rounded-sm hover:scale-90 text-red-600"
         title="Delete user"
+        onClick={handleDeleteUser}
       >
         <IconTrash />
       </button>

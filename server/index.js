@@ -67,4 +67,14 @@ app.put("/api/update-user-metadata", async (req, res) => {
   res.status(200).json(data);
 });
 
+// Delete existing user
+app.delete("/api/delete-user", async (req, res) => {
+  const { userId } = req.body;
+  const { data, error } = await supabaseAdmin.auth.admin.deleteUser(userId);
+  if (error) {
+    return res.status(500).json({ error: error.message });
+  }
+  res.status(200).json(data);
+})
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
