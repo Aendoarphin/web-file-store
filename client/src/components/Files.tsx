@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   IconDownload,
@@ -9,9 +9,9 @@ import {
   IconTrash,
   IconChevronUp,
   IconChevronDown,
-} from "@tabler/icons-react"
-import { useState } from "react"
-import type { File, SortDirection, SortField } from "../types/types"
+} from "@tabler/icons-react";
+import { useState } from "react";
+import type { File, SortDirection, SortField } from "../types/types";
 
 // Dummy data
 const dummyFiles: File[] = [
@@ -50,7 +50,7 @@ const dummyFiles: File[] = [
     size: "1.2 MB",
     uploadedAt: "2023-11-20",
   },
-]
+];
 
 const FileActions = () => {
   return (
@@ -71,69 +71,69 @@ const FileActions = () => {
       </button>
       <button
         onClick={() => alert("Deleting file...")}
-        className="px-2 py-1 rounded-sm hover:scale-90 text-red-600"
+        className="px-2 py-1 rounded-sm hover:scale-90 text-red-700"
         title="Delete file"
       >
         <IconTrash />
       </button>
     </div>
-  )
-}
+  );
+};
 
 const FilesTable = ({ files }: { files: File[] }) => {
-  const [sortField, setSortField] = useState<SortField>(null)
-  const [sortDirection, setSortDirection] = useState<SortDirection>("asc")
+  const [sortField, setSortField] = useState<SortField>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
   if (files.length === 0)
     return (
       <div className="py-20">
         <IconLoader2 className="animate-spin mx-auto" />
       </div>
-    )
+    );
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
       // Toggle direction if same field is clicked
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc")
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       // Set new field and default to ascending
-      setSortField(field)
-      setSortDirection("asc")
+      setSortField(field);
+      setSortDirection("asc");
     }
-  }
+  };
 
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return null
+    if (sortField !== field) return null;
     return sortDirection === "asc" ? (
       <IconChevronUp className="inline-block ml-1 size-4" />
     ) : (
       <IconChevronDown className="inline-block ml-1 size-4" />
-    )
-  }
+    );
+  };
 
   // Sort the files based on current sort field and direction
   const sortedFiles = [...files].sort((a, b) => {
-    if (!sortField) return 0
+    if (!sortField) return 0;
 
-    let comparison = 0
+    let comparison = 0;
     if (sortField === "name") {
-      comparison = a.name.localeCompare(b.name)
+      comparison = a.name.localeCompare(b.name);
     } else if (sortField === "type") {
-      comparison = a.type.localeCompare(b.type)
+      comparison = a.type.localeCompare(b.type);
     } else if (sortField === "size") {
       // Extract numeric value from size string for proper comparison
-      const sizeA = Number.parseFloat(a.size.split(" ")[0])
-      const sizeB = Number.parseFloat(b.size.split(" ")[0])
-      comparison = sizeA - sizeB
+      const sizeA = Number.parseFloat(a.size.split(" ")[0]);
+      const sizeB = Number.parseFloat(b.size.split(" ")[0]);
+      comparison = sizeA - sizeB;
     } else if (sortField === "uploadedAt") {
       // Convert date strings to Date objects for comparison
-      const dateA = new Date(a.uploadedAt)
-      const dateB = new Date(b.uploadedAt)
-      comparison = dateA.getTime() - dateB.getTime()
+      const dateA = new Date(a.uploadedAt);
+      const dateB = new Date(b.uploadedAt);
+      comparison = dateA.getTime() - dateB.getTime();
     }
 
-    return sortDirection === "asc" ? comparison : -comparison
-  })
+    return sortDirection === "asc" ? comparison : -comparison;
+  });
 
   return (
     <div className="w-full overflow-x-auto">
@@ -169,7 +169,10 @@ const FilesTable = ({ files }: { files: File[] }) => {
         </thead>
         <tbody>
           {sortedFiles.map((file) => (
-            <tr key={file.id} className={`border-t border-neutral-300 even:bg-neutral-300 transition-colors`}>
+            <tr
+              key={file.id}
+              className={`border-t border-neutral-300 even:bg-neutral-300 transition-colors`}
+            >
               <td className="p-3">{file.name}</td>
               <td className="p-3">{file.type}</td>
               <td className="p-3">{file.size}</td>
@@ -182,22 +185,22 @@ const FilesTable = ({ files }: { files: File[] }) => {
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
 const Files = () => {
   // File data - using the dummy data directly
-  const [files] = useState<File[]>(dummyFiles)
+  const [files] = useState<File[]>(dummyFiles);
 
   // Search functionality
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Filter files based on search query
   const filteredFiles = files.filter(
     (file) =>
       file.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      file.type.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
+      file.type.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen w-full p-4 flex items-start justify-center">
@@ -205,7 +208,9 @@ const Files = () => {
         {/* Header */}
         <div className="p-6 pb-2">
           <h3 className="font-semibold">Files</h3>
-          <p className="text-sm text-neutral-600">View and manage system files</p>
+          <p className="text-sm text-neutral-600">
+            View and manage system files
+          </p>
         </div>
 
         {/* Content */}
@@ -244,7 +249,7 @@ const Files = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Files
+export default Files;

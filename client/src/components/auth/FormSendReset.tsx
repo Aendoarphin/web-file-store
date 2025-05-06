@@ -65,7 +65,7 @@ const FormSendReset = () => {
           {message.text !== "" && (
             <div
               className={`text-xs mx-6 ${
-                message.type === "success" ? "text-green-600" : "text-red-600"
+                message.type === "success" ? "text-green-600" : "text-red-700"
               }`}
             >
               {message.text}

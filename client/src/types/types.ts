@@ -3,20 +3,20 @@ export interface MessageType {
   type: "success" | "error" | null;
 }
 
-export   interface IconMap {
+export interface IconMap {
   [key: string]: React.ReactNode;
 }
 
 export type File = {
-  id: string
-  name: string
-  type: string
-  size: string
-  uploadedAt: string
-}
+  id: string;
+  name: string;
+  type: string;
+  size: string;
+  uploadedAt: string;
+};
 
-export type SortField = "name" | "type" | "size" | "uploadedAt" | null
-export type SortDirection = "asc" | "desc"
+export type SortField = "name" | "type" | "size" | "uploadedAt" | null;
+export type SortDirection = "asc" | "desc";
 
 export interface FormErrors {
   email?: string;
@@ -28,6 +28,6 @@ export interface FormData {
   email: string;
   password: string;
   name: string;
-  role: "Admin" | "User";
-  group: "collections" | "accounting" | "operations" | "IT" | "compliance";
+  role: "admin" | "user";
+  group: "collections" | "accounting" | "operations" | "it" | "compliance";
 }

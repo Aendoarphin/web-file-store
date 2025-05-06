@@ -18,9 +18,9 @@ import Users from "./components/Users";
 import Files from "./components/Files";
 import Settings from "./components/Settings";
 import FormEditUser from "./components/admin/FormEditUser";
+import FormCreateUser from "./components/admin/FormCreateUser";
 
 import useTest from "./hooks/useTest";
-import FormCreateUser from "./components/admin/FormCreateUser";
 
 const appRoutes: { [key: string]: React.ReactElement } = {
   "/": <Home />,
@@ -60,26 +60,29 @@ function App() {
         localStorage.length > 0 &&
         isExpired(parsedUser.user.last_sign_in_at);
       if (expired) {
+        supabase.auth.signOut();
         localStorage.removeItem("sbuser");
-        document.location.href = "/session-expired";
+        navigate("/session-expired");
       }
     });
 
     // Modified redirect logic to preserve current path
     const currentPath = window.location.pathname;
-    
+
     // Only redirect if user is not authenticated and trying to access protected routes
     const publicRoutes = [
-      "/auth/signin", 
-      "/auth/signup", 
-      "/auth/reset", 
-      "/auth/email-confirmation", 
-      "/auth/reset-password", 
-      "/session-expired"
+      "/auth/signin",
+      "/auth/signup",
+      "/auth/reset",
+      "/auth/email-confirmation",
+      "/auth/reset-password",
+      "/session-expired",
     ];
-    
-    const isPublicRoute = publicRoutes.some(route => currentPath.startsWith(route));
-    
+
+    const isPublicRoute = publicRoutes.some((route) =>
+      currentPath.startsWith(route)
+    );
+
     if (!currentUser && !isPublicRoute) {
       // User is not logged in and trying to access protected route
       navigate("/auth/signin");
@@ -100,7 +103,7 @@ function App() {
     });
     return () => subscription.unsubscribe();
   }, []);
-  
+
   // Rest of the component remains the same
   return (
     <>

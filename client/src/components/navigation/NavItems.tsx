@@ -31,7 +31,7 @@ const NavItems = () => {
         });
       }
       localStorage.removeItem("sbuser");
-      document.location.href = "/auth/signin";
+      navigate("/auth/signin");
     } catch (error) {
       console.log(error);
     }
