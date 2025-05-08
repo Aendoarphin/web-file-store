@@ -1,5 +1,4 @@
-"use client";
-
+// continue here; implement real storage data
 import {
   IconDownload,
   IconLoader2,
@@ -19,35 +18,30 @@ const dummyFiles: File[] = [
     id: "1",
     name: "annual-report-2023.pdf",
     type: "PDF",
-    size: "2.4 MB",
     uploadedAt: "2023-12-15",
   },
   {
     id: "2",
     name: "product-image.jpg",
     type: "Image",
-    size: "1.8 MB",
     uploadedAt: "2023-12-10",
   },
   {
     id: "3",
     name: "user-data.csv",
     type: "CSV",
-    size: "4.2 MB",
     uploadedAt: "2023-12-05",
   },
   {
     id: "4",
     name: "presentation.pptx",
     type: "PowerPoint",
-    size: "8.7 MB",
     uploadedAt: "2023-11-28",
   },
   {
     id: "5",
     name: "contract-template.docx",
     type: "Word",
-    size: "1.2 MB",
     uploadedAt: "2023-11-20",
   },
 ];
@@ -120,11 +114,6 @@ const FilesTable = ({ files }: { files: File[] }) => {
       comparison = a.name.localeCompare(b.name);
     } else if (sortField === "type") {
       comparison = a.type.localeCompare(b.type);
-    } else if (sortField === "size") {
-      // Extract numeric value from size string for proper comparison
-      const sizeA = Number.parseFloat(a.size.split(" ")[0]);
-      const sizeB = Number.parseFloat(b.size.split(" ")[0]);
-      comparison = sizeA - sizeB;
     } else if (sortField === "uploadedAt") {
       // Convert date strings to Date objects for comparison
       const dateA = new Date(a.uploadedAt);
@@ -154,12 +143,6 @@ const FilesTable = ({ files }: { files: File[] }) => {
             </th>
             <th
               className="text-left p-3 font-semibold cursor-pointer hover:bg-neutral-400 transition-colors"
-              onClick={() => handleSort("size")}
-            >
-              Size {getSortIcon("size")}
-            </th>
-            <th
-              className="text-left p-3 font-semibold cursor-pointer hover:bg-neutral-400 transition-colors"
               onClick={() => handleSort("uploadedAt")}
             >
               Uploaded {getSortIcon("uploadedAt")}
@@ -175,7 +158,6 @@ const FilesTable = ({ files }: { files: File[] }) => {
             >
               <td className="p-3">{file.name}</td>
               <td className="p-3">{file.type}</td>
-              <td className="p-3">{file.size}</td>
               <td className="p-3">{file.uploadedAt}</td>
               <td className="p-3">
                 <FileActions />

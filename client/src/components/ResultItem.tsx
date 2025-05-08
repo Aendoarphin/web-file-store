@@ -10,6 +10,7 @@ import {
 import { getFileDownloadLink } from "../utils/actions";
 import { useState, useEffect } from "react";
 import { IconMap } from "../types/types";
+import { Link } from "react-router";
 
 const ResultItem = (props: { fileName: string; input: string }) => {
   const [downloadLink, setDownloadLink] = useState("");
@@ -65,9 +66,9 @@ const ResultItem = (props: { fileName: string; input: string }) => {
       ) : (
         <div className="group w-full bg-neutral-200 items-center flex gap-4 first-of-type:rounded-t-md last-of-type:rounded-b-md p-4 odd:bg-neutral-300 not-last-of-type:border-b-[1px] not-last-of-type:border-b-neutral-400">
           {currentFileIcon ? currentFileIcon : <IconFile />}
-          <a href={downloadLink} className=" group-hover:underline">
+          <Link to={downloadLink} className=" group-hover:underline">
             {highlightMatches(props.input, props.fileName)}
-          </a>
+          </Link>
         </div>
       )}
     </>

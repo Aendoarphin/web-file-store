@@ -11,11 +11,10 @@ export type File = {
   id: string;
   name: string;
   type: string;
-  size: string;
   uploadedAt: string;
 };
 
-export type SortField = "name" | "type" | "size" | "uploadedAt" | null;
+export type SortField = "name" | "type" | "uploadedAt" | null;
 export type SortDirection = "asc" | "desc";
 
 export interface FormErrors {

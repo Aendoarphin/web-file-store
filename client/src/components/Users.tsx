@@ -1,5 +1,4 @@
 import {
-  // continue here; create delete modal
   IconLoader2,
   IconPencil,
   IconPlus,
@@ -117,7 +116,7 @@ const UsersTable = ({ users }: { users: User[] }) => {
           <div className="rounded-sm bg-neutral-300 p-6 fixed self-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
             <h4 className="font-semibold text-lg mb-2">Delete User</h4>
             <hr className="mb-4" />
-            <p className="font-semibold pb-4">
+            <p className="font-semibold pb-4 text-nowrap">
               Are you sure you want to delete user{" "}
               {users[0].user_metadata.email}?
             </p>
