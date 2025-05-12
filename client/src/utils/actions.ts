@@ -1,9 +1,17 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import supabase from "./supabase";
+import { FileObject } from "@supabase/storage-js";
 import axios from "axios";
 
 // Storage - Get all files in a bucket
-export const getFiles = async (): Promise<string[]> => {
+export const getFiles = async (): Promise<FileObject[]> => {
+	const { data, error } = await supabase.storage.from("files").list("document");
+	if (error) return []
+	return data;
+}
+
+// Storage - Get all file names in a bucket
+export const getFileNames = async (): Promise<string[]> => {
 	const { data } = await supabase.storage.from("files").list("document", {
 		limit: 100,
 		offset: 0,

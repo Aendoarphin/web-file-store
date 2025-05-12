@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { getFiles } from "../utils/actions";
+import { getFileNames } from "../utils/actions";
 import { IconArrowUp, IconArrowDown } from "@tabler/icons-react";
 import ResultItem from "./ResultItem";
 import StartupMessage from "./messages/StartupMessage";
@@ -24,7 +24,7 @@ const Home = () => {
   const handleSubmit = async () => {
     try {
       if (input.trim()) {
-        const response = await getFiles();
+        const response = await getFileNames();
         const filtered = findMatches(response, input);
         setData(filtered);
         if (filtered.length === 0) {

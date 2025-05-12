@@ -1,4 +1,3 @@
-// continue here; implement real storage data
 import {
   IconDownload,
   IconLoader2,
@@ -9,42 +8,53 @@ import {
   IconChevronUp,
   IconChevronDown,
 } from "@tabler/icons-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { File, SortDirection, SortField } from "../types/types";
+import { getFiles } from "../utils/actions";
+import { FileObject } from "@supabase/storage-js";
 
-// Dummy data
-const dummyFiles: File[] = [
-  {
-    id: "1",
-    name: "annual-report-2023.pdf",
-    type: "PDF",
-    uploadedAt: "2023-12-15",
-  },
-  {
-    id: "2",
-    name: "product-image.jpg",
-    type: "Image",
-    uploadedAt: "2023-12-10",
-  },
-  {
-    id: "3",
-    name: "user-data.csv",
-    type: "CSV",
-    uploadedAt: "2023-12-05",
-  },
-  {
-    id: "4",
-    name: "presentation.pptx",
-    type: "PowerPoint",
-    uploadedAt: "2023-11-28",
-  },
-  {
-    id: "5",
-    name: "contract-template.docx",
-    type: "Word",
-    uploadedAt: "2023-11-20",
-  },
-];
+// Helper function to determine file type from file extension
+const getFileType = (filename: string): string => {
+  const extension = filename.split('.').pop()?.toLowerCase() || '';
+  
+  const typeMap: Record<string, string> = {
+    'pdf': 'PDF',
+    'jpg': 'Image',
+    'jpeg': 'Image',
+    'png': 'Image',
+    'gif': 'Image',
+    'svg': 'Image',
+    'csv': 'CSV',
+    'xlsx': 'Excel',
+    'xls': 'Excel',
+    'doc': 'Word',
+    'docx': 'Word',
+    'ppt': 'PowerPoint',
+    'pptx': 'PowerPoint',
+    'txt': 'Text',
+    'json': 'JSON',
+    'js': 'JavaScript',
+    'ts': 'TypeScript',
+    'html': 'HTML',
+    'css': 'CSS',
+  };
+
+  return typeMap[extension] || 'Other';
+};
+
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0];
+};
+
+const convertToFileFormat = (fileObject: FileObject): File => {
+  return {
+    id: fileObject.id || fileObject.name, // Use name as fallback ID if id is not available
+    name: fileObject.name,
+    type: getFileType(fileObject.name),
+    uploadedAt: formatDate(fileObject.created_at || new Date().toISOString()),
+  };
+};
 
 const FileActions = () => {
   return (
@@ -87,10 +97,8 @@ const FilesTable = ({ files }: { files: File[] }) => {
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      // Toggle direction if same field is clicked
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
-      // Set new field and default to ascending
       setSortField(field);
       setSortDirection("asc");
     }
@@ -105,7 +113,6 @@ const FilesTable = ({ files }: { files: File[] }) => {
     );
   };
 
-  // Sort the files based on current sort field and direction
   const sortedFiles = [...files].sort((a, b) => {
     if (!sortField) return 0;
 
@@ -115,7 +122,6 @@ const FilesTable = ({ files }: { files: File[] }) => {
     } else if (sortField === "type") {
       comparison = a.type.localeCompare(b.type);
     } else if (sortField === "uploadedAt") {
-      // Convert date strings to Date objects for comparison
       const dateA = new Date(a.uploadedAt);
       const dateB = new Date(b.uploadedAt);
       comparison = dateA.getTime() - dateB.getTime();
@@ -171,8 +177,31 @@ const FilesTable = ({ files }: { files: File[] }) => {
 };
 
 const Files = () => {
-  // File data - using the dummy data directly
-  const [files] = useState<File[]>(dummyFiles);
+  const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        setLoading(true);
+        const response = await getFiles();
+        
+        // Transform the FileObject array into our File type array
+        const formattedFiles = response.map(convertToFileFormat);
+        
+        setFiles(formattedFiles);
+        setError(null);
+      } catch (e) {
+        console.error("Error fetching files:", e);
+        setError("Failed to load files");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFiles();
+  }, []); // Only fetch on component mount
 
   // Search functionality
   const [searchQuery, setSearchQuery] = useState("");
@@ -199,7 +228,18 @@ const Files = () => {
         <div className="p-6 space-y-6">
           {/* Files Table Section */}
           <div>
-            <h4 className="font-semibold text-lg mb-2">File Library</h4>
+            <div className="flex items-center justify-between">
+              <h4 className="font-semibold text-lg mb-2">File Library</h4>
+            {/* Action Button */}
+          <div>
+            <button
+              onClick={() => alert("Uploading new file...")}
+              className="rounded-sm px-4 py-2 transition-colors flex items-center bg-neutral-700 text-white hover:bg-neutral-800"
+            >
+              <IconPlus className="inline mr-1" /> Upload New File
+            </button>
+          </div>
+            </div>
             <hr className="mb-4" />
             {/* Search Bar */}
             <div className="mb-4">
@@ -216,17 +256,16 @@ const Files = () => {
                 </div>
               </div>
             </div>
-            <FilesTable files={filteredFiles} />
-          </div>
-
-          {/* Action Button */}
-          <div>
-            <button
-              onClick={() => alert("Uploading new file...")}
-              className="bg-neutral-700 text-white rounded-sm px-4 py-2 hover:bg-neutral-800 transition-colors"
-            >
-              <IconPlus className="inline mr-1" /> Upload New File
-            </button>
+            
+            {loading ? (
+              <div className="py-20">
+                <IconLoader2 className="animate-spin mx-auto" />
+              </div>
+            ) : error ? (
+              <div className="py-10 text-center text-red-500">{error}</div>
+            ) : (
+              <FilesTable files={filteredFiles} />
+            )}
           </div>
         </div>
       </div>
