@@ -7,40 +7,14 @@ import {
   IconTrash,
   IconChevronUp,
   IconChevronDown,
+  IconAlertTriangle,
 } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
 import type { File, SortDirection, SortField } from "../types/types";
-import { getFiles } from "../utils/actions";
+import { getFileDownloadLink, getFiles } from "../utils/actions";
 import { FileObject } from "@supabase/storage-js";
-
-// Helper function to determine file type from file extension
-const getFileType = (filename: string): string => {
-  const extension = filename.split('.').pop()?.toLowerCase() || '';
-  
-  const typeMap: Record<string, string> = {
-    'pdf': 'PDF',
-    'jpg': 'Image',
-    'jpeg': 'Image',
-    'png': 'Image',
-    'gif': 'Image',
-    'svg': 'Image',
-    'csv': 'CSV',
-    'xlsx': 'Excel',
-    'xls': 'Excel',
-    'doc': 'Word',
-    'docx': 'Word',
-    'ppt': 'PowerPoint',
-    'pptx': 'PowerPoint',
-    'txt': 'Text',
-    'json': 'JSON',
-    'js': 'JavaScript',
-    'ts': 'TypeScript',
-    'html': 'HTML',
-    'css': 'CSS',
-  };
-
-  return typeMap[extension] || 'Other';
-};
+import { getFileType } from "../scripts/helper";
+import { Link } from "react-router";
 
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -56,16 +30,25 @@ const convertToFileFormat = (fileObject: FileObject): File => {
   };
 };
 
-const FileActions = () => {
+const FileActions = ({ fileName }: { fileName: string }) => {
+  const [downloadLink, setDownloadLink] = useState("");
+
+  const fetchLink = async () => {
+    const response = await getFileDownloadLink(fileName);
+    setDownloadLink(response);
+  };
+
+  fetchLink();
+  
   return (
     <div className="w-min flex flex-nowrap mx-auto">
-      <button
-        onClick={() => alert("Downloading...")}
+      <Link
+        to={downloadLink}
         className="px-2 py-1 rounded-sm hover:scale-90"
         title="Download file"
       >
         <IconDownload />
-      </button>
+      </Link>
       <button
         onClick={() => alert("Renaming file...")}
         className="px-2 py-1 rounded-sm hover:scale-90"
@@ -166,7 +149,7 @@ const FilesTable = ({ files }: { files: File[] }) => {
               <td className="p-3">{file.type}</td>
               <td className="p-3">{file.uploadedAt}</td>
               <td className="p-3">
-                <FileActions />
+                <FileActions fileName={file.name} />
               </td>
             </tr>
           ))}
@@ -262,7 +245,7 @@ const Files = () => {
                 <IconLoader2 className="animate-spin mx-auto" />
               </div>
             ) : error ? (
-              <div className="py-10 text-center text-red-500">{error}</div>
+              <div className="py-10 text-center text-red-700 font-semibold flex flex-col"> <IconAlertTriangle className="mx-auto" /> {error}</div>
             ) : (
               <FilesTable files={filteredFiles} />
             )}
