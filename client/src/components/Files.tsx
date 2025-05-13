@@ -11,10 +11,11 @@ import {
 } from "@tabler/icons-react";
 import { useState, useEffect } from "react";
 import type { File, SortDirection, SortField } from "../types/types";
-import { getFileDownloadLink, getFiles } from "../utils/actions";
+import { getFileDownloadLink, getFiles, uploadFile } from "../utils/actions";
 import { FileObject } from "@supabase/storage-js";
 import { getFileType } from "../scripts/helper";
 import { Link } from "react-router";
+import supabase from "../utils/supabase";
 
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -30,7 +31,7 @@ const convertToFileFormat = (fileObject: FileObject): File => {
   };
 };
 
-const FileActions = ({ fileName }: { fileName: string }) => {
+const FileActions = ({ fileName, files, setFiles }: { fileName: string, files: File[], setFiles: (files: File[]) => void }) => {
   const [downloadLink, setDownloadLink] = useState("");
 
   const fetchLink = async () => {
@@ -39,6 +40,14 @@ const FileActions = ({ fileName }: { fileName: string }) => {
   };
 
   fetchLink();
+
+  // Handle delete file action
+  const handleDeleteFile = async (fileName: string) => {
+    if (window.confirm(`Are you sure you want to delete ${fileName}?`)) {
+      await supabase.storage.from("files").remove([`document/${fileName}`]);
+      setFiles(files.filter((file) => file.name !== fileName));
+    }
+  };
   
   return (
     <div className="w-min flex flex-nowrap mx-auto">
@@ -57,7 +66,7 @@ const FileActions = ({ fileName }: { fileName: string }) => {
         <IconPencil />
       </button>
       <button
-        onClick={() => alert("Deleting file...")}
+        onClick={() => handleDeleteFile(fileName)}
         className="px-2 py-1 rounded-sm hover:scale-90 text-red-700"
         title="Delete file"
       >
@@ -67,7 +76,7 @@ const FileActions = ({ fileName }: { fileName: string }) => {
   );
 };
 
-const FilesTable = ({ files }: { files: File[] }) => {
+const FilesTable = ({ files, setFiles }: { files: File[], setFiles: (files: File[]) => void }) => {
   const [sortField, setSortField] = useState<SortField>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
@@ -149,7 +158,7 @@ const FilesTable = ({ files }: { files: File[] }) => {
               <td className="p-3">{file.type}</td>
               <td className="p-3">{file.uploadedAt}</td>
               <td className="p-3">
-                <FileActions fileName={file.name} />
+                <FileActions fileName={file.name} files={files} setFiles={setFiles} />
               </td>
             </tr>
           ))}
@@ -196,6 +205,23 @@ const Files = () => {
       file.type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Handle upload new file action
+  const handleUploadNewFile = async(event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) {
+      alert("No file selected");
+      return;
+    }
+    alert(`Uploading file: ${file}`);
+    await uploadFile(file); // Use the non-null assertion operator (!) to assert that file is not undefined
+    if (error) {
+      console.error("Error uploading file:", error);
+      alert("Failed to upload file");
+      return;
+    }
+    window.location.reload();
+    };
+
   return (
     <div className="min-h-screen w-full p-4 flex items-start justify-center">
       <div className="w-full max-w-4xl bg-neutral-200 rounded-sm shadow-sm mt-[5vh] overflow-hidden">
@@ -215,12 +241,16 @@ const Files = () => {
               <h4 className="font-semibold text-lg mb-2">File Library</h4>
             {/* Action Button */}
           <div>
-            <button
-              onClick={() => alert("Uploading new file...")}
-              className="rounded-sm px-4 py-2 transition-colors flex items-center bg-neutral-700 text-white hover:bg-neutral-800"
+            <label
+              className="rounded-sm px-4 py-2 transition-colors flex items-center bg-neutral-700 text-white hover:bg-neutral-800 cursor-pointer"
             >
               <IconPlus className="inline mr-1" /> Upload New File
-            </button>
+              <input
+                type="file"
+                onChange={handleUploadNewFile}
+                className="hidden"
+              />
+            </label>
           </div>
             </div>
             <hr className="mb-4" />
@@ -247,7 +277,7 @@ const Files = () => {
             ) : error ? (
               <div className="py-10 text-center text-red-700 font-semibold flex flex-col"> <IconAlertTriangle className="mx-auto" /> {error}</div>
             ) : (
-              <FilesTable files={filteredFiles} />
+              <FilesTable files={filteredFiles} setFiles={setFiles} />
             )}
           </div>
         </div>

@@ -3,6 +3,26 @@ import supabase from "./supabase";
 import { FileObject } from "@supabase/storage-js";
 import axios from "axios";
 
+// Storage - Upload a file to a bucket
+export const uploadFile = async (file: File) => {
+	const { error } = await supabase.storage
+      .from("files")
+      .upload(`document/${file.name}`, file!);
+	if (error) {
+		console.error("Error uploading file:", error);
+	}
+}
+
+// Storage - Delete a file from a bucket
+export const deleteFile = async (fileName: string) => {
+	const { error } = await supabase.storage
+		.from("files")
+		.remove([`document/${fileName}`]);
+	if (error) {
+		console.error("Error deleting file:", error);
+	}
+}
+
 // Storage - Get all files in a bucket
 export const getFiles = async (): Promise<FileObject[]> => {
 	const { data, error } = await supabase.storage.from("files").list("document");
