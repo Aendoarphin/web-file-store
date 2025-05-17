@@ -6,12 +6,26 @@ import axios from "axios";
 // Storage - Upload a file to a bucket
 export const uploadFile = async (file: File) => {
 	const { error } = await supabase.storage
-      .from("files")
-      .upload(`document/${file.name}`, file!);
+		.from("files")
+		.upload(`document/${encodeURIComponent(file.name)}`, file!);
 	if (error) {
 		console.error("Error uploading file:", error);
+		return error;
 	}
-}
+};
+
+// Storage - Upload multiple files to a bucket
+export const uploadMultipleFiles = async (files: File[]) => {
+	for (const file of files) {
+		const { error } = await supabase.storage
+			.from("files")
+			.upload(`document/${encodeURIComponent(file.name)}`, file!);
+		if (error) {
+			console.error("Error uploading file:", error);
+			return error;
+		}
+	}
+};
 
 // Storage - Delete a file from a bucket
 export const deleteFile = async (fileName: string) => {
@@ -21,14 +35,14 @@ export const deleteFile = async (fileName: string) => {
 	if (error) {
 		console.error("Error deleting file:", error);
 	}
-}
+};
 
 // Storage - Get all files in a bucket
 export const getFiles = async (): Promise<FileObject[]> => {
 	const { data, error } = await supabase.storage.from("files").list("document");
-	if (error) return []
+	if (error) return [];
 	return data;
-}
+};
 
 // Storage - Get all file names in a bucket
 export const getFileNames = async (): Promise<string[]> => {

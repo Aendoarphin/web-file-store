@@ -90,7 +90,8 @@ const FileActions = ({
 						<h4 className="font-semibold text-lg mb-2">Delete File</h4>
 						<hr className="mb-4" />
 						<p className="font-semibold pb-4 text-nowrap">
-							Are you sure you want to delete the file <strong>{fileName}</strong>?
+							Are you sure you want to delete the file{" "}
+							<strong>{fileName}</strong>?
 						</p>
 						<div className="w-min flex gap-2 flex-nowrap mx-auto">
 							<button
@@ -112,7 +113,6 @@ const FileActions = ({
 		</div>
 	);
 };
-
 
 const FilesTable = ({
 	files,
@@ -259,36 +259,52 @@ const Files = () => {
 		event: React.ChangeEvent<HTMLInputElement>
 	) => {
 		const file = event.target.files?.[0];
+
 		if (!file) {
-			console.error("No file selected");
-			setMessage({
-				text: "No file selected",
-				type: "error",
-			});
+			setMessage({ text: "No file selected", type: "error" });
 			return;
 		}
 
+		if (event.target.files && event.target.files.length > 1) {
+			for (const file of event.target.files) {
+				const response = await uploadFile(file);
+				if (response && response.message) {
+					setMessage({
+						text: "File name contains invalid characters. Please remove characters like /, #, ?, etc.",
+						type: "error",
+					});
+					return;
+				}
+			}
+			const updatedFiles = await getFiles();
+			setFiles(updatedFiles.map(convertToFileFormat));
+			setMessage({ text: "Files uploaded successfully", type: "success" });
+		} else {
+			const existingFile = await fileExists(file.name);
+			if (existingFile) {
+				setMessage({ text: "File already exists", type: "error" });
+				return;
+			}
+
+			const response = await uploadFile(file);
+			if (response && response.message) {
+				setMessage({
+					text: "File name contains invalid characters. Please remove characters like /, #, ?, etc.",
+					type: "error",
+				});
+				return;
+			}
+
+			const updatedFiles = await getFiles();
+			setFiles(updatedFiles.map(convertToFileFormat));
+			setMessage({ text: "File uploaded successfully", type: "success" });
+		}
+	};
+
+	// Helper function to check if a file exists
+	const fileExists = async (fileName: string) => {
 		const allFiles = await getFiles();
-		const existingFile = allFiles.some((f) => f.name === file.name);
-		if (existingFile) {
-			console.error("File already exists");
-			setMessage({
-				text: "File already exists",
-				type: "error",
-			});
-			return;
-		}
-
-		console.log("Uploading file:", file);
-		await uploadFile(file);
-
-		const updatedFiles = await getFiles();
-		setFiles(updatedFiles.map(convertToFileFormat));
-
-		setMessage({
-			text: "File uploaded successfully",
-			type: "success",
-		});
+		return allFiles.some((f) => f.name === fileName);
 	};
 
 	return (
@@ -311,9 +327,10 @@ const Files = () => {
 							{/* Action Button */}
 							<div>
 								<label className="rounded-sm px-4 py-2 transition-colors flex items-center bg-neutral-700 text-white hover:bg-neutral-800 cursor-pointer">
-									<IconPlus className="inline mr-1" /> Upload New File
+									<IconPlus className="inline mr-1" /> Upload
 									<input
 										type="file"
+										multiple
 										onChange={handleUploadNewFile}
 										className="hidden"
 									/>
