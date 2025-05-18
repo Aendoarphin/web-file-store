@@ -94,15 +94,11 @@ const UsersTable = ({ users }: { users: User[] }) => {
 						>
 							<td className="p-3">{user.user_metadata.name}</td>
 							<td className="p-3">{user.email}</td>
+							{user.user_metadata.group ? <td className="p-3">
+								{user.user_metadata.group.toUpperCase()}
+							</td> : <td className="p-3">N/A</td>}
 							<td className="p-3">
-								{user.user_metadata.group.length > 3
-									? String(user.user_metadata.group).charAt(0).toUpperCase() +
-									  String(user.user_metadata.group).slice(1)
-									: user.user_metadata.group.toUpperCase()}
-							</td>
-							<td className="p-3">
-								{String(user.user_metadata.role).charAt(0).toUpperCase() +
-									String(user.user_metadata.role).slice(1)}
+								{String(user.user_metadata.role).toUpperCase()}
 							</td>
 							<td className="p-3">
 								<UserActions user={user} modalState={updateModalState} />
@@ -160,7 +156,7 @@ const Users = () => {
 
 	return (
 		<div className="min-h-screen w-full p-4 flex items-start justify-center">
-			<div className="w-full max-w-4xl bg-neutral-200 rounded-sm shadow-sm mt-[5vh] overflow-hidden">
+			<div className="w-full max-w-4xl bg-neutral-200 rounded-sm shadow-sm mb-20 mt-[5vh] overflow-hidden">
 				{/* Header */}
 				<div className="p-6 pb-2">
 					<h3 className="font-semibold">Users</h3>

@@ -100,7 +100,7 @@ const FormEditUser = () => {
                     className="w-full p-2 border border-neutral-300 rounded-sm bg-neutral-300"
                     onChange={(e) => setGroup(e.target.value)}
                   >
-                    <option value="it">IT</option>
+                    <option value="information technology">Information Technology</option>
                     <option value="accounting">Accounting</option>
                     <option value="collections">Collections</option>
                     <option value="operations">Operations</option>

@@ -28,5 +28,5 @@ export interface FormData {
   password: string;
   name: string;
   role: "admin" | "user";
-  group: "collections" | "accounting" | "operations" | "it" | "compliance";
+  group: "collections" | "accounting" | "operations" | "information technology" | "compliance";
 }

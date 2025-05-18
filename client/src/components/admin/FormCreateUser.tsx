@@ -236,7 +236,7 @@ const CreateUserForm = () => {
                     <option value="Collections">Collections</option>
                     <option value="Accounting">Accounting</option>
                     <option value="Operations">Operations</option>
-                    <option value="IT">IT</option>
+                    <option value="Information Technology">Information Technology</option>
                     <option value="Compliance">Compliance</option>
                   </select>
                 </div>

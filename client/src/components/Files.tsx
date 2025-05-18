@@ -309,7 +309,7 @@ const Files = () => {
 
 	return (
 		<div className="min-h-screen w-full p-4 flex items-start justify-center">
-			<div className="w-full max-w-4xl bg-neutral-200 rounded-sm shadow-sm mt-[5vh] overflow-hidden">
+			<div className="w-full max-w-4xl bg-neutral-200 mb-20 rounded-sm shadow-sm mt-[5vh] overflow-hidden">
 				{/* Header */}
 				<div className="p-6 pb-2">
 					<h3 className="font-semibold">Files</h3>
@@ -323,7 +323,7 @@ const Files = () => {
 					{/* Files Table Section */}
 					<div>
 						<div className="flex items-center justify-between">
-							<h4 className="font-semibold text-lg mb-2">File Library</h4>
+							<h4 className="font-semibold text-lg mb-2">Library</h4>
 							{/* Action Button */}
 							<div>
 								<label className="rounded-sm px-4 py-2 transition-colors flex items-center bg-neutral-700 text-white hover:bg-neutral-800 cursor-pointer">

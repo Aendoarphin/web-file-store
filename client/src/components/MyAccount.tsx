@@ -127,8 +127,8 @@ const MyAccount = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <UserMetaDataItem label="Name" value={user.user_metadata.name} />
               <UserMetaDataItem label="Email" value={user.user_metadata.email} />
-              <UserMetaDataItem label="Group" value={user.user_metadata.group.charAt(0).toUpperCase() + user.user_metadata.group.slice(1)} />
-              <UserMetaDataItem label="Role" value={user.user_metadata.role} />
+              <UserMetaDataItem label="Group" value={user.user_metadata.group.toUpperCase()} /> {/*capitalize first letter of each word*/}
+              <UserMetaDataItem label="Role" value={user.user_metadata.role.toUpperCase()} />
             </div>
           </section>
 
