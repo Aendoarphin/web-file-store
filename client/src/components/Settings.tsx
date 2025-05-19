@@ -1,7 +1,7 @@
 
 const Settings = () => {
   return (
-    <div>Settings</div>
+    <div className="min-h-screen w-full p-4 flex items-start justify-center border">Settings</div>
   )
 }
 

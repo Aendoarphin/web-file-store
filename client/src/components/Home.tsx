@@ -106,7 +106,7 @@ const Home = () => {
           </div>
           <div
             id="resultsContainer"
-            className="flex flex-col items-start p-4 w-full h-[90dvh]"
+            className={data ? "flex flex-wrap gap-2 p-4" : "flex flex-col items-start p-4 w-full h-[90dvh]"}
           >
             {order === "asc"
               ? data?.map((item, index) => (

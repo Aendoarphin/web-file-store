@@ -124,12 +124,15 @@ const FilesTable = ({
 	const [sortField, setSortField] = useState<SortField>(null);
 	const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
-	if (files.length === 0)
-		return (
+	if (!files) {
+    return (
 			<div className="py-20">
 				<IconLoader2 className="animate-spin mx-auto" />
 			</div>
 		);
+  } else if (files.length === 0) {
+    return <p>No files found</p>;
+  }
 
 	const handleSort = (field: SortField) => {
 		if (sortField === field) {
@@ -378,7 +381,7 @@ const Files = () => {
 				>
 					<div
 						className={`flex items-center gap-2 rounded-sm px-4 py-3 text-white shadow-md ${
-							message.type === "error" ? "bg-red-500" : "bg-green-700"
+							message.type === "error" ? "bg-red-700" : "bg-green-700"
 						}`}
 					>
 						{message.type === "error" ? <IconAlertTriangle /> : <IconCheck />}

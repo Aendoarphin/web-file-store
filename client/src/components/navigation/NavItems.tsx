@@ -39,7 +39,7 @@ const NavItems = ({ navState }: { navState: boolean }) => {
 
 	return (
 		<>
-			<ol className={`${navState ? "fixed ml-8" : ""}`}>
+			<ol className={`${navState ? "fixed left-9" : ""}`}>
 				<li className={style} onClick={() => navigate("/")}>
 					<IconHome /> Home
 				</li>

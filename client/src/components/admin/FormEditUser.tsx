@@ -157,7 +157,7 @@ const FormEditUser = () => {
         >
           <div
             className={`flex items-center gap-2 rounded-sm px-4 py-3 text-white shadow-md ${
-              message.type === "error" ? "bg-red-500" : "bg-green-700"
+              message.type === "error" ? "bg-red-700" : "bg-green-700"
             }`}
           >
             {message.type === "error" ? (

@@ -64,12 +64,13 @@ const ResultItem = (props: { fileName: string; input: string }) => {
       {props.fileName === "No results found" ? (
         <p>No results found</p>
       ) : (
-        <div className="group w-full bg-neutral-200 items-center flex gap-4 first-of-type:rounded-t-md last-of-type:rounded-b-md p-4 odd:bg-neutral-300 not-last-of-type:border-b-[1px] not-last-of-type:border-b-neutral-400">
-          {currentFileIcon ? currentFileIcon : <IconFile />}
-          <Link to={downloadLink} className=" group-hover:underline">
+        <Link to={downloadLink} className="group">
+          <div className="group-hover:underline bg-neutral-200 p-6 h-min flex gap-2 flex-nowrap rounded-sm">
+            {currentFileIcon ? currentFileIcon : <IconFile />}
+
             {highlightMatches(props.input, props.fileName)}
-          </Link>
-        </div>
+          </div>
+        </Link>
       )}
     </>
   );
