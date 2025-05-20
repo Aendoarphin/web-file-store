@@ -30,7 +30,7 @@ const NavItems = ({ navState }: { navState: boolean }) => {
 					status: error.status,
 				});
 			}
-			localStorage.removeItem("sbuser");
+			localStorage.removeItem("sb-snvcvbztmwsqqyegkzqu-auth-token");
 			navigate("/auth/signin");
 		} catch (error) {
 			console.log(error);

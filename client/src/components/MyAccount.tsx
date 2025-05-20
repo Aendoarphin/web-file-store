@@ -37,7 +37,7 @@ const PasswordInput = ({
 
 // Main component
 const MyAccount = () => {
-  const [user] = useState(JSON.parse(localStorage.getItem("sbuser")!).user);
+  const [user] = useState(JSON.parse(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token")!).user);
   const [passwords, setPasswords] = useState({ newPassword: "", confirmedNewPassword: "" });
   const { message, setMessage, toastVisible } = useToast();
 

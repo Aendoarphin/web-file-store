@@ -1,0 +1,46 @@
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6Iko4T0hwdVRSRjc2WklGR04iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NudmN2Ynp0bXdzcXF5ZWdrenF1LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJmZDhjMGI3OC0wYWM1LTRhZjEtYTFmOC0zMmM1YjhiNGM5NzgiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ3NzU2NDIzLCJpYXQiOjE3NDc3NTI4MjMsImVtYWlsIjoiYXBpbmVkYUB3c2ZjdS5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoiYXBpbmVkYUB3c2ZjdS5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZ3JvdXAiOiJpbmZvcm1hdGlvbiB0ZWNobm9sb2d5IiwibmFtZSI6IkFyaG9uIFBpbmVkYSIsInJvbGUiOiJhZG1pbiJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzQ3NzUyODIzfV0sInNlc3Npb25faWQiOiJlNjJiYzY1Ny1lMzI4LTQwZTAtYTVmMi03NzU2MjIxMWUwMWYiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.r-2Hfa5-rjP-4jplpligec-BTXXeMAdt4Nmnm9IGqfE",
+  "token_type": "bearer",
+  "expires_in": 3600,
+  "expires_at": 1747756423,
+  "refresh_token": "ytpnueuhfcya",
+  "user": {
+    "id": "fd8c0b78-0ac5-4af1-a1f8-32c5b8b4c978",
+    "aud": "authenticated",
+    "role": "authenticated",
+    "email": "apineda@wsfcu.com",
+    "email_confirmed_at": "2025-05-18T19:00:33.150413Z",
+    "phone": "",
+    "confirmed_at": "2025-05-18T19:00:33.150413Z",
+    "last_sign_in_at": "2025-05-20T14:53:43.362450255Z",
+    "app_metadata": { "provider": "email", "providers": ["email"] },
+    "user_metadata": {
+      "email": "apineda@wsfcu.com",
+      "email_verified": true,
+      "group": "information technology",
+      "name": "Arhon Pineda",
+      "role": "admin"
+    },
+    "identities": [
+      {
+        "identity_id": "aee94efd-00a1-41c0-b20c-ed24b5a844e3",
+        "id": "fd8c0b78-0ac5-4af1-a1f8-32c5b8b4c978",
+        "user_id": "fd8c0b78-0ac5-4af1-a1f8-32c5b8b4c978",
+        "identity_data": {
+          "email": "apineda@wsfcu.com",
+          "email_verified": false,
+          "phone_verified": false,
+          "sub": "fd8c0b78-0ac5-4af1-a1f8-32c5b8b4c978"
+        },
+        "provider": "email",
+        "last_sign_in_at": "2025-05-18T19:00:33.144339Z",
+        "created_at": "2025-05-18T19:00:33.144392Z",
+        "updated_at": "2025-05-18T19:00:33.144392Z",
+        "email": "apineda@wsfcu.com"
+      }
+    ],
+    "created_at": "2025-05-18T19:00:33.139265Z",
+    "updated_at": "2025-05-20T14:53:43.364037Z",
+    "is_anonymous": false
+  }
+}

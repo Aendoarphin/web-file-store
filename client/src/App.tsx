@@ -21,6 +21,7 @@ import FormEditUser from "./components/admin/FormEditUser";
 import FormCreateUser from "./components/admin/FormCreateUser";
 
 import useTest from "./hooks/useTest";
+import { User } from "@supabase/supabase-js";
 
 const appRoutes: { [key: string]: React.ReactElement } = {
   "/": <Home />,
@@ -42,16 +43,16 @@ const appRoutes: { [key: string]: React.ReactElement } = {
 
 function App() {
   const navigate = useNavigate();
-
-  const [currentUser] = useState<object | null>(
-    JSON.parse(localStorage.getItem("sbuser")!)
+  // 
+  const [currentUser] = useState<User | null>(
+    JSON.parse(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token")!)
   );
   const [brand, setBrand] = useState<string>("Brand");
 
   // Check if session is expired
   useEffect(() => {
     document.addEventListener("click", function () {
-      const parsedUser = JSON.parse(localStorage.getItem("sbuser")!);
+      const parsedUser = JSON.parse(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token")!);
       const expired =
         parsedUser &&
         parsedUser.user &&
@@ -59,7 +60,7 @@ function App() {
         isExpired(parsedUser.user.last_sign_in_at);
       if (expired) {
         supabase.auth.signOut();
-        localStorage.removeItem("sbuser");
+        // localStorage.removeItem("sb-snvcvbztmwsqqyegkzqu-auth-token");
         navigate("/session-expired");
       }
     });
@@ -93,9 +94,9 @@ function App() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
-        localStorage.setItem("sbuser", JSON.stringify(session));
+        localStorage.setItem("sb-snvcvbztmwsqqyegkzqu-auth-token", JSON.stringify(session));
       } else if (event === "SIGNED_OUT") {
-        localStorage.removeItem("sbuser");
+        // localStorage.removeItem("sb-snvcvbztmwsqqyegkzqu-auth-token");
       }
     });
     return () => subscription.unsubscribe();
@@ -106,7 +107,7 @@ function App() {
       <UserContext.Provider value={currentUser}>
         <BrandContext.Provider value={{ brand, setBrand }}>
           <div className="flex flex-row flex-nowrap z-50">
-            {localStorage.getItem("sbuser") && <NavMenu />}
+            {localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token") && <NavMenu />}
             <div className="w-full">
               <Routes>
                 {Object.keys(appRoutes).map((route) => (

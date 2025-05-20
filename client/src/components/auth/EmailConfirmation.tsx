@@ -36,7 +36,7 @@ const EmailConfirmation = () => {
         
         <Link 
           to="/auth/signin"
-          onClick={() => localStorage.removeItem("sbuser")} 
+          onClick={() => localStorage.removeItem("sb-snvcvbztmwsqqyegkzqu-auth-token")} 
           className="bg-black cursor-pointer text-white p-2 rounded px-10 mt-4 text-center"
         >
           Return to Sign In

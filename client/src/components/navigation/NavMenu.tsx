@@ -12,9 +12,9 @@ const NavMenu = () => {
 
 	// Current user
 	const [currentUser] = useState<User>(
-		(localStorage.getItem("sbuser") !== null &&
+		(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token") !== null &&
 			localStorage.length > 0 &&
-			JSON.parse(localStorage.getItem("sbuser")!).user) ||
+			JSON.parse(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token")!).user) ||
 			""
 	);
 	// State for navbar

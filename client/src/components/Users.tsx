@@ -16,7 +16,7 @@ const UserActions = ({
 	user: User;
 	modalState: (state: boolean) => void;
 }) => {
-	const currentUser: User = JSON.parse(localStorage.getItem("sbuser")!).user;
+	const currentUser: User = JSON.parse(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token")!).user;
 
 	const encodedData = {
 		userId: encodeURIComponent(user.id),
