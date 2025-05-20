@@ -14,17 +14,20 @@ const FormSignIn = () => {
   }>({ email: "", password: "" });
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { brand } = useContext(BrandContext) as { brand: string };
 
   const signInUser = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     const { data, error } = await supabase.auth.signInWithPassword({
       email: userInput.email,
       password: userInput.password,
     });
     if (data.user?.email === userInput.email) {
       navigate("/");
+      setIsLoading(false);
     }
     if (error) {
       setErrorMessage(error.message);
@@ -80,7 +83,7 @@ const FormSignIn = () => {
           <input
             disabled={!isEmail}
             type="submit"
-            value="Sign In"
+            value={isLoading ? "Signing in..." : "Sign In"}
             className="bg-black text-white p-2 rounded px-10 disabled:contrast-50 cursor-pointer"
           />
         </div>

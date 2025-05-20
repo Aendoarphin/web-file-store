@@ -21,7 +21,7 @@ const NavMenu = () => {
 	const [nav, setNav] = useState(true);
 	return (
 		<>
-			<div className="h-[100] flex">
+			<div className="h-[100] flex z-40">
 				<button
 					onClick={() => setNav(!nav)}
 					className="h-full fixed top-0 bg-neutral-300"
@@ -38,7 +38,7 @@ const NavMenu = () => {
 					<NavItems navState={nav} />
 				</div>
 			</div>
-			<div className="bg-neutral-300 flex flex-row justify-between fixed bottom-0 w-full left-0">
+			<div className="bg-neutral-300 flex flex-row justify-between fixed bottom-0 w-full left-0 z-40">
 				<div className="p-2">
 					&copy; {brand} {new Date().getFullYear()}
 				</div>

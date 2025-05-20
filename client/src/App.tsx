@@ -21,6 +21,7 @@ import FormEditUser from "./components/admin/FormEditUser";
 import FormCreateUser from "./components/admin/FormCreateUser";
 
 import useTest from "./hooks/useTest";
+
 import { User } from "@supabase/supabase-js";
 
 const appRoutes: { [key: string]: React.ReactElement } = {
@@ -30,20 +31,20 @@ const appRoutes: { [key: string]: React.ReactElement } = {
   "auth/reset": <FormSendReset />,
   "auth/email-confirmation": <EmailConfirmation />,
   "auth/reset-password": <FormResetPassword />,
-  "admin": <AdminPanel />,
+  admin: <AdminPanel />,
   "session-expired": <SessionExpired />,
   "*": <NotFound />,
   "my-account": <MyAccount />,
   "admin/users": <Users />,
-  "files": <Files />,
-  "settings": <Settings />,
+  files: <Files />,
+  settings: <Settings />,
   "admin/edit-user": <FormEditUser />,
   "admin/create-user": <FormCreateUser />,
 };
 
 function App() {
   const navigate = useNavigate();
-  // 
+  //
   const [currentUser] = useState<User | null>(
     JSON.parse(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token")!)
   );
@@ -52,7 +53,9 @@ function App() {
   // Check if session is expired
   useEffect(() => {
     document.addEventListener("click", function () {
-      const parsedUser = JSON.parse(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token")!);
+      const parsedUser = JSON.parse(
+        localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token")!
+      );
       const expired =
         parsedUser &&
         parsedUser.user &&
@@ -94,9 +97,15 @@ function App() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
-        localStorage.setItem("sb-snvcvbztmwsqqyegkzqu-auth-token", JSON.stringify(session));
+        // localStorage.setItem(
+        //   "sb-snvcvbztmwsqqyegkzqu-auth-token",
+        //   JSON.stringify(session)
+        // );
       } else if (event === "SIGNED_OUT") {
         // localStorage.removeItem("sb-snvcvbztmwsqqyegkzqu-auth-token");
+        if (!location.pathname.includes("signin") && !currentUser) {
+          navigate("/auth/signin");
+        }
       }
     });
     return () => subscription.unsubscribe();
@@ -107,7 +116,14 @@ function App() {
       <UserContext.Provider value={currentUser}>
         <BrandContext.Provider value={{ brand, setBrand }}>
           <div className="flex flex-row flex-nowrap z-50">
-            {localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token") && <NavMenu />}
+            {(localStorage.getItem("sb-snvcvbztmwsqqyegkzqu-auth-token") &&
+              (location.pathname.includes("email-confirmation") ||
+                location.pathname.includes("reset-password"))) ||
+            location.pathname.includes("signin") ||
+            location.pathname.includes("reset") ||
+            location.pathname.includes("session-expired") ? null : (
+              <NavMenu />
+            )}
             <div className="w-full">
               <Routes>
                 {Object.keys(appRoutes).map((route) => (
