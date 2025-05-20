@@ -65,7 +65,7 @@ const ResultItem = (props: { fileName: string; input: string }) => {
         <p>No results found</p>
       ) : (
         <Link to={downloadLink} className="group">
-          <div className="group-hover:underline bg-neutral-200 p-6 h-min flex gap-2 flex-nowrap rounded-sm">
+          <div className="group-hover:underline bg-neutral-200 p-6 h-min flex flex-nowrap rounded-sm">
             {currentFileIcon ? currentFileIcon : <IconFile />}
 
             {highlightMatches(props.input, props.fileName)}

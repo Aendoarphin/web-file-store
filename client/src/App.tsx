@@ -40,8 +40,6 @@ const appRoutes: { [key: string]: React.ReactElement } = {
   "admin/create-user": <FormCreateUser />,
 };
 
-// Import statements remain the same
-
 function App() {
   const navigate = useNavigate();
 
@@ -90,7 +88,6 @@ function App() {
       // User is logged in but on login page
       navigate("/");
     }
-    // In all other cases, keep the URL as is
 
     const {
       data: { subscription },
@@ -104,7 +101,6 @@ function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Rest of the component remains the same
   return (
     <>
       <UserContext.Provider value={currentUser}>
